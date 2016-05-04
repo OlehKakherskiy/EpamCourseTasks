@@ -52,7 +52,6 @@ public class Model {
         maxValues = new ArrayList<>();
         minValues = new ArrayList<>();
         inputtedNumbers = new ArrayList<>();
-        rightNumber = rand();
     }
 
     /**
@@ -65,20 +64,25 @@ public class Model {
     }
 
     /**
-     * Generates new random int in range [min,max]. If max > {@link Model#MAX_RANDOM}
-     * then will truncated MAX_RANDOM. If min < {@link Model#MIN_RANDOM} then whill
-     * be upped to MIN_RANDOM
+     * Generates new random int in range [min,max].
      *
      * @param min start number of range, in which random value will be generated
      * @param max end number of range, in which random value will be generated
      * @return random value in range [min, max]
+     * @throws IllegalArgumentException if min < {@link #MIN_RANDOM} or max {@link #MAX_RANDOM}
      */
-    public int rand(int min, int max) {
-        max = max <= MAX_RANDOM ? max : MAX_RANDOM;
-        min = min >= MIN_RANDOM ? min : MIN_RANDOM;
-        maxValues.add(max);
-        minValues.add(min);
-        return numberGenerator.nextInt(max - min + 1) + min;
+    public int rand(int min, int max) throws IllegalArgumentException {
+        if (max > MAX_RANDOM) {
+            throw new IllegalArgumentException("max > MAX_RANDOM");
+        }
+        if (min < MIN_RANDOM) {
+            throw new IllegalArgumentException("min > MIN_RANDOM");
+        }
+
+        addRangeToStatistics(min, max);
+
+        rightNumber = numberGenerator.nextInt(max - min + 1) + min;
+        return rightNumber;
     }
 
     /**

@@ -3,7 +3,6 @@ package controller;
 import model.Model;
 import view.View;
 
-import java.io.InputStream;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -40,7 +39,6 @@ public class Controller {
      */
     private View view;
 
-    private Scanner scanner;
 
     /**
      * Number that is inputted from inputStream on every iteration
@@ -53,12 +51,10 @@ public class Controller {
      *
      * @param model
      * @param view
-     * @param inputStream
      */
-    public Controller(Model model, View view, InputStream inputStream) {
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
-        scanner = new Scanner(inputStream);
     }
 
     /**
@@ -66,9 +62,10 @@ public class Controller {
      * until user guess the value, generated in model. After that,
      * prepare statistical data and outputs it through the view object.
      */
-    public void playGame() {
+    public void processUser() {
         boolean finishGame = false;
         //game business logic
+        model.rand();
         do {
             int currentMin = model.getActualMin();
             int currentMax = model.getActualMax();
@@ -95,6 +92,7 @@ public class Controller {
      * @return <tt>true</tt>, if inputted data is valid. Otherwise, <tt>false</tt>
      */
     private boolean validateInputData(int min, int max) {
+        Scanner scanner = new Scanner(System.in);
         boolean validateIsSuccessful = false;
         try {
             inputtedNumber = scanner.nextInt();

@@ -13,7 +13,7 @@ public class Main {
         InputStream in = System.in;
         View view = new View();
         Model model = new Model();
-        Controller controller = new Controller(model, view, in);
-        controller.playGame();
+        Controller controller = new Controller(model, view);
+        controller.processUser();
     }
 }
