@@ -187,9 +187,33 @@ public class Tasks {
     }
 
     //циклический сдвиг
-    public static int[] task18(int[] array) {
 
-        return null;
+    /**
+     * @param array
+     * @param shiftCount if < 0 then left shift, else - right shift.
+     * @return
+     */
+    public static int[] task18(int[] array, int shiftCount) {
+        nullCheck(array);
+        if (shiftCount == 0 || array.length == 0)
+            return array;
+        int[] result = new int[array.length];
+        for (int i = 0; i < array.length; i++) {
+            int targetIndex = i + shiftCount;
+            if (targetIndex > array.length - 1) {
+                targetIndex -= array.length;
+            } else if (targetIndex < 0) {
+                targetIndex += array.length;
+            }
+            result[targetIndex] = array[i];
+        }
+        return result;
+    }
+
+    private static int shiftAndReturnNextElement(int[] array, int currentElement, int targetIndex) {
+        int buffer = array[targetIndex];
+        array[targetIndex] = currentElement;
+        return buffer;
     }
 
     //вывести значения элементов, равных другим
@@ -264,12 +288,6 @@ public class Tasks {
     public static int[] task24(int[] array1, int[] array2) {
         nullCheck(array1);
         nullCheck(array2);
-
-//        if (array1.length == 0)
-//            return array2;
-//        if (array2.length == 0)
-//            return array1;
-
         int[] result = new int[array1.length + array2.length];
         int leftIndex = 0;
         int rightIndex = 0;

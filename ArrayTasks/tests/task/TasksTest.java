@@ -156,7 +156,10 @@ public class TasksTest {
 
     @Test
     public void testTask18() throws Exception {
-        Assert.fail();
+        Assert.assertArrayEquals(new int[0], Tasks.task18(new int[0], 5));
+        Assert.assertArrayEquals(new int[]{1, 2, 3}, Tasks.task18(new int[]{1, 2, 3}, 0));
+        Assert.assertArrayEquals(new int[]{3, 4, 5, 6, 7, 8, 1, 2}, Tasks.task18(new int[]{1, 2, 3, 4, 5, 6, 7, 8}, 6));
+        Assert.assertArrayEquals(new int[]{3, 4, 5, 6, 7, 8, 1, 2}, Tasks.task18(new int[]{1, 2, 3, 4, 5, 6, 7, 8}, -2));
     }
 
     @Test
