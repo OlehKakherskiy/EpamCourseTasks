@@ -18,6 +18,9 @@ public class FullNameParser extends AbstractDataParser {
 
     @Override
     protected boolean applyCheckStrategy(String data) {
+        System.out.println(data);
+        System.out.println(regexp.get("contactGroupPattern").matcher(data).find());
+        System.out.println(regexp.get("contactGroupPattern").pattern());
         return regexp.get("fullNamePattern").matcher(data).find() && regexp.get("contactGroupPattern").matcher(data).find();
     }
 
@@ -27,7 +30,7 @@ public class FullNameParser extends AbstractDataParser {
         String[] splitFullName = data.split(" ");
         name.setSurname(splitFullName[0]);
         name.setName(splitFullName[1]);
-        name.setName(splitFullName[2]);
+        name.setSecondName(splitFullName[2]);
         contact.setContactName(name);
         contact.setContactGroup(ContactGroup.valueOf(splitFullName[3]));
     }

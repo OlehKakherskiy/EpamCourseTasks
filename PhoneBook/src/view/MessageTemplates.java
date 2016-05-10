@@ -1,11 +1,17 @@
 package view;
 
+import entity.ContactGroup;
+import entity.PhoneType;
+
+import java.util.Arrays;
+
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class MessageTemplates {
 
-    public static final String INPUT_FULL_NAME = "Input full name in format: surname name second_name";
+    public static final String INPUT_FULL_NAME = "Input full name in format: surname name second_name " +
+            Arrays.toString(ContactGroup.values());
 
     public static final String INPUT_NICKNAME = "Input nickname";
 
@@ -13,7 +19,7 @@ public class MessageTemplates {
             "country, region, city, street, house_number, flat_number, index";
 
     public static final String INPUT_PHONE = "Input phones in format: phone_type phone_number; another phone in the same" +
-            "format, if need";
+            "format, if need. Phone types: " + Arrays.toString(PhoneType.values());
 
     public static final String INPUT_EMAIL = "Input email address";
 

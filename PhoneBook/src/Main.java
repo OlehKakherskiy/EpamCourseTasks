@@ -42,12 +42,12 @@ public class Main {
 
         patternMap = new HashMap<>();
         patternMap.put("skypePattern", RegexpConstants.MOCK_PATTERN);
-        parsers.add(new NicknameParser(patternMap, MessageTemplates.INPUT_SKYPE, //TODO: дописать класс для скайпа
+        parsers.add(new SkypeParser(patternMap, MessageTemplates.INPUT_SKYPE,
                 formatErrorMessage("Skype nickname shouldn't be empty")));
 
         patternMap = new HashMap<>();
-        patternMap.put("commentPattern", RegexpConstants.MOCK_PATTERN); //TODO:
-//        parsers.add(new )
+        patternMap.put("commentPattern", RegexpConstants.MOCK_PATTERN);
+        parsers.add(new CommentParser(patternMap, MessageTemplates.INPUT_COMMENT, formatErrorMessage("")));
 
         patternMap = new HashMap<>();
         patternMap.put("countryPattern", RegexpConstants.COUNTRY_PATTERN);

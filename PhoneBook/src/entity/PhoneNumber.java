@@ -29,4 +29,9 @@ public class PhoneNumber {
     public void setType(PhoneType type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "PhoneNumber:" + phoneNumber + ", Type:" + type;
+    }
 }

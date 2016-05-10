@@ -42,6 +42,7 @@ public class Contact implements Serializable {
         id = UUID.randomUUID();
         phoneNumbers = new ArrayList<>();
         creationDate = LocalDate.now();
+        updateDate = LocalDate.now();
     }
 
     public void addPhoneNumber(PhoneNumber phoneNumber) {
@@ -131,6 +132,19 @@ public class Contact implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder phoneNumbersBuilder = new StringBuilder(100);
+        for (PhoneNumber phoneNumber : phoneNumbers) {
+            phoneNumbersBuilder.append(phoneNumber.toString()).append(";\n");
+        }
+        return String.format("Contact %s;Contact group: %s;\nNickname: %s;\nPhone numbers:\n%s" +
+                        "Email: %s;\nSkype: %s;\nAddress: %s;\nCreation date: %s;\nLast update date: %s;\nComment: %s;\n",
+                contactName.formatFullName(), contactGroup.name(), nickName, phoneNumbersBuilder.toString(),
+                email, skypeNickName, address.formatAsPostAddress(), creationDate.toString(),
+                updateDate.toString(), contactComment);
     }
 
     public ContactGroup getContactGroup() {

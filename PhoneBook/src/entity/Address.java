@@ -41,7 +41,7 @@ public class Address {
                 append(index).toString();
     }
 
-    public String formatFullAddress(){
+    public String formatFullAddress() {
         return null;
         //TODO:реализация метода!!
     }

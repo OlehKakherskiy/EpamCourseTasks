@@ -12,7 +12,7 @@ public class RegexpConstants {
 
     public static final Pattern FULL_NAME_PATTERN = Pattern.compile("^([A-Z][a-z]+) ([A-Z][a-z]+) ([A-Z][a-z]+)");
 
-    public static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^(0\\d{1,4})(\\d{3})(\\d{2})(\\d{2})");
+    public static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("(0\\d{2,4})(\\d{3})(\\d{2})(\\d{2})");
 
     public static final Pattern MOCK_PATTERN = Pattern.compile(".*");
 
@@ -38,19 +38,20 @@ public class RegexpConstants {
 
 
     private static String formatContactGroupPattern() {
-        StringBuilder result = new StringBuilder("^");
+        StringBuilder result = new StringBuilder("(");
 
         for (ContactGroup group : ContactGroup.values()) {
             result.append(group.name()).append("|");
         }
-        result.deleteCharAt(result.length() - 1);
-        return result.toString();
+        result.setCharAt(result.length() - 1, ')');
+        return result.append("$").toString();
     }
 
     private static String formatPhoneTypePattern() {
-        StringBuilder result = new StringBuilder("^");
+        StringBuilder result = new StringBuilder("(");
         for (PhoneType type : PhoneType.values())
             result.append(type.name()).append("|");
-        return result.deleteCharAt(result.length() - 1).toString();
+        result.setCharAt(result.length() - 1, ')');
+        return result.toString();
     }
 }

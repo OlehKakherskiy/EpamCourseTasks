@@ -31,7 +31,9 @@ public class Controller {
         for (AbstractDataParser parser : dataParsers) {
             parseData(scanner, parser, contact);
         }
-
+        view.printMessage("Contact is created");
+        noteBook.addContact(contact);
+        view.printMessage(noteBook.toString());
     }
 
     private void parseData(Scanner sc, AbstractDataParser parser, Contact contact) {
