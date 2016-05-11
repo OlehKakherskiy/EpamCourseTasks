@@ -6,16 +6,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class represents phone book, that can be empty or have several {@link Contact} objects.
+ *
+ * @see Contact
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class NoteBook implements Serializable {
+public class PhoneBook implements Serializable {
 
+    /**
+     * contact list
+     */
     private List<Contact> contacts;
 
-    public NoteBook() {
+    /**
+     * inits {@link #contacts} field with empty list.
+     */
+    public PhoneBook() {
         contacts = new ArrayList<>();
     }
 
+    /**
+     * add contact to contact list. If contact has already been added,
+     * then changes contact {@link Contact#updateDate}
+     *
+     * @param contact contact that has to be added to list
+     */
     public void addContact(Contact contact) {
         if (!contacts.contains(contact)) {
             contacts.add(contact);
@@ -24,6 +39,12 @@ public class NoteBook implements Serializable {
         }
     }
 
+    /**
+     * removes contact from contact list. If there is no {@link Contact} object in list,
+     * then do nothing.
+     *
+     * @param contact contact object, that should be removed.
+     */
     public void removeContact(Contact contact) {
         if (contacts.contains(contact)) {
             contacts.remove(contact);

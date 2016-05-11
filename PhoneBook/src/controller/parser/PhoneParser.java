@@ -4,7 +4,6 @@ import entity.PhoneNumber;
 import entity.PhoneType;
 import model.Contact;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -21,11 +20,6 @@ public class PhoneParser extends AbstractDataParser {
     @Override
     protected boolean applyCheckStrategy(String data) {
         String[] numbers = data.split(";|; ");
-        System.out.println("numbers = " + Arrays.toString(numbers));
-        System.out.println(regexp.get("phoneTypePattern"));
-        System.out.println(regexp.get("phoneNumberPattern"));
-        System.out.println(regexp.get("phoneNumberPattern").matcher(data).find());
-        System.out.println(regexp.get("phoneTypePattern").matcher(data).find());
         for (String number : numbers) {
             String[] numberParts = number.trim().split(" ");
             if (numberParts.length < 2)

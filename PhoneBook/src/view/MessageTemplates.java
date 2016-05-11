@@ -6,6 +6,8 @@ import entity.PhoneType;
 import java.util.Arrays;
 
 /**
+ * Simple messages with description how to input different types of data.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class MessageTemplates {
@@ -27,5 +29,8 @@ public class MessageTemplates {
 
     public static final String INPUT_COMMENT = "Input comment, if need";
 
+    /**
+     * error template string. Should be used as a parameter
+     */
     public static final String INPUT_ERROR = "Error with inputting data.%s.Try again";
 }

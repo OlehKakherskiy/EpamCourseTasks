@@ -1,38 +1,74 @@
 package entity;
 
 /**
+ * Class represents address entity. Full address, that can unique identify every street,
+ * consists of postal index, country name, region (can be region, state, etc.), city name, street name,
+ * street number, flat number.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class Address {
 
+    /**
+     * country name
+     */
     private String country;
 
+    /**
+     * region name
+     */
     private String region;
 
+    /**
+     * city name
+     */
     private String city;
 
+    /**
+     * street name
+     */
     private String street;
 
+    /**
+     * house number
+     */
     private String houseNumber;
 
+    /**
+     * flat number
+     */
     private String flatNumber;
 
+    /**
+     * post index
+     */
     private String index;
 
-    public Address(String country, String region, String city, String street, String houseNumber,
-                   String flatNumber, String index) {
-        this.country = country;
-        this.region = region;
-        this.city = city;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.flatNumber = flatNumber;
-        this.index = index;
-    }
-
-    public Address() {
-    }
-
+    /**
+     * <p>
+     * Formats Address in postal format.
+     * </p>
+     * <p>
+     * Format:
+     * </p>
+     * <p>
+     * street name, house number, flat number
+     * </p>
+     * <p>
+     * city
+     * </p>
+     * <p>
+     * region
+     * </p>
+     * <p>
+     * country
+     * </p>
+     * <p>
+     * index
+     * </p>
+     *
+     * @return string representation of full address in postal format
+     */
     public String formatAsPostAddress() {
         return new StringBuilder(street).append(", ").append(houseNumber).
                 append(", ").append(flatNumber).append("\n").
