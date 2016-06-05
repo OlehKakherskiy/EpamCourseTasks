@@ -1,25 +1,28 @@
 package controller.command;
 
+import app.GlobalContext;
 import controller.validator.AbstractValidator;
 import model.CreditList;
 import model.entity.credit.Credit;
+import view.View;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class FindCreditCommand extends AbstractOperationCommand<List<Credit>> {
+public class FindCreditCommand extends MultipleParamsCommand<List<Credit>> {
 
     private static PropertyDescriptor[] propertyDescriptors;
+
+    private static CreditList creditList;
 
     static {
         try {
@@ -28,17 +31,41 @@ public class FindCreditCommand extends AbstractOperationCommand<List<Credit>> {
             e.printStackTrace();
             System.exit(-1);
         }
+        creditList = (CreditList) GlobalContext.creditList;
     }
 
-    public FindCreditCommand(Map<String, Class> paramsTemplates,
-                             AbstractValidator<Map<String, Class>, Map<String, Object>> paramsTemplatesValidator) {
-        super(paramsTemplates, paramsTemplatesValidator);
+    public FindCreditCommand(View view, Scanner sc) {
+        super(view, sc);
+    }
+
+    public FindCreditCommand(View view, Scanner sc, AbstractValidator<Map<String, Class>, Map<String, Object>> validator, Map<String, Class> paramsTemplate) {
+        super(view, sc, validator, paramsTemplate);
+    }
+
+
+    @Override
+    protected Map<String, Object> inputParametersForProcessing() {
+        view.printMessage((String) GlobalContext.getParam(GlobalContext.availableKeysFilters));
+        String inputData = null;
+        if (scanner.hasNext()) {
+            inputData = scanner.nextLine();
+        }
+        List<String> splittedData = new ArrayList<>(Arrays.asList(inputData.split(" ")));
+        if (splittedData.size() % 2 == 1) {
+            splittedData.add(null);
+        }
+        Map<String, Object> result = new HashMap<>();
+        Iterator<String> iterator = splittedData.iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            String value = iterator.next();
+            result.put(key, value);
+        }
+        return result;
     }
 
     @Override
     protected List<Credit> processCommandHook(Map<String, Object> params) {
-
-        CreditList list = (CreditList) params.get("creditList");
 
         Predicate<Credit> composedPredicate = null;
 
@@ -49,7 +76,21 @@ public class FindCreditCommand extends AbstractOperationCommand<List<Credit>> {
                 composedPredicate.and(addPredicate(param));
             }
         }
-        return list.getCredits().stream().filter(composedPredicate).collect(Collectors.toList());
+        return creditList.getCredits().stream().filter(composedPredicate).collect(Collectors.toList());
+    }
+
+    @Override
+    protected void outputResult(List<Credit> result) {
+        StringBuilder builder = new StringBuilder("result:");
+        int i = 1;
+        if (result.size() == 0) {
+            builder.append("no results");
+        } else {
+            for (Credit credit : result) {
+                builder.append(i).append(": ").append(credit.toString()).append("\n");
+            }
+        }
+        view.printMessage(builder.toString());
     }
 
     private Predicate<Credit> addPredicate(Map.Entry<String, Object> entry) {

@@ -1,7 +1,7 @@
 package controller;
 
-import controller.command.IOperationCommand;
-import model.CreditList;
+import app.GlobalContext;
+import controller.command.AbstractCommand;
 import view.View;
 
 import java.util.Map;
@@ -12,37 +12,32 @@ import java.util.Scanner;
  */
 public class CreditOperationsController {
 
-    private CreditList creditList;
-
     private View view;
 
-    private Map<Integer, IOperationCommand> controllerCommands;
+    private Scanner sc;
 
-    public CreditOperationsController(CreditList creditList, Map<Integer, IOperationCommand> commands) {
-        this.creditList = creditList;
+    private Map<Integer, AbstractCommand> controllerCommands;
+
+    public CreditOperationsController(View view, Scanner sc, Map<Integer, AbstractCommand> commands) {
         this.controllerCommands = commands;
+        this.view = view;
+        this.sc = sc;
     }
 
     public void processRequest() {
-        Scanner sc = new Scanner(System.in);
-        int commandID = inputCommandID(sc);
-    }
-
-    private int inputCommandID(Scanner sc) {
-        boolean commandIDExists = false;
-        int commandID;
-        do {
-            commandID = sc.nextInt();
-            commandIDExists = validateCommandID(commandID);
-            if (!commandIDExists) {
-                System.out.println("This command id does not exists. Try again.");
+        while (true) {
+            view.printMessage((String) GlobalContext.getParam(GlobalContext.availableCommands));
+            int commandID = sc.nextInt();
+            if (commandID == 0) {
+                System.exit(0);
+            } else {
+                AbstractCommand command = controllerCommands.get(commandID);
+                if (command == null) {
+                    view.printMessage((String) GlobalContext.getParam(GlobalContext.noCommand));
+                } else {
+                    command.processCommand();
+                }
             }
-        } while (commandIDExists);
-
-        return commandID;
-    }
-
-    private boolean validateCommandID(int commandID) {
-        return controllerCommands.containsKey(commandID);
+        }
     }
 }

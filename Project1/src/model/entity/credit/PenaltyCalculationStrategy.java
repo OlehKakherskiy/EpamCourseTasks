@@ -1,5 +1,6 @@
 package model.entity.credit;
 
+import controller.ValidationException;
 import controller.validator.AbstractValidator;
 import controller.validator.ParamsTemplateValidator;
 import model.entity.BankOperation;
@@ -57,10 +58,8 @@ public abstract class PenaltyCalculationStrategy<T extends BankOperation> {
      *
      * @param penaltyCauses causes why penalty should be processed
      */
-    public final void addPenaltyToBankOperation(Map<String, Object> penaltyCauses) {
-        if (!penaltyCauseValidator.validate(penaltyCausesPatterns, penaltyCauses)) {
-            return;
-        }
+    public final void addPenaltyToBankOperation(Map<String, Object> penaltyCauses) throws ValidationException {
+        penaltyCauseValidator.validate(penaltyCausesPatterns, penaltyCauses);
         addPenaltyHook(penaltyCauses);
     }
 

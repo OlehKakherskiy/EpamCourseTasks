@@ -13,6 +13,9 @@ import java.util.Set;
  */
 public class CreditList {
 
+    /**
+     * all credits, that are offered for client from banks
+     */
     private Set<Credit> credits;
 
     public CreditList() {

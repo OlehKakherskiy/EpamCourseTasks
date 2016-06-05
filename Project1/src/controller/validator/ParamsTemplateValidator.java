@@ -1,5 +1,8 @@
 package controller.validator;
 
+import app.GlobalContext;
+import controller.ValidationException;
+
 import java.util.Map;
 
 /**
@@ -12,19 +15,17 @@ public class ParamsTemplateValidator extends AbstractValidator<Map<String, Class
     }
 
     @Override
-    protected boolean validateHook(Map<String, Class> expectation, Map<String, Object> actual) {
-        boolean hasMatchCause = false;
+    protected void validateHook(Map<String, Class> expectation, Map<String, Object> actual) throws ValidationException {
         for (Map.Entry<String, Class> currentExpectation : expectation.entrySet()) {
             Object value = actual.get(currentExpectation.getKey());
-            if (value != null) {
-                hasMatchCause = true;
-                if (!hasMatchValue(currentExpectation, value)) {
-                    return false;
-                }
+            if (value != null && !hasMatchValue(currentExpectation, value)) {
+                String exceptionTemplate = (String) GlobalContext.getParam(GlobalContext.incompatibleTypesExceptionKey);
+
+                throw new ValidationException(String.format(exceptionTemplate, currentExpectation.getKey(),
+                        currentExpectation.getValue(), value.getClass()));
             }
         }
         removeUnexpectedParams(expectation, actual);
-        return hasMatchCause;
     }
 
     private void removeUnexpectedParams(Map<String, Class> expectation, Map<String, Object> actual) {
@@ -32,7 +33,11 @@ public class ParamsTemplateValidator extends AbstractValidator<Map<String, Class
     }
 
     private boolean hasMatchValue(Map.Entry<String, Class> expectationPattern, Object actualValue) {
-        return expectationPattern.getValue().isAssignableFrom(actualValue.getClass());
+        boolean isMatch = expectationPattern.getValue().isAssignableFrom(actualValue.getClass());
+        if (!isMatch) {
+            actualValue = expectationPattern.getValue().cast(actualValue);
+            isMatch = expectationPattern.getValue().isAssignableFrom(actualValue.getClass());
+        }
+        return isMatch;
     }
-
 }

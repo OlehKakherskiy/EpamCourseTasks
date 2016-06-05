@@ -1,5 +1,7 @@
 package controller.validator;
 
+import controller.ValidationException;
+
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
@@ -11,10 +13,12 @@ public abstract class AbstractValidator<T, E> {
         this.nextChain = nextChain;
     }
 
-    public final boolean validate(T expectation, E actual) {
-        return validateHook(expectation, actual) &&
-                (nextChain == null || nextChain.validate(expectation, actual));
+    public final void validate(T expectation, E actual) throws ValidationException {
+        validateHook(expectation, actual);
+        if (nextChain != null) {
+            nextChain.validate(expectation, actual);
+        }
     }
 
-    protected abstract boolean validateHook(T expectation, E actual);
+    protected abstract void validateHook(T expectation, E actual) throws ValidationException;
 }

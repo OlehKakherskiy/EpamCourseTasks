@@ -18,15 +18,17 @@ public class CreditLine extends Credit {
     private boolean increaseMaxCreditLimitOpportunity;
 
     public CreditLine(String name, String bankName, int maxMonthCount, int minSumAmount, int maxSumAmount,
-                      boolean increaseMaxCreditLimitOpportunity, AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator) {
-        super(name, bankName, maxMonthCount, minSumAmount, maxSumAmount, documentsValidator);
+                      boolean increaseMaxCreditLimitOpportunity,
+                      AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator,
+                      PaymentStrategy paymentStrategy) {
+        super(name, bankName, maxMonthCount, minSumAmount, maxSumAmount, documentsValidator, paymentStrategy);
         this.increaseMaxCreditLimitOpportunity = increaseMaxCreditLimitOpportunity;
     }
 
 
     @Override
     public String getOfferDetails() {
-        return toString();
+        return "offer details: " + toString();
     }
 
     @Override

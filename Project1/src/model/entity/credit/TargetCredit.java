@@ -25,20 +25,21 @@ public class TargetCredit extends Credit {
 
     public TargetCredit(String name, String bankName, int maxMonthCount, int minSumAmount, int maxSumAmount,
                         boolean earlyRepaymentPossibility, String creditTarget,
-                        AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator) {
-        super(name, bankName, maxMonthCount, minSumAmount, maxSumAmount, documentsValidator);
+                        AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator,
+                        PaymentStrategy paymentStrategy) {
+        super(name, bankName, maxMonthCount, minSumAmount, maxSumAmount, documentsValidator, paymentStrategy);
         this.earlyRepaymentPossibility = earlyRepaymentPossibility;
         this.creditTarget = creditTarget;
     }
 
     @Override
     public String getOfferDetails() {
-        return "";
+        return "offer details:" + toString();
     }
 
     @Override
     public String getRequiredDocumentsDescription() {
-        return "";
+        return "no document description";
     }
 
     @Override

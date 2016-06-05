@@ -47,12 +47,15 @@ public abstract class Credit extends BankOperation {
     protected int maxSumAmount;
 
     public Credit(String name, String bankName, int maxMonthCount, int minSumAmount, int maxSumAmount,
-                  AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator) {
+                  AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator,
+                  PaymentStrategy paymentStrategy) {
         super(name, bankName, documentsValidator);
         this.maxMonthCount = maxMonthCount;
         setMinSumAmount(minSumAmount);
         setMaxSumAmount(maxSumAmount);
+        this.paymentStrategy = paymentStrategy;
     }
+
 
     /**
      * adds percents to full payout for using this credit operation by user

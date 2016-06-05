@@ -1,5 +1,6 @@
 package model.entity;
 
+import controller.ValidationException;
 import controller.validator.AbstractValidator;
 import model.entity.credit.PenaltyCalculationStrategy;
 
@@ -81,9 +82,9 @@ public abstract class BankOperation {
      * @param documents client's documents, needed to order this bank operation
      * @return true, if bank operation processed successfully. Otherwise - false
      */
-    public final boolean processBankOperation(Map<String, Object> documents) {
-        return documentsValidator.validate(requiredDocuments, documents) &&
-                processBankOperationHook(documents);
+    public final boolean processBankOperation(Map<String, Object> documents) throws ValidationException {
+        documentsValidator.validate(requiredDocuments, documents);
+        return processBankOperationHook(documents);
     }
 
     /**
@@ -108,8 +109,8 @@ public abstract class BankOperation {
      *
      * @param penaltyCauses causes why penalty should be processed
      */
-    public void addPenaltyToOperationResult(Map<String, Object> penaltyCauses) {
-        penaltyCalculationStrategy.addPenaltyToCredit(penaltyCauses);
+    public void addPenaltyToOperationResult(Map<String, Object> penaltyCauses) throws ValidationException {
+        penaltyCalculationStrategy.addPenaltyToBankOperation(penaltyCauses);
     }
 
     /**
