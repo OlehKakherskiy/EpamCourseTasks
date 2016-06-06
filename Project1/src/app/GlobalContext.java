@@ -12,6 +12,7 @@ import java.util.Properties;
  */
 public class GlobalContext {
 
+
     public static final Properties contextParams = new Properties();
 
     public static final String incompatibleTypesExceptionKey = "exception.incompatibleTypesException";
@@ -44,7 +45,8 @@ public class GlobalContext {
 
 
     public static void initConfigs() {
-        try (FileInputStream fis = new FileInputStream("Project1/src/app/config.properties")) {
+//        try (FileInputStream fis = new FileInputStream(new File(".").getCanonicalPath() + "\\src\\app\\config.properties")) {
+        try (FileInputStream fis = new FileInputStream("resources/config.properties")) {
             contextParams.load(fis);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

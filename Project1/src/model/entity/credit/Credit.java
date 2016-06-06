@@ -2,6 +2,7 @@ package model.entity.credit;
 
 import controller.validator.AbstractValidator;
 import model.entity.BankOperation;
+import model.entity.credit.percentageCalculationStrategy.PercentageCalculationStrategy;
 
 import java.util.Map;
 

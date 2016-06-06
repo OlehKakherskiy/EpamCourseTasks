@@ -2,7 +2,7 @@ package model.entity;
 
 import controller.ValidationException;
 import controller.validator.AbstractValidator;
-import model.entity.credit.PenaltyCalculationStrategy;
+import model.entity.credit.penaltyStrategy.PenaltyCalculationStrategy;
 
 import java.util.Map;
 

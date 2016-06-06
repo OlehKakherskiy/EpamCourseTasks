@@ -33,7 +33,7 @@ public class CreditLine extends Credit {
 
     @Override
     public String getRequiredDocumentsDescription() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

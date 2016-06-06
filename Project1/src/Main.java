@@ -1,5 +1,4 @@
-package app;
-
+import app.GlobalContext;
 import controller.CreditOperationsController;
 import controller.command.AbstractCommand;
 import controller.command.ChooseCreditByNameCommand;

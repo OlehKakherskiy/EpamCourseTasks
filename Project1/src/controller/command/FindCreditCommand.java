@@ -2,6 +2,7 @@ package controller.command;
 
 import app.GlobalContext;
 import controller.validator.AbstractValidator;
+import controller.validator.IncompatibleStringValueValidator;
 import model.CreditList;
 import model.entity.credit.Credit;
 import view.View;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class FindCreditCommand extends MultipleParamsCommand<List<Credit>> {
+public class FindCreditCommand extends MultipleParamsCommand<Set<Credit>> {
 
     private static PropertyDescriptor[] propertyDescriptors;
 
@@ -39,7 +40,7 @@ public class FindCreditCommand extends MultipleParamsCommand<List<Credit>> {
     }
 
     public FindCreditCommand(View view, Scanner sc, AbstractValidator<Map<String, Class>, Map<String, Object>> validator, Map<String, Class> paramsTemplate) {
-        super(view, sc, validator, paramsTemplate);
+        super(view, sc, validator == null ? new IncompatibleStringValueValidator(null) : validator, paramsTemplate);
     }
 
 
@@ -57,40 +58,30 @@ public class FindCreditCommand extends MultipleParamsCommand<List<Credit>> {
         Map<String, Object> result = new HashMap<>();
         Iterator<String> iterator = splittedData.iterator();
         while (iterator.hasNext()) {
-            String key = iterator.next();
-            String value = iterator.next();
-            result.put(key, value);
+            result.put(iterator.next(), iterator.next());
         }
         return result;
     }
 
     @Override
-    protected List<Credit> processCommandHook(Map<String, Object> params) {
+    protected Set<Credit> processCommandHook(Map<String, Object> params) {
 
-        Predicate<Credit> composedPredicate = null;
+        List<Predicate<Credit>> composedPredicate = params.entrySet().stream().map(this::addPredicate).collect(Collectors.toList());
 
-        for (Map.Entry<String, Object> param : params.entrySet()) {
-            if (composedPredicate == null) {
-                composedPredicate = addPredicate(param);
-            } else {
-                composedPredicate.and(addPredicate(param));
+        if (composedPredicate == null)
+            return creditList.getCredits();
+
+        Set<Credit> res = new HashSet<>();
+        outer:
+        for (Credit credit : creditList.getCredits()) {
+            for (Predicate<Credit> predicate : composedPredicate) {
+                if (!predicate.test(credit)) {
+                    continue outer;
+                }
             }
+            res.add(credit);
         }
-        return creditList.getCredits().stream().filter(composedPredicate).collect(Collectors.toList());
-    }
-
-    @Override
-    protected void outputResult(List<Credit> result) {
-        StringBuilder builder = new StringBuilder("result:");
-        int i = 1;
-        if (result.size() == 0) {
-            builder.append("no results");
-        } else {
-            for (Credit credit : result) {
-                builder.append(i).append(": ").append(credit.toString()).append("\n");
-            }
-        }
-        view.printMessage(builder.toString());
+        return res;
     }
 
     private Predicate<Credit> addPredicate(Map.Entry<String, Object> entry) {
@@ -105,6 +96,20 @@ public class FindCreditCommand extends MultipleParamsCommand<List<Credit>> {
             }
             return false;
         };
+    }
+
+    @Override
+    protected void outputResult(Set<Credit> result) {
+        StringBuilder builder = new StringBuilder("result:");
+        int i = 1;
+        if (result.size() == 0) {
+            builder.append("no results");
+        } else {
+            for (Credit credit : result) {
+                builder.append(i).append(": ").append(credit.toString()).append("\n");
+            }
+        }
+        view.printMessage(builder.toString());
     }
 
     private PropertyDescriptor getPropertyDescriptorByFieldName(String name) {

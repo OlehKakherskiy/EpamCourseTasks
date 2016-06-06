@@ -1,4 +1,4 @@
-package model.entity.credit;
+package model.entity.credit.penaltyStrategy;
 
 import controller.ValidationException;
 import controller.validator.AbstractValidator;

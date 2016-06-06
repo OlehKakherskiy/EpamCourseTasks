@@ -1,4 +1,6 @@
-package model.entity.credit;
+package model.entity.credit.percentageCalculationStrategy;
+
+import model.entity.credit.Credit;
 
 /**
  * Class represents a root of percentage calculation hierarchy.

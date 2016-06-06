@@ -36,8 +36,11 @@ public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<Str
 
     @Override
     protected Credit processCommandHook(String params) {
-        return creditList.getCredits().stream().filter(credit -> credit.getName().
-                equals(params)).findFirst().get();
+        for (Credit credit : creditList.getCredits()) {
+            if (credit.getName().equals(params))
+                return credit;
+        }
+        return null;
     }
 
     @Override
