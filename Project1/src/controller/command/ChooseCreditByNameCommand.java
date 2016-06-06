@@ -9,12 +9,18 @@ import view.View;
 import java.util.Scanner;
 
 /**
+ * Class encapsulates logic of choosing credit from list by it's name.
+ * No validation is needed
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<String>, String> {
 
     private CreditList creditList = GlobalContext.creditList;
 
+    /**
+     * credit's name inputted string
+     */
     private String inputtedString = null;
 
     public ChooseCreditByNameCommand(View view, Scanner sc) {
@@ -27,13 +33,24 @@ public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<Str
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String inputParametersForProcessing() {
         view.printMessage((String) GlobalContext.getParam(GlobalContext.chooseCredit));
-        inputtedString = scanner.nextLine();
+        while (scanner.hasNextLine() && (inputtedString == null || inputtedString.equals("")))
+            inputtedString = scanner.nextLine();
         return inputtedString;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     *
+     * @param params credit's name.
+     * @return credit that has inputted name
+     */
     @Override
     protected Credit processCommandHook(String params) {
         for (Credit credit : creditList.getCredits()) {
@@ -43,6 +60,9 @@ public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<Str
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void outputResult(Credit result) {
         if (result == null) {

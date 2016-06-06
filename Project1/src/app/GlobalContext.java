@@ -3,15 +3,15 @@ package app;
 import model.CreditList;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * Class encapsulates configs and global objects
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class GlobalContext {
-
 
     public static final Properties contextParams = new Properties();
 
@@ -45,13 +45,11 @@ public class GlobalContext {
 
 
     public static void initConfigs() {
-//        try (FileInputStream fis = new FileInputStream(new File(".").getCanonicalPath() + "\\src\\app\\config.properties")) {
-        try (FileInputStream fis = new FileInputStream("resources/config.properties")) {
+        try (FileInputStream fis = new FileInputStream("D:\\Документы\\FICT\\Новая папка\\EpamTasks\\Project1\\resources\\config.properties")) {
             contextParams.load(fis);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
     }
 }
