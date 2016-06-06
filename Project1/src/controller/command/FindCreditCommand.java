@@ -2,7 +2,6 @@ package controller.command;
 
 import app.GlobalContext;
 import controller.validator.AbstractValidator;
-import controller.validator.IncompatibleStringValueValidator;
 import model.CreditList;
 import model.entity.credit.Credit;
 import view.View;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  * @see CreditList
  */
-public class FindCreditCommand extends MultipleParamsCommand<Set<Credit>> {
+public class FindCreditCommand extends AbstractCommand<Set<Credit>> {
 
     /**
      * all properties of {@link Credit}
@@ -44,12 +43,8 @@ public class FindCreditCommand extends MultipleParamsCommand<Set<Credit>> {
         creditList = (CreditList) GlobalContext.creditList;
     }
 
-    public FindCreditCommand(View view, Scanner sc) {
-        super(view, sc);
-    }
-
-    public FindCreditCommand(View view, Scanner sc, AbstractValidator<Map<String, Class>, Map<String, Object>> validator, Map<String, Class> paramsTemplate) {
-        super(view, sc, validator == null ? new IncompatibleStringValueValidator(null) : validator, paramsTemplate);
+    public FindCreditCommand(View view, Scanner sc, AbstractValidator validator, Map<String, Class> paramsTemplate) {
+        super(view, sc, validator, paramsTemplate);
     }
 
     /**
@@ -92,7 +87,7 @@ public class FindCreditCommand extends MultipleParamsCommand<Set<Credit>> {
 
         List<Predicate<Credit>> composedPredicate = params.entrySet().stream().map(this::addPredicate).collect(Collectors.toList());
 
-        if (composedPredicate == null)
+        if (composedPredicate.isEmpty())
             return creditList.getCredits();
 
         Set<Credit> res = new HashSet<>();

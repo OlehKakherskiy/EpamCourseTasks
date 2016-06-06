@@ -24,8 +24,7 @@ public class TargetCredit extends Credit {
     private String creditTarget;
 
     public TargetCredit(String name, String bankName, int maxMonthCount, int minSumAmount, int maxSumAmount,
-                        boolean earlyRepaymentPossibility, String creditTarget,
-                        AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator,
+                        boolean earlyRepaymentPossibility, String creditTarget, AbstractValidator documentsValidator,
                         PaymentStrategy paymentStrategy) {
         super(name, bankName, maxMonthCount, minSumAmount, maxSumAmount, documentsValidator, paymentStrategy);
         this.earlyRepaymentPossibility = earlyRepaymentPossibility;
@@ -69,5 +68,13 @@ public class TargetCredit extends Credit {
         int result = super.hashCode();
         result = 31 * result + (earlyRepaymentPossibility ? 1 : 0);
         return result;
+    }
+
+    public boolean isEarlyRepaymentPossibility() {
+        return earlyRepaymentPossibility;
+    }
+
+    public String getCreditTarget() {
+        return creditTarget;
     }
 }

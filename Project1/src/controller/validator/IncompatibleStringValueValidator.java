@@ -12,8 +12,8 @@ import java.util.Map;
  */
 public class IncompatibleStringValueValidator extends ParamsTemplateValidator {
 
-    public IncompatibleStringValueValidator(AbstractValidator<Map<String, Class>, Map<String, Object>> nextChain) {
-        super(nextChain);
+    public IncompatibleStringValueValidator(Map<String, Class> templates, AbstractValidator nextChain) {
+        super(templates, nextChain);
     }
 
     /**
@@ -23,14 +23,15 @@ public class IncompatibleStringValueValidator extends ParamsTemplateValidator {
      * do null check and check for emptiness.
      * </p>
      *
-     * @param expectation target keys and types expectations of actual params
-     * @param actual      actual key/value params
+     * @param actual actual key/value params
      * @throws ValidationException if actual string param is null or empty
      */
     @Override
-    protected void validateHook(Map<String, Class> expectation, Map<String, Object> actual) throws ValidationException {
-        super.validateHook(expectation, actual);
-        for (Map.Entry<String, Class> entry : expectation.entrySet()) {
+    protected void validateHook(Map<String, Object> actual) throws ValidationException {
+        super.validateHook(actual);
+        if (validationTemplates == null || validationTemplates.isEmpty() || actual == null || actual.isEmpty())
+            return;
+        for (Map.Entry<String, Class> entry : validationTemplates.entrySet()) {
             if (entry.getValue().equals(String.class)) {
                 String key = entry.getKey();
                 String value = (String) actual.get(key);

@@ -5,6 +5,7 @@ import controller.ValidationException;
 import controller.validator.AbstractValidator;
 import model.entity.credit.penaltyStrategy.PenaltyCalculationStrategy;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,9 +42,12 @@ public abstract class BankOperation {
     /**
      * required documents for processing bank operation
      */
-    protected Map<String, Class> requiredDocuments;
+    protected Map<String, Class> requiredDocuments = new HashMap<>();
 
-    protected AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator;
+    /**
+     * validates documents before processing bank operation
+     */
+    protected AbstractValidator documentsValidator;
 
     /**
      * Inits new bank operation with specific name and bank name
@@ -52,12 +56,12 @@ public abstract class BankOperation {
      * @param bankName bank name, that provides implementation of this operation
      */
     public BankOperation(String name, String bankName,
-                         AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator) {
+                         AbstractValidator documentsValidator) {
         nullAndEmptinessCheck(name, "name");
         nullAndEmptinessCheck(bankName, "bankName");
         this.name = name;
         this.bankName = bankName;
-        this.documentsValidator = documentsValidator;
+        this.documentsValidator = GlobalContext.getDefaultValidator(requiredDocuments, documentsValidator);
     }
 
     /**
@@ -86,7 +90,7 @@ public abstract class BankOperation {
      * @return true, if bank operation processed successfully. Otherwise - false
      */
     public final boolean processBankOperation(Map<String, Object> documents) throws ValidationException {
-        documentsValidator.validate(requiredDocuments, documents);
+        documentsValidator.validate(documents);
         return processBankOperationHook(documents);
     }
 
@@ -125,6 +129,15 @@ public abstract class BankOperation {
         if (penaltyCalculationStrategy == null)
             return;
         this.penaltyCalculationStrategy = penaltyCalculationStrategy;
+    }
+
+    public void addDocumentTemplate(String key, Class value) {
+        if (key != null && !key.isEmpty() && value != null)
+            requiredDocuments.put(key, value);
+    }
+
+    public void removeDocumentTemplate(String key) {
+        requiredDocuments.remove(key);
     }
 
     public String getName() {

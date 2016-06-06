@@ -22,7 +22,7 @@ public class FindCreditCommandTest {
 
     public static CreditList creditList = GlobalContext.creditList;
 
-    public static FindCreditCommand testCommand = new FindCreditCommand(null, null);
+    public static FindCreditCommand testCommand = new FindCreditCommand(null, null, null, null);
 
     @BeforeClass
     public static void init() {
@@ -77,8 +77,6 @@ public class FindCreditCommandTest {
 
         Map<String, Object> params = new HashMap<>();
 
-        Assert.assertArrayEquals(new Object[0], testCommand.processCommandHook(params).toArray());
-
         params.put("name", "blabla");
 
         Assert.assertArrayEquals(new Object[0], testCommand.processCommandHook(params).toArray());
@@ -89,11 +87,11 @@ public class FindCreditCommandTest {
         Map<String, Object> params = new HashMap<>();
         params.put("bankName", "bank1");
         params.put("paymentStrategy", PaymentStrategy.DIFFERENTIATED);
-        params.put("earlyRepaymentPossibility", false);
+//        params.put("earlyRepaymentPossibility", true);
         Object[] expectation = {
                 new TargetCredit("credit6", "bank1", 2, 1300000, 200000000, true, "justTarget2", null, PaymentStrategy.DIFFERENTIATED),
                 new TargetCredit("credit5", "bank1", 100, 1500000, 300000000, true, "justTarget", null, PaymentStrategy.DIFFERENTIATED)
         };
-        Assert.assertArrayEquals(new Object[0], testCommand.processCommandHook(params).toArray());
+        Assert.assertArrayEquals(expectation, testCommand.processCommandHook(params).toArray());
     }
 }

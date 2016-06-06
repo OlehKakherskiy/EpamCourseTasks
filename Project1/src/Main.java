@@ -30,15 +30,15 @@ public class Main {
         Map<Integer, AbstractCommand> commandMap = new HashMap<>();
         View view = new View();
         Scanner sc = new Scanner(System.in);
-        commandMap.put(1, new AbstractCommand<Set<Credit>, Void, Void>(view, sc) {
+        commandMap.put(1, new AbstractCommand<Set<Credit>>(view, sc, null, null) {
 
             @Override
-            protected Void inputParametersForProcessing() {
+            protected Map<String, Object> inputParametersForProcessing() {
                 return null;
             }
 
             @Override
-            protected Set<Credit> processCommandHook(Void params) {
+            protected Set<Credit> processCommandHook(Map<String, Object> params) {
                 return GlobalContext.creditList.getCredits();
             }
 
@@ -51,8 +51,8 @@ public class Main {
                 view.printMessage(builder.toString());
             }
         });
-        commandMap.put(2, new FindCreditCommand(view, sc));
-        commandMap.put(3, new ChooseCreditByNameCommand(view, sc));
+        commandMap.put(2, new FindCreditCommand(view, sc, null, null));
+        commandMap.put(3, new ChooseCreditByNameCommand(view, sc, null, null));
 
         CreditOperationsController controller = new CreditOperationsController(view, sc, commandMap);
 

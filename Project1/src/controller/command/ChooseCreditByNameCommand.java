@@ -6,6 +6,8 @@ import model.CreditList;
 import model.entity.credit.Credit;
 import view.View;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -14,7 +16,7 @@ import java.util.Scanner;
  *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<String>, String> {
+public class ChooseCreditByNameCommand extends AbstractCommand<Credit> {
 
     private CreditList creditList = GlobalContext.creditList;
 
@@ -23,12 +25,9 @@ public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<Str
      */
     private String inputtedString = null;
 
-    public ChooseCreditByNameCommand(View view, Scanner sc) {
-        super(view, sc);
-    }
 
     public ChooseCreditByNameCommand(View view, Scanner sc,
-                                     AbstractValidator<Class<String>, String> validator, Class<String> paramsTemplate) {
+                                     AbstractValidator validator, Map<String, Class> paramsTemplate) {
         super(view, sc, validator, paramsTemplate);
     }
 
@@ -37,11 +36,13 @@ public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<Str
      * {@inheritDoc}
      */
     @Override
-    protected String inputParametersForProcessing() {
+    protected Map<String, Object> inputParametersForProcessing() {
         view.printMessage((String) GlobalContext.getParam(GlobalContext.chooseCredit));
         while (scanner.hasNextLine() && (inputtedString == null || inputtedString.equals("")))
             inputtedString = scanner.nextLine();
-        return inputtedString;
+        Map<String, Object> result = new HashMap<>();
+        result.put("creditName", inputtedString);
+        return result;
     }
 
     /**
@@ -52,9 +53,12 @@ public class ChooseCreditByNameCommand extends AbstractCommand<Credit, Class<Str
      * @return credit that has inputted name
      */
     @Override
-    protected Credit processCommandHook(String params) {
+    protected Credit processCommandHook(Map<String, Object> params) {
+        if (params == null)
+            return null;
+        String creditName = (String) params.get("creditName");
         for (Credit credit : creditList.getCredits()) {
-            if (credit.getName().equals(params))
+            if (credit.getName().equals(creditName))
                 return credit;
         }
         return null;

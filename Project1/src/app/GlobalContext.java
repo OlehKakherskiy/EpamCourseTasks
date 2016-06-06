@@ -1,9 +1,12 @@
 package app;
 
+import controller.validator.AbstractValidator;
+import controller.validator.IncompatibleStringValueValidator;
 import model.CreditList;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -34,6 +37,10 @@ public class GlobalContext {
     public static final String noCommand = "exception.noCommandException";
 
     public static final String bankOperationStringValueException = "exception.bankOperationStringValueException";
+
+    public static AbstractValidator getDefaultValidator(Map<String, Class> templates, AbstractValidator nextChain) {
+        return new IncompatibleStringValueValidator(templates, nextChain);
+    }
 
     public static final CreditList creditList = new CreditList();
 

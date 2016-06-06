@@ -1,8 +1,8 @@
 package model.entity.credit.penaltyStrategy;
 
+import app.GlobalContext;
 import controller.ValidationException;
 import controller.validator.AbstractValidator;
-import controller.validator.ParamsTemplateValidator;
 import model.entity.BankOperation;
 
 import java.util.Map;
@@ -41,14 +41,13 @@ public abstract class PenaltyCalculationStrategy<T extends BankOperation> {
     /**
      * validator, that validates causes for penalty calculation
      */
-    protected AbstractValidator<Map<String, Class>, Map<String, Object>> penaltyCauseValidator;
+    protected AbstractValidator penaltyCauseValidator;
 
     public PenaltyCalculationStrategy(T bankOperation, Map<String, Class> penaltyCausesPatterns,
-                                      AbstractValidator<Map<String, Class>, Map<String, Object>> penaltyValidator) {
+                                      AbstractValidator penaltyValidator) {
         this.bankOperation = bankOperation;
         this.penaltyCausesPatterns = penaltyCausesPatterns;
-        this.penaltyCauseValidator = (penaltyCauseValidator instanceof ParamsTemplateValidator) ?
-                penaltyValidator : new ParamsTemplateValidator(penaltyValidator);
+        this.penaltyCauseValidator = GlobalContext.getDefaultValidator(penaltyCausesPatterns, penaltyValidator);
     }
 
     /**
@@ -59,7 +58,7 @@ public abstract class PenaltyCalculationStrategy<T extends BankOperation> {
      * @param penaltyCauses causes why penalty should be processed
      */
     public final void addPenaltyToBankOperation(Map<String, Object> penaltyCauses) throws ValidationException {
-        penaltyCauseValidator.validate(penaltyCausesPatterns, penaltyCauses);
+        penaltyCauseValidator.validate(penaltyCauses);
         addPenaltyHook(penaltyCauses);
     }
 

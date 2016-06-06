@@ -4,8 +4,6 @@ import controller.validator.AbstractValidator;
 import model.entity.BankOperation;
 import model.entity.credit.percentageCalculationStrategy.PercentageCalculationStrategy;
 
-import java.util.Map;
-
 /**
  * Class represents hierarchy's root of credits operations. It has
  * additional state representing payment and percentage calculation
@@ -48,8 +46,7 @@ public abstract class Credit extends BankOperation {
     protected int maxSumAmount;
 
     public Credit(String name, String bankName, int maxMonthCount, int minSumAmount, int maxSumAmount,
-                  AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator,
-                  PaymentStrategy paymentStrategy) {
+                  AbstractValidator documentsValidator, PaymentStrategy paymentStrategy) {
         super(name, bankName, documentsValidator);
         setMaxMonthCount(maxMonthCount);
         setMinSumAmount(minSumAmount);

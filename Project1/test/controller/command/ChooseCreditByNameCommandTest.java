@@ -8,6 +8,9 @@ import model.entity.credit.TargetCredit;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
@@ -15,7 +18,7 @@ public class ChooseCreditByNameCommandTest {
 
     @Test
     public void testProcessCommandHookShouldBeFound() throws Exception {
-        ChooseCreditByNameCommand testCommand = new ChooseCreditByNameCommand(null, null);
+        ChooseCreditByNameCommand testCommand = new ChooseCreditByNameCommand(null, null, null, null);
         Credit credit1 = new TargetCredit("credit1", "bank1", 60, 10000, 100000, true, "simpleTarget", null, PaymentStrategy.ANNUITY);
         Credit credit2 = new CreditLine("creditLine1", "bank1", 1, 2000, 10000, false, null, PaymentStrategy.FULLY);
         Credit credit3 = new TargetCredit("credit2", "bank2", 50, 15000, 150000, false, "house", null, PaymentStrategy.DIFFERENTIATED);
@@ -24,8 +27,11 @@ public class ChooseCreditByNameCommandTest {
 
         GlobalContext.creditList.addCredits(credit1, credit2, credit3, credit4);
 
-        Assert.assertEquals(credit1, testCommand.processCommandHook("credit1"));
-        Assert.assertNull(testCommand.processCommandHook("blablaCredit"));
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditName", "credit1");
+        Assert.assertEquals(credit1, testCommand.processCommandHook(params));
+        params.put("creditName", "blablaCredit");
+        Assert.assertNull(testCommand.processCommandHook(params));
         Assert.assertNull(testCommand.processCommandHook(null));
     }
 }

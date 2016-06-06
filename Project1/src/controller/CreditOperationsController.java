@@ -43,8 +43,8 @@ public class CreditOperationsController {
         while (true) {
             view.printMessage((String) GlobalContext.getParam(GlobalContext.availableCommands));
             int commandID = -1;
-            if (sc.hasNextInt())
-                commandID = sc.nextInt();
+            if (sc.hasNextLine())
+                commandID = Integer.valueOf(sc.nextLine());
             if (commandID == 0) {
                 System.exit(0);
             } else {
@@ -53,6 +53,7 @@ public class CreditOperationsController {
                     view.printMessage((String) GlobalContext.getParam(GlobalContext.noCommand));
                 } else {
                     command.processCommand();
+                    sc.nextLine();
                 }
             }
         }

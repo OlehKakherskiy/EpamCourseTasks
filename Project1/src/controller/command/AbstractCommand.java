@@ -1,9 +1,12 @@
 package controller.command;
 
+import app.GlobalContext;
 import controller.ValidationException;
 import controller.validator.AbstractValidator;
 import view.View;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -15,7 +18,7 @@ import java.util.Scanner;
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  * @see AbstractValidator
  */
-public abstract class AbstractCommand<V, T, E> {
+public abstract class AbstractCommand<V> {
 
     /**
      * output results
@@ -30,25 +33,20 @@ public abstract class AbstractCommand<V, T, E> {
     /**
      * validates command parameters
      */
-    protected AbstractValidator<T, E> validator;
+    protected AbstractValidator validator;
 
     /**
      * parameters templates for validation
      */
-    protected T paramsTemplate;
+    protected Map<String, Class> paramsTemplate;
 
-
-    public AbstractCommand(View view, Scanner sc) {
-        this.view = view;
-        this.scanner = sc;
-    }
 
     public AbstractCommand(View view, Scanner sc,
-                           AbstractValidator<T, E> validator, T paramsTemplate) {
+                           AbstractValidator validator, Map<String, Class> paramsTemplate) {
         this.view = view;
         this.scanner = sc;
-        this.validator = validator;
-        this.paramsTemplate = paramsTemplate;
+        this.validator = GlobalContext.getDefaultValidator(paramsTemplate, validator);
+        this.paramsTemplate = paramsTemplate == null ? new HashMap<>() : paramsTemplate;
     }
 
     /**
@@ -58,7 +56,7 @@ public abstract class AbstractCommand<V, T, E> {
      *
      * @return inputted values by client
      */
-    protected abstract E inputParametersForProcessing();
+    protected abstract Map<String, Object> inputParametersForProcessing();
 
     /**
      * Main algorithm of interaction between client and program. Firstly, each command
@@ -69,7 +67,7 @@ public abstract class AbstractCommand<V, T, E> {
      */
     public final void processCommand() {
         boolean successfulValidation = false;
-        E inputParams = null;
+        Map<String, Object> inputParams = null;
         while (!successfulValidation) {
             inputParams = inputParametersForProcessing();
             successfulValidation = validateInputParams(inputParams);
@@ -85,7 +83,7 @@ public abstract class AbstractCommand<V, T, E> {
      * @param params inputted params via UI.
      * @return the result of encapsulated algorithm
      */
-    protected abstract V processCommandHook(E params);
+    protected abstract V processCommandHook(Map<String, Object> params);
 
     /**
      * Outputs formatted result to UI.
@@ -103,11 +101,11 @@ public abstract class AbstractCommand<V, T, E> {
      * @param inputParams params that should be validated
      * @return whether validation was successful
      */
-    private boolean validateInputParams(E inputParams) {
+    private boolean validateInputParams(Map<String, Object> inputParams) {
         if (validator == null)
             return true;
         try {
-            validator.validate(paramsTemplate, inputParams);
+            validator.validate(inputParams);
         } catch (ValidationException e) {
             view.printMessage(e.getMessage());
             return false;
@@ -115,11 +113,11 @@ public abstract class AbstractCommand<V, T, E> {
         return true;
     }
 
-    public void setValidator(AbstractValidator<T, E> validator) {
+    public void setValidator(AbstractValidator validator) {
         this.validator = validator;
     }
 
-    public void setParamsTemplate(T paramsTemplate) {
+    public void setParamsTemplate(Map<String, Class> paramsTemplate) {
         this.paramsTemplate = paramsTemplate;
     }
 }

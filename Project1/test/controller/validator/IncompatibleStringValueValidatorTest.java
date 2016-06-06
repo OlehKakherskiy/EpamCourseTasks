@@ -14,7 +14,7 @@ public class IncompatibleStringValueValidatorTest {
 
     static Map<String, Class> templates;
 
-    static AbstractValidator<Map<String, Class>, Map<String, Object>> validator;
+    static AbstractValidator validator;
 
     @BeforeClass
     public static void init() {
@@ -27,7 +27,7 @@ public class IncompatibleStringValueValidatorTest {
         templates.put("earlyRepaymentPossibility", Boolean.class);
         templates.put("increaseMaxCreditLimitOpportunity", Boolean.class);
 
-        validator = new IncompatibleStringValueValidator(null);
+        validator = new IncompatibleStringValueValidator(templates, null);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class IncompatibleStringValueValidatorTest {
         actualParams.put("name", "name1");
         actualParams.put("bankName", "bankName1");
         actualParams.put("minSumAmount", 1);
-        validator.validate(templates, actualParams);
+        validator.validate(actualParams);
     }
 
     @Test(expected = ValidationException.class)
@@ -45,7 +45,7 @@ public class IncompatibleStringValueValidatorTest {
         actualParams.put("name", "name1");
         actualParams.put("bankName", "bankName1");
         actualParams.put("minSumAmount", 1000.5);
-        validator.validate(templates, actualParams);
+        validator.validate(actualParams);
     }
 
     @Test(expected = ValidationException.class)
@@ -54,7 +54,7 @@ public class IncompatibleStringValueValidatorTest {
         actualParams.put("blablabla", 10);
         actualParams.put("nextFakeParam", 20);
         actualParams.put("lastFakeParam", "todo");
-        validator.validate(templates, actualParams);
+        validator.validate(actualParams);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class IncompatibleStringValueValidatorTest {
         actualParams.put("nextFakeParam", 20);
         actualParams.put("lastFakeParam", "todo");
 
-        validator.validate(templates, actualParams);
+        validator.validate(actualParams);
     }
 
     @Test(expected = ValidationException.class)
@@ -77,7 +77,7 @@ public class IncompatibleStringValueValidatorTest {
         actualParams.put("bankName", "asdfasd");
         actualParams.put("minSumAmount", 1);
 
-        validator.validate(templates, actualParams);
+        validator.validate(actualParams);
     }
 
     @Test(expected = ValidationException.class)
@@ -87,6 +87,6 @@ public class IncompatibleStringValueValidatorTest {
         actualParams.put("bankName", null);
         actualParams.put("minSumAmount", "1");
 
-        validator.validate(templates, actualParams);
+        validator.validate(actualParams);
     }
 }

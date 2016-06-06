@@ -15,10 +15,13 @@ import java.util.Map;
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  * @see ParamsConverter
  */
-public class ParamsTemplateValidator extends AbstractValidator<Map<String, Class>, Map<String, Object>> {
+public class ParamsTemplateValidator extends AbstractValidator {
 
-    public ParamsTemplateValidator(AbstractValidator<Map<String, Class>, Map<String, Object>> nextChain) {
+    protected Map<String, Class> validationTemplates;
+
+    public ParamsTemplateValidator(Map<String, Class> templates, AbstractValidator nextChain) {
         super(nextChain);
+        this.validationTemplates = templates;
     }
 
     /**
@@ -27,28 +30,30 @@ public class ParamsTemplateValidator extends AbstractValidator<Map<String, Class
      * Removes all unexpected actual params, then tries to convert all String params
      * to target types using {@link ParamsConverter}. Then checks comparability between target types and actual.
      *
-     * @param expectation target keys and types expectations of actual params
-     * @param actual      actual key/value params
+     * @param actual actual key/value params
      * @throws ValidationException if converting was unsuccessful or if actual param's type
      *                             and expectation type are incompatible
      */
     @Override
-    protected void validateHook(Map<String, Class> expectation, Map<String, Object> actual) throws ValidationException {
+    protected void validateHook(Map<String, Object> actual) throws ValidationException {
 
-        removeUnexpectedParams(expectation, actual);
+        if (validationTemplates == null || validationTemplates.isEmpty() || actual == null || actual.isEmpty())
+            return;
+
+        removeUnexpectedParams(actual);
         if (actual.size() == 0) {
             throw new ValidationException("Validation exception. " +
                     "No matches between expectation templates and actual params");
         }
 
-        actual = ParamsConverter.convertParams(expectation, actual);
+        actual = ParamsConverter.convertParams(validationTemplates, actual);
 
         for (Map.Entry<String, Object> currentEntry : actual.entrySet()) {
-            if (!isCompatibleTypes(currentEntry.getKey(), expectation.get(currentEntry.getKey()), currentEntry.getValue())) {
+            if (!isCompatibleTypes(currentEntry.getKey(), validationTemplates.get(currentEntry.getKey()), currentEntry.getValue())) {
                 String exceptionTemplate = (String) GlobalContext.getParam(GlobalContext.incompatibleTypesExceptionKey);
 
                 throw new ValidationException(String.format(exceptionTemplate, currentEntry.getKey(),
-                        expectation.get(currentEntry.getKey()), currentEntry.getValue().getClass()));
+                        validationTemplates.get(currentEntry.getKey()), currentEntry.getValue().getClass()));
             }
         }
     }
@@ -56,12 +61,11 @@ public class ParamsTemplateValidator extends AbstractValidator<Map<String, Class
     /**
      * removes all extra params, that are not expected by expectation param's templates.
      *
-     * @param expectation params templates
-     * @param actual      actual params
+     * @param actual actual params
      */
-    private void removeUnexpectedParams(Map<String, Class> expectation, Map<String, Object> actual) {
+    private void removeUnexpectedParams(Map<String, Object> actual) {
         Map<String, Object> forRemoving = new HashMap<>();
-        actual.keySet().stream().filter(key -> !expectation.containsKey(key)).forEach(key -> forRemoving.put(key, actual.get(key)));
+        actual.keySet().stream().filter(key -> !validationTemplates.containsKey(key)).forEach(key -> forRemoving.put(key, actual.get(key)));
         forRemoving.keySet().forEach(actual::remove);
     }
 
