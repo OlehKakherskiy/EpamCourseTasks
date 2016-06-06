@@ -33,6 +33,8 @@ public class GlobalContext {
 
     public static final String noCommand = "exception.noCommandException";
 
+    public static final String bankOperationStringValueException = "exception.bankOperationStringValueException";
+
     public static final CreditList creditList = new CreditList();
 
     static {

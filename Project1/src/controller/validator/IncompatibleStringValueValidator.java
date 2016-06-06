@@ -62,7 +62,7 @@ public class IncompatibleStringValueValidator extends ParamsTemplateValidator {
      * @throws ValidationException if value is empty
      */
     private void emptyCheck(String key, String value) throws ValidationException {
-        if (value.equals("")) {
+        if (value.isEmpty()) {
             throw new ValidationException(String.format((String) GlobalContext.getParam
                     (GlobalContext.emptyStringValidationException), key));
         }

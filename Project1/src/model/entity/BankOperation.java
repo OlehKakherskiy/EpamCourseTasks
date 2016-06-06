@@ -1,5 +1,6 @@
 package model.entity;
 
+import app.GlobalContext;
 import controller.ValidationException;
 import controller.validator.AbstractValidator;
 import model.entity.credit.penaltyStrategy.PenaltyCalculationStrategy;
@@ -52,6 +53,8 @@ public abstract class BankOperation {
      */
     public BankOperation(String name, String bankName,
                          AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator) {
+        nullAndEmptinessCheck(name, "name");
+        nullAndEmptinessCheck(bankName, "bankName");
         this.name = name;
         this.bankName = bankName;
         this.documentsValidator = documentsValidator;
@@ -161,5 +164,11 @@ public abstract class BankOperation {
         return "name='" + name + '\'' +
                 ", bankName='" + bankName + '\'' +
                 ",\npenaltyCalculationStrategy=" + penaltyCalculationStrategy;
+    }
+
+    private void nullAndEmptinessCheck(String value, String fieldName) {
+        if (value == null || value.isEmpty())
+            throw new IllegalArgumentException(String.format((String) GlobalContext.
+                    getParam(GlobalContext.bankOperationStringValueException), fieldName));
     }
 }

@@ -64,7 +64,7 @@ public class FindCreditCommand extends MultipleParamsCommand<Set<Credit>> {
     protected Map<String, Object> inputParametersForProcessing() {
         view.printMessage((String) GlobalContext.getParam(GlobalContext.availableKeysFilters));
         String inputData = null;
-        while (scanner.hasNext() && (inputData == null || inputData.equals(""))) {
+        while (scanner.hasNext() && (inputData == null || inputData.isEmpty())) {
             inputData = scanner.nextLine();
         }
         List<String> splittedData = new ArrayList<>(Arrays.asList(inputData.split(" ")));

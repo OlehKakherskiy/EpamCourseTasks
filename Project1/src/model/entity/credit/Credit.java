@@ -51,10 +51,10 @@ public abstract class Credit extends BankOperation {
                   AbstractValidator<Map<String, Class>, Map<String, Object>> documentsValidator,
                   PaymentStrategy paymentStrategy) {
         super(name, bankName, documentsValidator);
-        this.maxMonthCount = maxMonthCount;
+        setMaxMonthCount(maxMonthCount);
         setMinSumAmount(minSumAmount);
         setMaxSumAmount(maxSumAmount);
-        this.paymentStrategy = paymentStrategy;
+        this.paymentStrategy = paymentStrategy == null ? PaymentStrategy.FULLY : paymentStrategy;
     }
 
 
