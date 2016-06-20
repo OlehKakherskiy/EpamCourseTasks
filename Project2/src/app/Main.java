@@ -1,5 +1,10 @@
 package app;
 
+import model.splitStrategy.SentencePartSplitter;
+import model.splitStrategy.SentenceSplitter;
+import model.splitStrategy.SplitStrategy;
+import model.splitStrategy.SymbolSplitter;
+
 import java.util.StringTokenizer;
 
 /**
@@ -11,8 +16,11 @@ public class Main {
 
         String str = "fgjodfijgiodjfg doifgdoifgnuenrengk dfdgmdfgkmgk,oleh";
         StringTokenizer tokenizer = new StringTokenizer(str, " ,", true);
-        while (tokenizer.hasMoreTokens())
-            System.out.println(tokenizer.nextElement());
+
+        SplitStrategy strategy1 = new SentenceSplitter();
+        SplitStrategy strategy2 = new SentencePartSplitter();
+        SplitStrategy strategy3 = new SymbolSplitter();
+
 
     }
 }

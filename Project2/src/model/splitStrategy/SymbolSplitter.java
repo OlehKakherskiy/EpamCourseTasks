@@ -1,6 +1,5 @@
 package model.splitStrategy;
 
-import com.sun.istack.internal.NotNull;
 import model.Symbol;
 
 /**
@@ -8,8 +7,8 @@ import model.Symbol;
  */
 public class SymbolSplitter extends SplitStrategy<Symbol> {
 
-    public SymbolSplitter(@NotNull Class<Symbol> genericType) {
-        super(genericType);
+    public SymbolSplitter() {
+        super(Symbol.class);
     }
 
     @Override
