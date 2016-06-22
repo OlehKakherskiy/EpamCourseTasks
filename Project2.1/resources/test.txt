@@ -1,0 +1,4 @@
+Ever since the release of Java 5, I've been keeping my eyes open for a book that describes what I believe to be the most
+powerful new feature of Java - generics !?? As a bonus, the second half of this book. The new book published by O'Reilly, Java Generics and Collections covers the topic in spades...
+Examines the Java Collections Framework todoA? Since the Collections Framework was rewritten to incorporate the use of
+generics, it makes perfect sense for the authors to spend a reasonable amount of time describing the new interfaces!
