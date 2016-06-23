@@ -22,6 +22,9 @@ public class Controller {
             File f = new File(filePath);
             if (f.exists()) {
                 flag = true;
+            } else {
+                View.printMessage(GlobalContext.FILE_NOT_FOUND_KEY);
+                continue;
             }
             View.printMessage((String) GlobalContext.getParam(GlobalContext.INPUT_LENGTH_KEY));
             String len = scanner.nextLine();

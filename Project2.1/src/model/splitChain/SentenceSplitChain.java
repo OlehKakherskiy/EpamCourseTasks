@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
  */
 public class SentenceSplitChain extends SplitChain {
 
+    /**
+     * regexp that indicates punctuation marks
+     */
     private static final Pattern SPLIT_REGEXP =
             Pattern.compile((String) GlobalContext.getParam(GlobalContext.SENTENCE_PART_SPLIT_REGEXP_KEY));
 
@@ -24,6 +27,13 @@ public class SentenceSplitChain extends SplitChain {
         super(next, groupDelimiter, instanceClass);
     }
 
+    /**
+     * Splits for words. Handle specific situations, where token can consist from word and punctuation marks
+     * - divides them for two tokens.
+     *
+     * @param textPart string representation of all children of this {@link TextPart}
+     * @return list of words
+     */
     @Override
     protected List<String> splitForNextChain(String textPart) {
         if (textPart == null || textPart.trim().length() == 0)
@@ -32,6 +42,7 @@ public class SentenceSplitChain extends SplitChain {
         List<String> result = new ArrayList<>(buffer.size());
         for (String elem : buffer) {
 
+            //if word consists from 1 char or word - is punctuation mark (can have several chars), adds to result
             StringBuilder current = new StringBuilder(elem);
             if (current.length() == 1 || SPLIT_REGEXP.matcher(current.toString()).matches()) {
                 result.add(current.toString());

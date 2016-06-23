@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Class represents word composite object, that consists from other textParts - symbols. Punctuation marks
+ * also can be represented as objects of this type
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class Word extends CompositeTextPart {
@@ -12,6 +15,15 @@ public class Word extends CompositeTextPart {
     Word() {
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Checks whether this word's length is similar to target length
+     * </p>
+     *
+     * @param length words length that should be found
+     * @return {@inheritDoc}
+     */
     @Override
     public Set<TextPart> findWords(int length) {
         if (length <= 0) {

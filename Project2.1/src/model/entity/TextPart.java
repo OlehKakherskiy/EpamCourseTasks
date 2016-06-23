@@ -10,19 +10,23 @@ import java.util.Set;
  * transparent composite pattern).This elements are encapsulated, so that user can't create them using constructor.
  * It's because this hierarchy has no logical protection of data inconsistency (e.g. potentially text part - word, can
  * consist a paragraph part, sentence part and symbols). To avoid this situation all constructors are with package
- * modifier, text parts could be created through the factory {@link TextPartFactory} and be built using
- * {@link SplitChain} hierarchy through {@link model.TextBuildFacade}.
+ * modifier, text parts could be created through the factory {@link TextPartFactory} or can be built using
+ * {@link SplitChain} hierarchy through. SplitChain hierarchy configures before program starts, so that user has only
+ * one strategy for text building.
  * <p>
- * Recommendation: use just {@link model.TextBuildFacade} as a user. For system maintaining and scaling
- * also {@link SplitChain} hierarchy could be used.
+ * For creating object prefer to use {@link TextPartFactory}, but if system is scaling, {@link SplitChain} hierarchy could
+ * be used as well.
+ * </p>
  *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  * @see TextPartFactory
- * @see model.TextBuildFacade
  * @see SplitChain
  */
 public abstract class TextPart {
 
+    /**
+     * constructor with package modifier
+     */
     TextPart() {
     }
 
@@ -32,8 +36,8 @@ public abstract class TextPart {
     private static final String UNSUPPORTED_OPERATION_MESSAGE = (String) GlobalContext.getParam(GlobalContext.UNSUPPORTED_OPERATION_TEXT_KEY);
 
     /**
-     * Finds words in text with target length without repetitions.
-     * If target length is less than 0 - returns empty set
+     * Finds words in all questioning sentences with target length without repetitions.
+     * If target length is less than 0 - returns empty set.
      *
      * @param length words length that should be found
      * @return set, contained words with target length. Empty set if length <=0
@@ -86,10 +90,4 @@ public abstract class TextPart {
      * @return string representation of this text part.
      */
     public abstract String format();
-//
-//    public List<TextPart> split(String textPart) {
-//        return (textPart == null || textPart.trim().isEmpty()) ?  Collections.emptyList(): splitHook(textPart);
-//    }
-//
-//    protected abstract List<TextPart> splitHook(String textPart);
 }

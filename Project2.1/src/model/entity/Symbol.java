@@ -4,16 +4,27 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
+ * Class represents leaf text part - symbol.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class Symbol extends TextPart {
 
+    /**
+     * internal state of symbol
+     */
     private char c;
 
     Symbol(char c) {
         this.c = c;
     }
 
+    /**
+     * returns empty set
+     *
+     * @param length words length that should be found
+     * @return
+     */
     @Override
     public Set<TextPart> findWords(int length) {
         return Collections.emptySet();
