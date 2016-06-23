@@ -7,11 +7,24 @@ import java.util.Set;
 
 /**
  * Root of composite hierarchy of text's part. Declares main interface of hierarchy's elements (implementation of
- * transparent composite pattern).
+ * transparent composite pattern).This elements are encapsulated, so that user can't create them using constructor.
+ * It's because this hierarchy has no logical protection of data inconsistency (e.g. potentially text part - word, can
+ * consist a paragraph part, sentence part and symbols). To avoid this situation all constructors are with package
+ * modifier, text parts could be created through the factory {@link TextPartFactory} and be built using
+ * {@link SplitChain} hierarchy through {@link model.TextBuildFacade}.
+ * <p>
+ * Recommendation: use just {@link model.TextBuildFacade} as a user. For system maintaining and scaling
+ * also {@link SplitChain} hierarchy could be used.
  *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
+ * @see TextPartFactory
+ * @see model.TextBuildFacade
+ * @see SplitChain
  */
 public abstract class TextPart {
+
+    TextPart() {
+    }
 
     /**
      * Message, when unsupported method is called
@@ -73,4 +86,10 @@ public abstract class TextPart {
      * @return string representation of this text part.
      */
     public abstract String format();
+//
+//    public List<TextPart> split(String textPart) {
+//        return (textPart == null || textPart.trim().isEmpty()) ?  Collections.emptyList(): splitHook(textPart);
+//    }
+//
+//    protected abstract List<TextPart> splitHook(String textPart);
 }

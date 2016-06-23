@@ -1,10 +1,7 @@
 package model.entity;
 
-import model.splitChain.SplitChain;
-
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,8 +9,7 @@ import java.util.Set;
  */
 public class Word extends CompositeTextPart {
 
-    Word(List<TextPart> parts, SplitChain splitChain) {
-        super(parts, splitChain);
+    Word() {
     }
 
     @Override

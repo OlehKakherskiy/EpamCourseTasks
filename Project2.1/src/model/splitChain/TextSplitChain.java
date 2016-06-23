@@ -1,8 +1,8 @@
 package model.splitChain;
 
 import app.GlobalContext;
-import model.entity.CompositeTextPart;
-import model.entity.TextPartFactory;
+import model.entity.SplitChain;
+import model.entity.TextPart;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +16,8 @@ public class TextSplitChain extends SplitChain {
 
     private static String delims = (String) GlobalContext.getParam(GlobalContext.TEXT_SPLIT_PATTERN_KEY);
 
-    public TextSplitChain(SplitChain next, String groupDelimiter, TextPartFactory factory, Class<? extends CompositeTextPart> instanceClass) {
-        super(next, groupDelimiter, factory, instanceClass);
+    public TextSplitChain(SplitChain next, String groupDelimiter, Class<? extends TextPart> instanceClass) {
+        super(next, groupDelimiter, instanceClass);
     }
 
     @Override

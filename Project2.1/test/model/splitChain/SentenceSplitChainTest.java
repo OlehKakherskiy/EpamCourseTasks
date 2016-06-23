@@ -10,11 +10,11 @@ import org.junit.Test;
  */
 public class SentenceSplitChainTest {
 
-    static SplitChain sentenceSplitChain;
+    static SentenceSplitChain sentenceSplitChain;
 
     @BeforeClass
     public static void setUp() throws Exception {
-        sentenceSplitChain = (SplitChain) GlobalContext.getParam(GlobalContext.SENTENCE_SPLIT_STRATEGY_KEY);
+        sentenceSplitChain = (SentenceSplitChain) GlobalContext.getParam(GlobalContext.SENTENCE_SPLIT_STRATEGY_KEY);
     }
 
     @Test

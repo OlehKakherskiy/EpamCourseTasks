@@ -1,15 +1,12 @@
 package app;
 
-import model.TextBuildFacade;
-import model.entity.CompositeTextPart;
-import model.entity.Sentence;
-import model.entity.Symbol;
-import model.entity.Word;
-import model.entity.TextPartFactory;
+import model.entity.*;
 import model.splitChain.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -41,22 +38,28 @@ public class GlobalContext {
 
     public static final String FILE_NOT_FOUND_KEY = "fileNotFound";
 
-    public static final TextBuildFacade facade;
 
     public static SplitChain buildChains;
 
     static {
+
         initConfigs();
-        SymbolSplit symbolSplit = new SymbolSplit("", TEXT_PART_FACTORY, Symbol.class);
-        WordSplitChain wordSplitChain = new WordSplitChain(symbolSplit, "", TEXT_PART_FACTORY, Word.class);
-        SentenceSplitChain sentenceSplitChain = new SentenceSplitChain(wordSplitChain, " ", TEXT_PART_FACTORY, Sentence.class);
-        buildChains = new TextSplitChain(sentenceSplitChain, " ", TEXT_PART_FACTORY, CompositeTextPart.class);
+
+        SymbolSplit symbolSplit = new SymbolSplit("", Symbol.class);
+        WordSplitChain wordSplitChain = new WordSplitChain(symbolSplit, "", Word.class);
+        SentenceSplitChain sentenceSplitChain = new SentenceSplitChain(wordSplitChain, " ", Sentence.class);
+        buildChains = new TextSplitChain(sentenceSplitChain, " ", CompositeTextPart.class);
 
         CONTEXT_PARAMS.put(TEXT_SPLIT_STRATEGY_KEY, buildChains);
         CONTEXT_PARAMS.put(SENTENCE_SPLIT_STRATEGY_KEY, sentenceSplitChain);
         CONTEXT_PARAMS.put(WORD_SPLIT_STRATEGY_KEY, wordSplitChain);
-        facade = new TextBuildFacade(buildChains);
 
+
+        Map<Class<? extends CompositeTextPart>, SplitChain> configs = new HashMap<>();
+        configs.put(CompositeTextPart.class, buildChains);
+        configs.put(Sentence.class, (SplitChain) GlobalContext.getParam(GlobalContext.SENTENCE_SPLIT_STRATEGY_KEY));
+        configs.put(Word.class, (SplitChain) GlobalContext.getParam(GlobalContext.WORD_SPLIT_STRATEGY_KEY));
+        TEXT_PART_FACTORY = new TextPartFactory(configs);
     }
 
     public static Object getParam(String key) {
@@ -66,19 +69,9 @@ public class GlobalContext {
     public static void initConfigs() {
         try (FileInputStream fis = new FileInputStream("D:\\Документы\\FICT\\Новая папка\\EpamTasks\\Project2.1\\resources\\config.properties")) {
             CONTEXT_PARAMS.load(fis);
-            try {
-                TEXT_PART_FACTORY = (TextPartFactory) Class.forName((String) CONTEXT_PARAMS.getProperty("textPartFactory")).newInstance();
-
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

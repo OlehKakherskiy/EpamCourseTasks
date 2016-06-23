@@ -1,11 +1,6 @@
 package model.entity;
 
-import model.splitChain.SplitChain;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +9,12 @@ import java.util.Map;
 public class TextPartFactory {
 
     private Map<String, Symbol> symbols = new HashMap<>();
+
+    private Map<Class<? extends CompositeTextPart>, SplitChain> splitStrategies;
+
+    public TextPartFactory(Map<Class<? extends CompositeTextPart>, SplitChain> splitStrategies) {
+        this.splitStrategies = splitStrategies;
+    }
 
     public Symbol getSharedTextPart(String textPart) {
         Symbol res = null;
@@ -24,24 +25,16 @@ public class TextPartFactory {
         return res;
     }
 
-    public CompositeTextPart getUnsharedTextPart(Class<? extends CompositeTextPart> instanceClass,
-                                                 SplitChain chain, List<TextPart> children) {
-        try {
-            Constructor<? extends TextPart> constructor = instanceClass.getDeclaredConstructor(List.class, SplitChain.class);
-            if (chain == null) {
-                throw new IllegalArgumentException("split strategy isn't instantiated for class " + instanceClass.getName());
-            }
-            return (CompositeTextPart) constructor.newInstance(children, chain);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+    public <T extends CompositeTextPart> T createCompositeTextPart(Class<T> instanceClass, String textPart) {
+        if (textPart == null || textPart.trim().isEmpty())
+            throw new IllegalArgumentException();
+        SplitChain chain = splitStrategies.get(instanceClass);
+
+        if (chain == null) {
+            throw new RuntimeException("No split strategy for class " + instanceClass.getName());
         }
-        return null;
+        return (T) chain.build(textPart);
+
     }
 
     private boolean isValidTextPart(String textPart) {

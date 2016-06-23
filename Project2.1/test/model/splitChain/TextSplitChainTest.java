@@ -10,11 +10,11 @@ import org.junit.Test;
  */
 public class TextSplitChainTest {
 
-    static SplitChain splitChain;
+    static TextSplitChain splitChain;
 
     @BeforeClass
     public static void init() {
-        splitChain = (SplitChain) GlobalContext.getParam(GlobalContext.TEXT_SPLIT_STRATEGY_KEY);
+        splitChain = (TextSplitChain) GlobalContext.getParam(GlobalContext.TEXT_SPLIT_STRATEGY_KEY);
     }
 
     @Test

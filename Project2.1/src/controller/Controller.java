@@ -1,6 +1,7 @@
 package controller;
 
 import app.GlobalContext;
+import model.entity.CompositeTextPart;
 import view.View;
 
 import java.io.*;
@@ -31,7 +32,8 @@ public class Controller {
                 while ((buffer = bis.readLine()) != null) {
                     builder.append(buffer);
                 }
-                View.printMessage(Arrays.toString(GlobalContext.facade.findWords(builder.toString(), length).toArray()));
+                View.printMessage(Arrays.toString(GlobalContext.TEXT_PART_FACTORY.
+                        createCompositeTextPart(CompositeTextPart.class, builder.toString()).findWords(length).toArray()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

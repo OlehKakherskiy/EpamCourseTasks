@@ -1,22 +1,21 @@
 package model.entity;
 
-import model.splitChain.SplitChain;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * Class represents composite text part - part, that can be consisted from different parts. It service
+ * full interface implementation, declared in {@link TextPart}.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class CompositeTextPart extends TextPart {
 
-    protected List<TextPart> parts;
+    protected List<TextPart> parts = new ArrayList<>();
 
     protected SplitChain splitChain;
 
-    CompositeTextPart(List<TextPart> parts, SplitChain splitChain) {
-        this.parts = (parts == null) ? new ArrayList<>() : parts;
-        this.splitChain = splitChain;
+    CompositeTextPart() {
     }
 
     @Override
@@ -74,5 +73,9 @@ public class CompositeTextPart extends TextPart {
 
     public void setSplitChain(SplitChain splitChain) {
         this.splitChain = splitChain;
+    }
+
+    public void setParts(List<TextPart> parts) {
+        this.parts = parts;
     }
 }

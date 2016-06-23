@@ -10,11 +10,11 @@ import org.junit.Test;
  */
 public class WordSplitChainTest {
 
-    static SplitChain wordSplitChain;
+    static WordSplitChain wordSplitChain;
 
     @BeforeClass
     public static void init() {
-        wordSplitChain = (SplitChain) GlobalContext.getParam(GlobalContext.WORD_SPLIT_STRATEGY_KEY);
+        wordSplitChain = (WordSplitChain) GlobalContext.getParam(GlobalContext.WORD_SPLIT_STRATEGY_KEY);
     }
 
     @Test

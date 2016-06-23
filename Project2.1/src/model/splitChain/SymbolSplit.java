@@ -1,7 +1,8 @@
 package model.splitChain;
 
+import app.GlobalContext;
+import model.entity.SplitChain;
 import model.entity.TextPart;
-import model.entity.TextPartFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class SymbolSplit extends SplitChain {
 
-    public SymbolSplit(String groupDelimiter, TextPartFactory factory, Class<? extends TextPart> instanceClass) {
-        super(null, groupDelimiter, factory, instanceClass);
+    public SymbolSplit(String groupDelimiter, Class<? extends TextPart> instanceClass) {
+        super(null, groupDelimiter, instanceClass);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class SymbolSplit extends SplitChain {
     }
 
     @Override
-    protected TextPart createLeafElement(String textPart) {
-        return factory.getSharedTextPart(textPart);
+    protected TextPart buildHook(String textPart) {
+        return GlobalContext.TEXT_PART_FACTORY.getSharedTextPart(textPart);
     }
 }

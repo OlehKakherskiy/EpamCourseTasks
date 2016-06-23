@@ -1,11 +1,9 @@
 package model.entity;
 
 import app.GlobalContext;
-import model.splitChain.SplitChain;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -14,12 +12,11 @@ import java.util.regex.Pattern;
  */
 public class Sentence extends CompositeTextPart {
 
+    Sentence() {
+    }
+
     private static final Pattern punctuationMarkPattern =
             Pattern.compile((String) GlobalContext.getParam(GlobalContext.SENTENCE_PART_SPLIT_REGEXP_KEY));
-
-    Sentence(List<TextPart> parts, SplitChain splitChain) {
-        super(parts, splitChain);
-    }
 
     @Override
     public Set<TextPart> findWords(int length) {

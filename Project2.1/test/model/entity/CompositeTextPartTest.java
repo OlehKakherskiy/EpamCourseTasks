@@ -1,14 +1,12 @@
 package model.entity;
 
 import app.GlobalContext;
-import model.splitChain.SplitChain;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +42,7 @@ public class CompositeTextPartTest {
         String test = "Ever since the release of Java 5 , I've been keeping my eyes open for a book that describes what " +
                 "I believe to be the most powerful new feature of Java - generics !??";
         Assert.assertEquals(test, sentence.format());
-        Assert.assertEquals("", new CompositeTextPart(Collections.EMPTY_LIST, sentenceSplitChain).format());
+//        Assert.assertEquals("", GlobalContext.TEXT_PART_FACTORY.createCompositeTextPart(CompositeTextPart.class, "").format());
     }
 
     @Test
@@ -82,9 +80,7 @@ public class CompositeTextPartTest {
     public void testGetChildren() throws Exception {
         List<TextPart> res = sentence.getChildren();
         Assert.assertEquals(34, sentence.getChildren().size());
-        sentence = new CompositeTextPart(Collections.emptyList(), sentenceSplitChain);
-        Assert.assertEquals(0, sentence.getChildren().size());
-        sentence = new CompositeTextPart(null, sentenceSplitChain);
+        sentence = new CompositeTextPart();
         Assert.assertEquals(0, sentence.getChildren().size());
     }
 

@@ -1,7 +1,7 @@
 package model.splitChain;
 
+import model.entity.SplitChain;
 import model.entity.TextPart;
-import model.entity.TextPartFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
  */
 public class WordSplitChain extends SplitChain {
 
-    public WordSplitChain(SplitChain next, String groupDelimiter, TextPartFactory factory,
-                          Class<? extends TextPart> instanceClass) {
-        super(next, groupDelimiter, factory, instanceClass);
+
+    public WordSplitChain(SplitChain next, String groupDelimiter, Class<? extends TextPart> instanceClass) {
+        super(next, groupDelimiter, instanceClass);
     }
 
     @Override
@@ -27,4 +27,5 @@ public class WordSplitChain extends SplitChain {
     public String group(TextPart part) {
         return String.join(groupDelimiter, part.getChildren().stream().map(TextPart::format).collect(Collectors.toList()));
     }
+
 }

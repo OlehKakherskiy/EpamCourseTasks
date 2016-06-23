@@ -1,8 +1,4 @@
-package model.splitChain;
-
-import model.entity.CompositeTextPart;
-import model.entity.TextPart;
-import model.entity.TextPartFactory;
+package model.entity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,15 +12,12 @@ public abstract class SplitChain {
 
     protected String groupDelimiter;
 
-    protected TextPartFactory factory;
-
     Class<? extends TextPart> instanceClass;
 
-    public SplitChain(SplitChain next, String groupDelimiter, TextPartFactory factory,
+    public SplitChain(SplitChain next, String groupDelimiter,
                       Class<? extends TextPart> instanceClass) {
         this.next = next;
         this.groupDelimiter = groupDelimiter;
-        this.factory = factory;
         this.instanceClass = instanceClass;
     }
 
@@ -36,7 +29,7 @@ public abstract class SplitChain {
     }
 
     protected TextPart buildHook(String textPart) {
-        return (next != null) ? createCompositeElement(createChildren(textPart)) : createLeafElement(textPart);
+        return createElement(createChildren(textPart.trim()), (Class<? extends CompositeTextPart>) instanceClass);
     }
 
     public String group(TextPart part) {
@@ -46,12 +39,18 @@ public abstract class SplitChain {
 
     protected abstract List<String> splitForNextChain(String textPart);
 
-    protected TextPart createLeafElement(String textPart) {
-        throw new UnsupportedOperationException(); //TODO: add excep descr.
-    }
-
-    private TextPart createCompositeElement(List<TextPart> children) {
-        return factory.getUnsharedTextPart((Class<? extends CompositeTextPart>) instanceClass, this, children);
+    private <T extends CompositeTextPart> T createElement(List<TextPart> children, Class<T> instanceClass) {
+        try {
+            T instance = instanceClass.newInstance();
+            instance.setParts(children);
+            instance.setSplitChain(this);
+            return instance;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private List<TextPart> createChildren(String textPart) {

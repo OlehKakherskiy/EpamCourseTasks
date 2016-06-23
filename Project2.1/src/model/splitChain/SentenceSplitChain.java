@@ -1,8 +1,8 @@
 package model.splitChain;
 
 import app.GlobalContext;
-import model.entity.CompositeTextPart;
-import model.entity.TextPartFactory;
+import model.entity.SplitChain;
+import model.entity.TextPart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +19,9 @@ public class SentenceSplitChain extends SplitChain {
     private static final Pattern SPLIT_REGEXP =
             Pattern.compile((String) GlobalContext.getParam(GlobalContext.SENTENCE_PART_SPLIT_REGEXP_KEY));
 
-    public SentenceSplitChain(SplitChain next, String groupDelimiter, TextPartFactory factory, Class<? extends CompositeTextPart> instanceClass) {
-        super(next, groupDelimiter, factory, instanceClass);
+
+    public SentenceSplitChain(SplitChain next, String groupDelimiter, Class<? extends TextPart> instanceClass) {
+        super(next, groupDelimiter, instanceClass);
     }
 
     @Override

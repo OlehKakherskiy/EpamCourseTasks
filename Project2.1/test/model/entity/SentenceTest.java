@@ -1,7 +1,6 @@
 package model.entity;
 
 import app.GlobalContext;
-import model.splitChain.SplitChain;
 import org.junit.Assert;
 import org.junit.Test;
 
