@@ -24,10 +24,11 @@ public class CPU extends Thread {
     @Override
     public void run() {
         while (!Thread.interrupted()) {
-            Process process = getProcess();
-            if (process == null) {
-                continue;
+            Process process = null;
+            while (process == null) {
+                process = getProcess();
             }
+
             System.out.println("cpu" + cpuID + "gets process from " + process.getStreamID() + " stream");
             processStreamID = process.getStreamID();
             if (Thread.currentThread().isInterrupted()) {
@@ -58,12 +59,11 @@ public class CPU extends Thread {
     }
 
     public void setNextProcessToExec(Process nextProcessToExec) {
-//        synchronized (ProcessQueue.lock) {
-//            ProcessQueue.lock.notifyAll();
-//            System.out.println("notifyAll");
-        this.nextProcessToExec = nextProcessToExec;
-//        }
-
+        synchronized (ProcessQueue.lock) {
+            ProcessQueue.lock.notifyAll();
+            System.out.println("notifyAll");
+            this.nextProcessToExec = nextProcessToExec;
+        }
     }
 
     public int getCpuID() {

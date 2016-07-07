@@ -37,11 +37,11 @@ public class ProcessQueue {
 
     public synchronized void addProcessToQueue(Process process) {
         queue.add(process);
-//        System.out.println("notifyAll");
-//        synchronized (lock) {
-        updateMaxQueueLength();
-//            lock.notifyAll();
-//        }
+        System.out.println("notifyAll");
+        synchronized (lock) {
+            updateMaxQueueLength();
+            lock.notifyAll();
+        }
     }
 
     private void updateMaxQueueLength() {
@@ -53,24 +53,24 @@ public class ProcessQueue {
         }
     }
 
-    public synchronized Process pollLast() {
-//        synchronized (lock) {
-        if (queue.size() == 0) {
-            return null;
-//                try {
-//                    System.out.println("cpu " + ((CPU) Thread.currentThread()).getCpuID() + "waits");
-//                    lock.wait();
-//                } catch (InterruptedException e) {
-//                    Thread.currentThread().interrupt();
-//                }
+    public Process pollLast() {
+        Process result = null;
+        synchronized (lock) {
+            if (queue.size() == 0) {
+                try {
+                    System.out.println("cpu " + ((CPU) Thread.currentThread()).getCpuID() + "waits");
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
 
-        }//tODO:
-        Process buffer = queue.size() == 0 ? null : queue.get(queue.size() - 1);
-        if (buffer != null) {
-            queue.remove(queue.size() - 1);
+            }//tODO:
+            result = queue.size() == 0 ? null : queue.get(queue.size() - 1);
+            if (result != null) {
+                queue.remove(queue.size() - 1);
+            }
         }
-        return buffer;
-//        }
+        return result;
     }
 
     public List<CPU> getCpus() {

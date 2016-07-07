@@ -19,8 +19,8 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int[] processCount = {400, 150};
-        int[][] generatorParams = {{250, 255}, {2, 3}};
+        int[] processCount = {150, 100};
+        int[][] generatorParams = {{250, 255}, {100, 150}};
 
         QueueStatistics queueStatistics = new QueueStatistics(processCount.length);
 
