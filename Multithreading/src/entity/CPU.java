@@ -1,10 +1,15 @@
 package entity;
 
 /**
+ * Class represents consumer object in this system.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class CPU extends Thread {
 
+    /**
+     * queue, from which cpu takes processes
+     */
     protected ProcessQueue queue;
 
     /**
@@ -12,8 +17,14 @@ public class CPU extends Thread {
      */
     private volatile int processStreamID = -1; //TODO: is volatile need?
 
+    /**
+     * process, that was added directly from process stream
+     */
     private volatile Process nextProcessToExec; //TODO: volatile
 
+    /**
+     * cpu ID
+     */
     private int cpuID;
 
     public CPU(ProcessQueue queue, int cpuID) {
@@ -44,10 +55,20 @@ public class CPU extends Thread {
         }
     }
 
-    protected Process getProcess() {
+    /**
+     * returns process, added directly (if there is one) or from queue
+     *
+     * @return process from queue or directly added
+     */
+    private Process getProcess() {
         return (nextProcessToExec == null) ? queue.pollLast() : getNextForcedProcess();
     }
 
+    /**
+     * returns directly added process
+     *
+     * @return directly added process
+     */
     private Process getNextForcedProcess() {
         Process buf = nextProcessToExec;
         nextProcessToExec = null;
@@ -58,6 +79,11 @@ public class CPU extends Thread {
         return processStreamID;
     }
 
+    /**
+     * added process directly to this process for execution
+     *
+     * @param nextProcessToExec process that will be added directly to cpu
+     */
     public void setNextProcessToExec(Process nextProcessToExec) {
         synchronized (ProcessQueue.lock) {
             ProcessQueue.lock.notifyAll();

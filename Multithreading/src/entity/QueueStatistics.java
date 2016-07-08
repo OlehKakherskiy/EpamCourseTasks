@@ -1,12 +1,20 @@
 package entity;
 
 /**
+ * Class encapsulates execution statistics for each cpu and queue
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class QueueStatistics {
 
+    /**
+     * maximum queue length
+     */
     private int maxQueueLength = 0;
 
+    /**
+     * process count, that are not executed (by each cpu)
+     */
     private volatile int[] streamProcessLostCount;
 
 
