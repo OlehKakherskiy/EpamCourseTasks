@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<medicines xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="medicine.xsd">
+    <medicine name="name1" ID="ae2">
+        <pharm>s</pharm>
+        <group>antibiotics</group>
+        <versions>
+            <certificate certificateID="certID1">
+                <startDate>1995-05-11</startDate>
+                <endDate>2016-11-11</endDate>
+                <registeringOrganisation>organization1</registeringOrganisation>
+            </certificate>
+            <package price="1000" packType="packType1">
+                <count cnt="150" measureUnit="milliliter"/>
+            </package>
+            <dosage dosageCount="2" dosageMeasureUnit="milliliter" times="3" per="30m" for="adult men"/>
+            <dosage dosageCount="5" dosageMeasureUnit="gram" times="6" per="day" for="pregnant"/>
+        </versions>
+        <versions>
+            <certificate certificateID="fdsf">
+                <startDate>1995-05-11</startDate>
+                <endDate>1995-05-11</endDate>
+                <registeringOrganisation>sdfsf</registeringOrganisation>
+            </certificate>
+            <representationTypes>
+                <type>pills</type>
+                <type>drops</type>
+            </representationTypes>
+            <package price="" packType="">
+                <count cnt=""/>
+            </package>
+            <dosage dosageCount="" per="" for=""/>
+        </versions>
+    </medicine>
+
+    <medicine name="name1" ID="ae3">
+        <pharm>s</pharm>
+        <group>antibiotics</group>
+        <versions>
+            <certificate certificateID="sad1">
+                <startDate>1995-05-11</startDate>
+                <endDate>2016-11-11</endDate>
+                <registeringOrganisation>organization1</registeringOrganisation>
+            </certificate>
+            <package price="1000" packType="">
+                <count cnt="150" measureUnit="milliliter"/>
+            </package>
+            <dosage dosageCount="2" dosageMeasureUnit="milliliter" times="3" per="30m" for="adult men"/>
+            <dosage dosageCount="5" dosageMeasureUnit="gram" times="6" per="day" for="pregnant"/>
+        </versions>
+    </medicine>
+
+    <medicine name="name1" ID="ae4">
+        <pharm>s</pharm>
+        <group>antibiotics</group>
+        <analogues>
+            <analogueID>ae3</analogueID>
+            <analogueID>ae2</analogueID>
+        </analogues>
+        <versions>
+            <certificate certificateID="ads2">
+                <startDate>1995-05-11</startDate>
+                <endDate>2016-11-11</endDate>
+                <registeringOrganisation>organization1</registeringOrganisation>
+            </certificate>
+            <package price="1000" packType="packType1">
+                <count cnt="150" measureUnit="milliliter"/>
+            </package>
+            <dosage dosageCount="2" dosageMeasureUnit="milliliter" times="3" per="30m" for="adult men"/>
+            <dosage dosageCount="5" dosageMeasureUnit="gram" times="6" per="day" for="pregnant"/>
+        </versions>
+    </medicine>
+
+</medicines>
