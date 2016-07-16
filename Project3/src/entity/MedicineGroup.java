@@ -29,12 +29,16 @@ public enum MedicineGroup {
 
     @XmlEnumValue("antibiotics")
     ANTIBIOTICS("antibiotics"),
+
     @XmlEnumValue("vitamins")
     VITAMINS("vitamins"),
+
     @XmlEnumValue("antiviral")
     ANTIVIRAL("antiviral"),
+
     @XmlEnumValue("antiinflammatory")
     ANTIINFLAMMATORY("antiinflammatory");
+
     private final String value;
 
     MedicineGroup(String v) {

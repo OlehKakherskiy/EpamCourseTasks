@@ -15,7 +15,13 @@
             <xs:element name="pharm" type="notEmptyString"/>
             <xs:element name="group" type="medicineGroup"/>
             <xs:element name="analogues" type="analogue" minOccurs="0"/>
-            <xs:element name="versions" type="version" minOccurs="1"/>
+            <xs:element name="versions" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="version" type="version" minOccurs="1"/>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
         <xs:attribute name="name" type="notEmptyString" use="required"/>
         <xs:attribute name="ID" type="xs:ID" use="required"/>
@@ -37,52 +43,51 @@
     </xs:complexType>
 
     <xs:complexType name="version">
-        <xs:sequence>
-            <xs:element name="certificate" type="certificate" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="representationTypes" minOccurs="1" maxOccurs="1">
+        <xs:all>
+            <xs:element name="producers" minOccurs="1" maxOccurs="1">
                 <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="type" type="representationType" minOccurs="1" maxOccurs="unbounded"/>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="producer" minOccurs="1" type="manufacturer"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="package" type="package" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="dosage" type="dosage" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="dosages" minOccurs="1">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="dosage" type="dosage"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="manufacturer">
+        <xs:sequence>
+            <xs:element name="certificate" type="certificate" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="packages" minOccurs="1" >
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="package" type="package"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="certificate">
         <xs:all>
             <xs:element name="startDate" type="xs:date" minOccurs="1"/>
             <xs:element name="endDate" type="xs:date" minOccurs="1"/>
-            <xs:element name="registeringOrganisation" minOccurs="1">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:minLength value="1"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
+            <xs:element name="registeringOrganisation" type="notEmptyString" minOccurs="1"/>
         </xs:all>
         <xs:attribute name="certificateID" use="required" type="xs:ID"/>
     </xs:complexType>
 
     <xs:complexType name="package">
-        <xs:all>
-            <xs:element name="count" minOccurs="1" maxOccurs="1">
-                <xs:complexType>
-                    <xs:attribute name="cnt" type="xs:positiveInteger" use="required"/>
-                    <xs:attribute name="measureUnit" type="measureUnit" use="optional" default="gram"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:all>
-
-        <xs:attribute name="price" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:int">
-                    <xs:minExclusive value="0"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
+        <xs:attribute name="count" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="measureUnit" type="measureUnit" use="optional" default="gram"/>
+        <xs:attribute name="price" use="required" type="xs:positiveInteger"/>
         <xs:attribute name="packType" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -93,15 +98,24 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-
+        <xs:attribute name="representationType" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="drops"/>
+                    <xs:enumeration value="pills"/>
+                    <xs:enumeration value="capsules"/>
+                    <xs:enumeration value="powder"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="dosage">
         <xs:attribute name="dosageCount" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="dosageMeasureUnit" type="measureUnit" use="optional" default="gram"/>
         <xs:attribute name="times" type="xs:positiveInteger" use="optional" default="1"/>
         <xs:attribute name="per" type="dosagePeriod" use="required"/>
         <xs:attribute name="for" type="peopleGroup" use="required"/>
+        <xs:attribute name="measureUnit" type="measureUnit" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="dosagePeriod">
@@ -135,15 +149,6 @@
             <xs:enumeration value="gram"/>
             <xs:enumeration value="milliliter"/>
             <xs:enumeration value="thing"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="representationType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="drops"/>
-            <xs:enumeration value="pills"/>
-            <xs:enumeration value="capsules"/>
-            <xs:enumeration value="powder"/>
         </xs:restriction>
     </xs:simpleType>
 

@@ -28,8 +28,10 @@ public enum MeasureUnit {
 
     @XmlEnumValue("gram")
     GRAM("gram"),
+
     @XmlEnumValue("milliliter")
     MILLILITER("milliliter"),
+
     @XmlEnumValue("thing")
     THING("thing");
     private final String value;

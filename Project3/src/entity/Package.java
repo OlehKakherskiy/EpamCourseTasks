@@ -2,37 +2,20 @@
 package entity;
 
 import javax.xml.bind.annotation.*;
-import java.math.BigInteger;
 
 
 /**
  * <p>Java class for package complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="package">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;all>
- *         &lt;element name="count">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;attribute name="cnt" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *                 &lt;attribute name="measureUnit" type="{}measureUnit" default="gram" />
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/all>
- *       &lt;attribute name="price" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
- *             &lt;minExclusive value="0"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
+ *       &lt;attribute name="count" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
+ *       &lt;attribute name="measureUnit" type="{}measureUnit" default="gram" />
+ *       &lt;attribute name="price" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
  *       &lt;attribute name="packType" use="required">
  *         &lt;simpleType>
  *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -43,53 +26,87 @@ import java.math.BigInteger;
  *           &lt;/restriction>
  *         &lt;/simpleType>
  *       &lt;/attribute>
+ *       &lt;attribute name="representationType" use="required">
+ *         &lt;simpleType>
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *             &lt;enumeration value="drops"/>
+ *             &lt;enumeration value="pills"/>
+ *             &lt;enumeration value="capsules"/>
+ *             &lt;enumeration value="powder"/>
+ *           &lt;/restriction>
+ *         &lt;/simpleType>
+ *       &lt;/attribute>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "package", propOrder = {
-
-})
+@XmlType(name = "package")
 public class Package {
 
-    @XmlElement(required = true)
-    protected Package.Count count;
+    @XmlAttribute(name = "count", required = true)
+    @XmlSchemaType(name = "positiveInteger")
+    private int count;
+    @XmlAttribute(name = "measureUnit")
+    private MeasureUnit measureUnit;
     @XmlAttribute(name = "price", required = true)
-    protected int price;
+    @XmlSchemaType(name = "positiveInteger")
+    private int price;
     @XmlAttribute(name = "packType", required = true)
-    protected String packType;
+    private String packType;
+    @XmlAttribute(name = "representationType", required = true)
+    private String representationType;
 
     /**
      * Gets the value of the count property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Package.Count }
-     *     
+     *
+     * @return possible object is
+     * {@link int }
      */
-    public Package.Count getCount() {
+    public int getCount() {
         return count;
     }
 
     /**
      * Sets the value of the count property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Package.Count }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link int }
      */
-    public void setCount(Package.Count value) {
+    public void setCount(int value) {
         this.count = value;
     }
 
     /**
+     * Gets the value of the measureUnit property.
+     *
+     * @return possible object is
+     * {@link MeasureUnit }
+     */
+    public MeasureUnit getMeasureUnit() {
+        if (measureUnit == null) {
+            return MeasureUnit.GRAM;
+        } else {
+            return measureUnit;
+        }
+    }
+
+    /**
+     * Sets the value of the measureUnit property.
+     *
+     * @param value allowed object is
+     *              {@link MeasureUnit }
+     */
+    public void setMeasureUnit(MeasureUnit value) {
+        this.measureUnit = value;
+    }
+
+    /**
      * Gets the value of the price property.
-     * 
+     *
+     * @return possible object is
+     * {@link int }
      */
     public int getPrice() {
         return price;
@@ -97,7 +114,9 @@ public class Package {
 
     /**
      * Sets the value of the price property.
-     * 
+     *
+     * @param value allowed object is
+     *              {@link int }
      */
     public void setPrice(int value) {
         this.price = value;
@@ -105,11 +124,9 @@ public class Package {
 
     /**
      * Gets the value of the packType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPackType() {
         return packType;
@@ -117,97 +134,32 @@ public class Package {
 
     /**
      * Sets the value of the packType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPackType(String value) {
         this.packType = value;
     }
 
+    /**
+     * Gets the value of the representationType property.
+     *
+     * @return possible object is
+     * {@link String }
+     */
+    public String getRepresentationType() {
+        return representationType;
+    }
 
     /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;attribute name="cnt" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
-     *       &lt;attribute name="measureUnit" type="{}measureUnit" default="gram" />
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
+     * Sets the value of the representationType property.
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "")
-    public static class Count {
-
-        @XmlAttribute(name = "cnt", required = true)
-        @XmlSchemaType(name = "positiveInteger")
-        protected BigInteger cnt;
-        @XmlAttribute(name = "measureUnit")
-        protected MeasureUnit measureUnit;
-
-        /**
-         * Gets the value of the cnt property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link BigInteger }
-         *     
-         */
-        public BigInteger getCnt() {
-            return cnt;
-        }
-
-        /**
-         * Sets the value of the cnt property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link BigInteger }
-         *     
-         */
-        public void setCnt(BigInteger value) {
-            this.cnt = value;
-        }
-
-        /**
-         * Gets the value of the measureUnit property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link MeasureUnit }
-         *     
-         */
-        public MeasureUnit getMeasureUnit() {
-            if (measureUnit == null) {
-                return MeasureUnit.GRAM;
-            } else {
-                return measureUnit;
-            }
-        }
-
-        /**
-         * Sets the value of the measureUnit property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link MeasureUnit }
-         *     
-         */
-        public void setMeasureUnit(MeasureUnit value) {
-            this.measureUnit = value;
-        }
-
+    public void setRepresentationType(String value) {
+        this.representationType = value;
     }
 
 }

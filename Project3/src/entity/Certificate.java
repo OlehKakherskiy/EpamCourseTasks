@@ -25,13 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;all>
  *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="registeringOrganisation">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;minLength value="1"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
+ *         &lt;element name="registeringOrganisation" type="{}notEmptyString"/>
  *       &lt;/all>
  *       &lt;attribute name="certificateID" use="required" type="{http://www.w3.org/2001/XMLSchema}ID" />
  *     &lt;/restriction>
@@ -49,20 +43,20 @@ public class Certificate {
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar startDate;
+    private XMLGregorianCalendar startDate;
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar endDate;
+    private XMLGregorianCalendar endDate;
 
     @XmlElement(required = true)
-    protected String registeringOrganisation;
+    private String registeringOrganisation;
 
     @XmlAttribute(name = "certificateID", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")
-    protected String certificateID;
+    private String certificateID;
 
     /**
      * Gets the value of the startDate property.

@@ -25,7 +25,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="pharm" type="{}notEmptyString"/>
  *         &lt;element name="group" type="{}medicineGroup"/>
  *         &lt;element name="analogues" type="{}analogue" minOccurs="0"/>
- *         &lt;element name="versions" type="{}version"/>
+ *         &lt;element name="versions">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;all>
+ *                   &lt;element name="version" type="{}version"/>
+ *                 &lt;/all>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *       &lt;/sequence>
  *       &lt;attribute name="name" use="required" type="{}notEmptyString" />
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}ID" />
@@ -46,20 +56,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class Medicine {
 
     @XmlElement(required = true)
-    protected String pharm;
+    private String pharm;
+
     @XmlElement(required = true)
     @XmlSchemaType(name = "string")
-    protected MedicineGroup group;
-    protected Analogue analogues;
+    private MedicineGroup group;
+
+    private Analogue analogues;
+
     @XmlElement(required = true)
-    protected Version versions;
+    private Medicine.Versions versions;
+
     @XmlAttribute(name = "name", required = true)
-    protected String name;
+    private String name;
+
     @XmlAttribute(name = "ID", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")
-    protected String id;
+    private String id;
 
     /**
      * Gets the value of the pharm property.
@@ -138,10 +153,10 @@ public class Medicine {
      * 
      * @return
      *     possible object is
-     *     {@link Version }
+     *     {@link Medicine.Versions }
      *     
      */
-    public Version getVersions() {
+    public Medicine.Versions getVersions() {
         return versions;
     }
 
@@ -150,10 +165,10 @@ public class Medicine {
      * 
      * @param value
      *     allowed object is
-     *     {@link Version }
+     *     {@link Medicine.Versions }
      *     
      */
-    public void setVersions(Version value) {
+    public void setVersions(Medicine.Versions value) {
         this.versions = value;
     }
 
@@ -203,6 +218,61 @@ public class Medicine {
      */
     public void setID(String value) {
         this.id = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;all>
+     *         &lt;element name="version" type="{}version"/>
+     *       &lt;/all>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+
+    })
+    public static class Versions {
+
+        @XmlElement(required = true)
+        private Version version;
+
+        /**
+         * Gets the value of the version property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link Version }
+         *     
+         */
+        public Version getVersion() {
+            return version;
+        }
+
+        /**
+         * Sets the value of the version property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link Version }
+         *     
+         */
+        public void setVersion(Version value) {
+            this.version = value;
+        }
+
     }
 
 }

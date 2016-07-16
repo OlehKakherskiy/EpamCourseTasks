@@ -1,73 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <medicines xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="medicine.xsd">
-    <medicine name="name1" ID="ae2">
-        <pharm>s</pharm>
-        <group>antibiotics</group>
-        <versions>
-            <certificate certificateID="certID1">
-                <startDate>1995-05-11</startDate>
-                <endDate>2016-11-11</endDate>
-                <registeringOrganisation>organization1</registeringOrganisation>
-            </certificate>
-            <package price="1000" packType="packType1">
-                <count cnt="150" measureUnit="milliliter"/>
-            </package>
-            <dosage dosageCount="2" dosageMeasureUnit="milliliter" times="3" per="30m" for="adult men"/>
-            <dosage dosageCount="5" dosageMeasureUnit="gram" times="6" per="day" for="pregnant"/>
-        </versions>
-        <versions>
-            <certificate certificateID="fdsf">
-                <startDate>1995-05-11</startDate>
-                <endDate>1995-05-11</endDate>
-                <registeringOrganisation>sdfsf</registeringOrganisation>
-            </certificate>
-            <representationTypes>
-                <type>pills</type>
-                <type>drops</type>
-            </representationTypes>
-            <package price="" packType="">
-                <count cnt=""/>
-            </package>
-            <dosage dosageCount="" per="" for=""/>
-        </versions>
-    </medicine>
-
     <medicine name="name1" ID="ae3">
         <pharm>s</pharm>
         <group>antibiotics</group>
         <versions>
-            <certificate certificateID="sad1">
-                <startDate>1995-05-11</startDate>
-                <endDate>2016-11-11</endDate>
-                <registeringOrganisation>organization1</registeringOrganisation>
-            </certificate>
-            <package price="1000" packType="">
-                <count cnt="150" measureUnit="milliliter"/>
-            </package>
-            <dosage dosageCount="2" dosageMeasureUnit="milliliter" times="3" per="30m" for="adult men"/>
-            <dosage dosageCount="5" dosageMeasureUnit="gram" times="6" per="day" for="pregnant"/>
-        </versions>
-    </medicine>
-
-    <medicine name="name1" ID="ae4">
-        <pharm>s</pharm>
-        <group>antibiotics</group>
-        <analogues>
-            <analogueID>ae3</analogueID>
-            <analogueID>ae2</analogueID>
-        </analogues>
-        <versions>
-            <certificate certificateID="ads2">
-                <startDate>1995-05-11</startDate>
-                <endDate>2016-11-11</endDate>
-                <registeringOrganisation>organization1</registeringOrganisation>
-            </certificate>
-            <package price="1000" packType="packType1">
-                <count cnt="150" measureUnit="milliliter"/>
-            </package>
-            <dosage dosageCount="2" dosageMeasureUnit="milliliter" times="3" per="30m" for="adult men"/>
-            <dosage dosageCount="5" dosageMeasureUnit="gram" times="6" per="day" for="pregnant"/>
+            <version>
+                <producers>
+                    <producer name="producer1">
+                        <certificate certificateID="sad1">
+                            <startDate>1995-05-11</startDate>
+                            <endDate>2016-11-11</endDate>
+                            <registeringOrganisation>organization1</registeringOrganisation>
+                        </certificate>
+                        <packages>
+                            <package count="1" price="1" packType="packType1" measureUnit="gram"
+                                     representationType="capsules"/>
+                            <package count="2" price="15" packType="packType2" measureUnit="milliliter"
+                                     representationType="drops"/>
+                        </packages>
+                    </producer>
+                    <producer name="producer2">
+                        <certificate certificateID="sad2">
+                            <startDate>1995-06-11</startDate>
+                            <endDate>2016-12-11</endDate>
+                            <registeringOrganisation>organization1</registeringOrganisation>
+                        </certificate>
+                        <packages>
+                            <package count="1" price="12" packType="packType1" measureUnit="thing"
+                                     representationType="capsules"/>
+                            <package count="2" price="15" packType="packType2" measureUnit="gram"
+                                     representationType="powder"/>
+                        </packages>
+                    </producer>
+                </producers>
+                <dosages>
+                    <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
+                    <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                </dosages>
+            </version>
         </versions>
     </medicine>
 

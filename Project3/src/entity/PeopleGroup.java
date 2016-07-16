@@ -30,14 +30,19 @@ public enum PeopleGroup {
 
     @XmlEnumValue("adult")
     ADULT("adult"),
+
     @XmlEnumValue("adult men")
     ADULT_MEN("adult men"),
+
     @XmlEnumValue("adult women")
     ADULT_WOMEN("adult women"),
+
     @XmlEnumValue("children")
     CHILDREN("children"),
+
     @XmlEnumValue("pregnant")
     PREGNANT("pregnant");
+
     private final String value;
 
     PeopleGroup(String v) {
