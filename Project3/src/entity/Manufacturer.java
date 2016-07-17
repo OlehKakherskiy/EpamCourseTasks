@@ -2,7 +2,6 @@
 package entity;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +47,7 @@ public class Manufacturer {
     private Certificate certificate;
 
     @XmlElement(required = true)
-    private Manufacturer.Packages packages;
+    private List<Package> packages;
 
     @XmlAttribute(name = "name", required = true)
     private String name;
@@ -77,29 +76,6 @@ public class Manufacturer {
         this.certificate = value;
     }
 
-    /**
-     * Gets the value of the packages property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Manufacturer.Packages }
-     *     
-     */
-    public Manufacturer.Packages getPackages() {
-        return packages;
-    }
-
-    /**
-     * Sets the value of the packages property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Manufacturer.Packages }
-     *     
-     */
-    public void setPackages(Manufacturer.Packages value) {
-        this.packages = value;
-    }
 
     /**
      * Gets the value of the name property.
@@ -125,64 +101,32 @@ public class Manufacturer {
         this.name = value;
     }
 
+    public List<Package> getPackages() {
+        return packages;
+    }
 
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence maxOccurs="unbounded">
-     *         &lt;element name="package" type="{}package"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "_package"
-    })
-    public static class Packages {
+    public void setPackages(List<Package> packages) {
+        this.packages = packages;
+    }
 
-        @XmlElement(name = "package", required = true)
-        private List<Package> _package;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Manufacturer)) return false;
 
-        /**
-         * Gets the value of the package property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the package property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getPackage().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Package }
-         * 
-         * 
-         */
-        public List<Package> getPackage() {
-            if (_package == null) {
-                _package = new ArrayList<Package>();
-            }
-            return this._package;
-        }
+        Manufacturer that = (Manufacturer) o;
+
+        if (!certificate.equals(that.certificate)) return false;
+        if (!packages.equals(that.packages)) return false;
+        return name.equals(that.name);
 
     }
 
+    @Override
+    public int hashCode() {
+        int result = certificate.hashCode();
+        result = 31 * result + packages.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

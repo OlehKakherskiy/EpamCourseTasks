@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <medicines xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns="http://www.w3schools.com"
-           xsi:schemaLocation="http://www.w3schools.com medicine.xsd">
+           xsi:schemaLocation="http://www.w3schools.com ../medicine.xsd">
     <medicine name="A" ID="ae3">
         <pharm>B</pharm>
         <group>antibiotics</group>
@@ -54,9 +54,13 @@
             </producer>
         </producers>
     </medicine>
-    <medicine name="A" ID="ae5">
+    <medicine name="B" ID="ae5">
         <pharm>B</pharm>
         <group>antibiotics</group>
+        <analogues>
+            <analogueID>ae3</analogueID>
+            <analogueID>ae2</analogueID>
+        </analogues>
         <producers>
             <producer name="Producer1">
                 <certificate certificateID="sad8">
@@ -65,11 +69,11 @@
                     <registeringOrganisation>Organization1</registeringOrganisation>
                 </certificate>
                 <packages>
-                    <package count="1" price="1" packType="packType1" measureUnit="gram"
+                    <package count="1" price="1" packType="packType1" measureUnit="thing"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="milliliter"
@@ -106,7 +110,7 @@
             </producer>
         </producers>
     </medicine>
-    <medicine name="A" ID="ae2">
+    <medicine name="C" ID="ae2">
         <pharm>B</pharm>
         <group>antibiotics</group>
         <producers>

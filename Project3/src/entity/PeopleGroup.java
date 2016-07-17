@@ -6,24 +6,6 @@ import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
 
-/**
- * <p>Java class for peopleGroup.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * <p>
- * <pre>
- * &lt;simpleType name="peopleGroup">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="adult"/>
- *     &lt;enumeration value="adult men"/>
- *     &lt;enumeration value="adult women"/>
- *     &lt;enumeration value="children"/>
- *     &lt;enumeration value="pregnant"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
- * </pre>
- * 
- */
 @XmlType(name = "peopleGroup")
 @XmlEnum
 public enum PeopleGroup {

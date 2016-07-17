@@ -5,41 +5,50 @@ package parser;
  */
 public enum TagName {
 
+    //names for medicine and medicines tags
     MEDICINES("medicines"),
     MEDICINE("medicine"),
+    MEDICINE_NAME("name"),
+    ID("ID"),
     PHARM("pharm"),
     GROUP("group"),
-
     ANALOGUES("analogues"),
     ANALOGUE_ID("analogueID"),
-
     VERSIONS("versions"),
-    REPRESENTATION_TYPES("representationTypes"),
-    TYPE("type"),
+    VERSION("version"),
 
+    //<version> childrens' names
+    PRODUCERS("producers"),
+
+    //<producer> children's names
+    PRODUCER("producer"),
+    PRODUCER_NAME("name"),
+
+    //certificate children's names
     CERTIFICATE("certificate"),
+    CERTIFICATE_ID("certificateID"),
     START_DATE("startDate"),
     END_DATE("endDate"),
     REGISTERING_ORGANISATION("registeringOrganisation"),
-    CERTIFICATE_ID("certificateID"),
 
+    TYPE("type"),
+
+    PACKAGES("packages"),
+
+    //package tag childrens
     PACKAGE("package"),
     COUNT("count"),
-    CNT("cnt"),
     MEASURE_UNIT("measureUnit"),
-
     PRICE("price"),
     PACK_TYPE("packType"),
+    REPRESENTATION_TYPE("representationType"),
+    DOSAGES("dosages"),
     DOSAGE("dosage"),
     DOSAGE_COUNT("dosageCount"),
-    DOSAGE_MEASURE_UNIT("dosageMeasureUnit"),
+    DOSAGE_MEASURE_UNIT("measureUnit"),
     TIMES("times"),
     PER("per"),
-    FOR("for"),
-
-    NAME("name"),
-    ID("ID");
-
+    FOR("for");
 
     private String string;
 
@@ -50,4 +59,4 @@ public enum TagName {
     public String getString() {
         return string;
     }
-}
+    }

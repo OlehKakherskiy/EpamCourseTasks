@@ -1,7 +1,9 @@
 package parser.domMarshalling;
 
 
+import entity.Medicines;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import parser.AbstractMarshaller;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,13 +12,14 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileWriter;
+import javax.xml.validation.Schema;
+import java.io.OutputStream;
+import java.io.Reader;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class DomMarshaller extends AbstractMarshaller {
+public class DomMarshaller extends AbstractMarshaller<Medicines> {
 
     private DomParser parser;
 
@@ -28,13 +31,11 @@ public class DomMarshaller extends AbstractMarshaller {
     }
 
     @Override
-    public void marshalling(Medicines medicines, String fileName) throws Exception {
-        nullAndEmptinessCheck(fileName);
-        File f = getFile(fileName);
+    public void marshalling(Medicines medicines, OutputStream outputStream) throws Exception {
         Document document = saver.save(medicines);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         try {
-            transformerFactory.newTransformer().transform(new DOMSource(document), new StreamResult(new FileWriter(f)));
+            transformerFactory.newTransformer().transform(new DOMSource(document), new StreamResult(outputStream));
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
             throw new Exception("marshalling exception", e);
@@ -42,12 +43,14 @@ public class DomMarshaller extends AbstractMarshaller {
     }
 
     @Override
-    protected Source getSource(String xmlFilePath) throws Exception {
-        File f = getFile(xmlFilePath);
-
+    protected Source getSource(Reader xmlStream, Schema schema) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        Document document = factory.newDocumentBuilder().parse(f);
-
+        factory.setIgnoringElementContentWhitespace(true);
+        factory.setNamespaceAware(true);
+        factory.setSchema(schema);
+//        factory.setValidating(true);
+//        factory.setFeature("http://apache.org/xml/features/validation/schema", true);
+        Document document = factory.newDocumentBuilder().parse(new InputSource(xmlStream)); //new File("D:\\Документы\\FICT\\Новая папка\\EpamTasks\\Project3\\test\\resources\\testFiles\\file.xml")
         return new DOMSource(document);
     }
 

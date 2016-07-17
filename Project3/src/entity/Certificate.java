@@ -11,30 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.time.LocalDate;
 
 
-/**
- * <p>Java class for certificate complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="certificate">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;all>
- *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="registeringOrganisation" type="{}notEmptyString"/>
- *       &lt;/all>
- *       &lt;attribute name="certificateID" use="required" type="{http://www.w3.org/2001/XMLSchema}ID" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "certificate", propOrder = {
 
@@ -43,11 +22,11 @@ public class Certificate {
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    private XMLGregorianCalendar startDate;
+    private LocalDate startDate;
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    private XMLGregorianCalendar endDate;
+    private LocalDate endDate;
 
     @XmlElement(required = true)
     private String registeringOrganisation;
@@ -66,7 +45,7 @@ public class Certificate {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
@@ -78,7 +57,7 @@ public class Certificate {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setStartDate(XMLGregorianCalendar value) {
+    public void setStartDate(LocalDate value) {
         this.startDate = value;
     }
 
@@ -90,7 +69,7 @@ public class Certificate {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -102,7 +81,7 @@ public class Certificate {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setEndDate(XMLGregorianCalendar value) {
+    public void setEndDate(LocalDate value) {
         this.endDate = value;
     }
 
@@ -154,4 +133,26 @@ public class Certificate {
         this.certificateID = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Certificate)) return false;
+
+        Certificate that = (Certificate) o;
+
+        if (!startDate.equals(that.startDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
+        if (!registeringOrganisation.equals(that.registeringOrganisation)) return false;
+        return certificateID.equals(that.certificateID);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + registeringOrganisation.hashCode();
+        result = 31 * result + certificateID.hashCode();
+        return result;
+    }
 }

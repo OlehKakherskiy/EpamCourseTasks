@@ -1,5 +1,6 @@
 package parser.domMarshalling;
 
+import entity.Medicines;
 import org.w3c.dom.Document;
 
 /**

@@ -1,68 +1,63 @@
 
 package entity;
 
+import parser.PackageType;
+import parser.RepresentationType;
+
 import javax.xml.bind.annotation.*;
+import java.math.BigInteger;
+import java.util.List;
 
 
-/**
- * <p>Java class for package complex type.
- * <p>
- * <p>The following schema fragment specifies the expected content contained within this class.
- * <p>
- * <pre>
- * &lt;complexType name="package">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="count" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *       &lt;attribute name="measureUnit" type="{}measureUnit" default="gram" />
- *       &lt;attribute name="price" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *       &lt;attribute name="packType" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;enumeration value="packType1"/>
- *             &lt;enumeration value="packType2"/>
- *             &lt;enumeration value="packType3"/>
- *             &lt;enumeration value="packType4"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="representationType" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;enumeration value="drops"/>
- *             &lt;enumeration value="pills"/>
- *             &lt;enumeration value="capsules"/>
- *             &lt;enumeration value="powder"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "package")
+@XmlType(name = "package", propOrder = {
+
+})
 public class Package {
+
+    @XmlElement(required = true)
+    private List<Dosage> dosages;
 
     @XmlAttribute(name = "count", required = true)
     @XmlSchemaType(name = "positiveInteger")
     private int count;
+
     @XmlAttribute(name = "measureUnit")
     private MeasureUnit measureUnit;
+
     @XmlAttribute(name = "price", required = true)
     @XmlSchemaType(name = "positiveInteger")
     private int price;
+
     @XmlAttribute(name = "packType", required = true)
-    private String packType;
+    private PackageType packType;
+
     @XmlAttribute(name = "representationType", required = true)
-    private String representationType;
+    private RepresentationType representationType;
+
+    /**
+     * Gets the value of the dosages property.
+     *
+     * @return possible object is
+     */
+    public List<Dosage> getDosages() {
+        return dosages;
+    }
+
+    /**
+     * Sets the value of the dosages property.
+     *
+     * @param value allowed object is
+     */
+    public void setDosages(List<Dosage> value) {
+        this.dosages = value;
+    }
 
     /**
      * Gets the value of the count property.
      *
      * @return possible object is
-     * {@link int }
+     * {@link BigInteger }
      */
     public int getCount() {
         return count;
@@ -72,7 +67,7 @@ public class Package {
      * Sets the value of the count property.
      *
      * @param value allowed object is
-     *              {@link int }
+     *              {@link BigInteger }
      */
     public void setCount(int value) {
         this.count = value;
@@ -106,7 +101,7 @@ public class Package {
      * Gets the value of the price property.
      *
      * @return possible object is
-     * {@link int }
+     * {@link BigInteger }
      */
     public int getPrice() {
         return price;
@@ -116,7 +111,7 @@ public class Package {
      * Sets the value of the price property.
      *
      * @param value allowed object is
-     *              {@link int }
+     *              {@link BigInteger }
      */
     public void setPrice(int value) {
         this.price = value;
@@ -128,7 +123,7 @@ public class Package {
      * @return possible object is
      * {@link String }
      */
-    public String getPackType() {
+    public PackageType getPackType() {
         return packType;
     }
 
@@ -138,7 +133,7 @@ public class Package {
      * @param value allowed object is
      *              {@link String }
      */
-    public void setPackType(String value) {
+    public void setPackType(PackageType value) {
         this.packType = value;
     }
 
@@ -148,7 +143,7 @@ public class Package {
      * @return possible object is
      * {@link String }
      */
-    public String getRepresentationType() {
+    public RepresentationType getRepresentationType() {
         return representationType;
     }
 
@@ -158,8 +153,7 @@ public class Package {
      * @param value allowed object is
      *              {@link String }
      */
-    public void setRepresentationType(String value) {
+    public void setRepresentationType(RepresentationType value) {
         this.representationType = value;
     }
-
 }

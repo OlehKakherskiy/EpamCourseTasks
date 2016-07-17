@@ -39,7 +39,6 @@ public class Dosage {
 
     @XmlAttribute(name = "per", required = true)
     private DosagePeriod per;
-
     @XmlAttribute(name = "for", required = true)
     private PeopleGroup _for;
 
@@ -50,7 +49,6 @@ public class Dosage {
      * Gets the value of the dosageCount property.
      *
      * @return possible object is
-     * {@link int }
      */
     public int getDosageCount() {
         return dosageCount;
@@ -59,8 +57,6 @@ public class Dosage {
     /**
      * Sets the value of the dosageCount property.
      *
-     * @param value allowed object is
-     *              {@link int }
      */
     public void setDosageCount(int value) {
         this.dosageCount = value;
@@ -69,8 +65,6 @@ public class Dosage {
     /**
      * Gets the value of the times property.
      *
-     * @return possible object is
-     * {@link int }
      */
     public int getTimes() {
         return times;
