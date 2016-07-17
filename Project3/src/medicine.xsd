@@ -40,7 +40,7 @@
 
     <xsd:complexType name="analogue">
         <xsd:sequence>
-            <xsd:element name="analogues" type="xsd:IDREF" minOccurs="1" maxOccurs="unbounded"/>
+            <xsd:element name="analogueID" type="xsd:IDREF" minOccurs="1" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 

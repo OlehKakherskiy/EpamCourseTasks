@@ -27,7 +27,7 @@ public class AbstractMarshallerTest {
         reader = new BufferedReader(new FileReader(new File("D:\\Документы\\FICT\\Новая папка\\EpamTasks\\Project3\\test\\resources\\medicine.xsd")));
 
         marshallers = new AbstractMarshaller[1];
-        marshallers[0] = new DomMarshaller(new DefaultDomParser(), new DefaultDomSaver());
+        marshallers[0] = new DomMarshaller(reader, new DefaultDomParser(), new DefaultDomSaver());
 
     }
 
@@ -35,9 +35,11 @@ public class AbstractMarshallerTest {
     @Test
     public void mainTest() throws Exception {
         for (AbstractMarshaller<Medicines> marshaller : marshallers) {
-            Medicines medicines = marshaller.unmarshalling(new BufferedReader(new FileReader("D:\\Документы\\FICT\\Новая папка\\EpamTasks\\Project3\\test\\resources\\testFiles\\file.xml")), reader);
+            Medicines medicines = marshaller.unmarshalling(new BufferedReader(new FileReader("D:\\Документы\\FICT\\Новая папка\\EpamTasks\\Project3\\test\\resources\\testFiles\\file.xml")));
             System.out.println();
-//            marshaller.marshalling(medicines,);
+            writer = new StringWriter();
+            marshaller.marshalling(medicines, writer);
+            System.out.println(writer.getBuffer().toString());
         }
     }
 
@@ -48,13 +50,9 @@ public class AbstractMarshallerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullXmlStream() throws Exception {
-        marshallers[0].unmarshalling(null, nullReader);
+        marshallers[0].unmarshalling(nullReader);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testNullXmlSchemaStream() throws Exception {
-        marshallers[0].unmarshalling(nullReader, null);
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullOutputStream() throws Exception {

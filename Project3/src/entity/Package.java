@@ -1,9 +1,6 @@
 
 package entity;
 
-import parser.PackageType;
-import parser.RepresentationType;
-
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
 import java.util.List;

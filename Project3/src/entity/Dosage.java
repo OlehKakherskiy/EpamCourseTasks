@@ -1,30 +1,9 @@
 
 package entity;
 
-import parser.DosagePeriod;
-
 import javax.xml.bind.annotation.*;
 
 
-/**
- * <p>Java class for dosage complex type.
- * <p>
- * <p>The following schema fragment specifies the expected content contained within this class.
- * <p>
- * <pre>
- * &lt;complexType name="dosage">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="dosageCount" use="required" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *       &lt;attribute name="times" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" default="1" />
- *       &lt;attribute name="per" use="required" type="{}dosagePeriod" />
- *       &lt;attribute name="for" use="required" type="{}peopleGroup" />
- *       &lt;attribute name="measureUnit" use="required" type="{}measureUnit" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dosage")
 public class Dosage {

@@ -4,8 +4,8 @@ import entity.Medicines;
 
 import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
-import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
@@ -13,8 +13,16 @@ import java.io.Reader;
 public class SaxMarshaller extends AbstractMarshaller {
 
 
+    public SaxMarshaller(Reader xmlSchemaReader) {
+        super(xmlSchemaReader);
+    }
+
+    public SaxMarshaller(Schema schema) {
+        super(schema);
+    }
+
     @Override
-    public void marshalling(Object element, OutputStream out) throws Exception {
+    public void marshalling(Object element, Writer out) throws Exception {
 
     }
 

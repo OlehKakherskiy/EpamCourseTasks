@@ -5,10 +5,10 @@ import entity.Package;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import parser.DosagePeriod;
-import parser.PackageType;
-import parser.RepresentationType;
-import parser.TagName;
+import entity.DosagePeriod;
+import entity.PackageType;
+import entity.RepresentationType;
+import entity.TagName;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

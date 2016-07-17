@@ -2,29 +2,31 @@ package parser;
 
 import entity.Medicines;
 
-import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
-import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class StaxMarshaller extends AbstractMarshaller {
+public class StaxMarshaller extends AbstractMarshaller<Medicines> {
 
 
-    @Override
-    public void marshalling(Object element, OutputStream out) throws Exception {
+    public StaxMarshaller(Reader xmlSchemaReader) {
+        super(xmlSchemaReader);
+    }
 
+    public StaxMarshaller(Schema schema) {
+        super(schema);
     }
 
     @Override
-    protected Source getSource(Reader xmlStream, Schema schema) throws Exception {
+    public Medicines unmarshalling(Reader xmlStream) {
         return null;
     }
 
     @Override
-    protected Medicines unmarshalling(Source source) {
-        return null;
+    public void marshalling(Medicines element, Writer out) throws Exception {
+
     }
 }
