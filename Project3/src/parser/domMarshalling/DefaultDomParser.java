@@ -28,7 +28,7 @@ public class DefaultDomParser implements DomParser {
         document.getDocumentElement().normalize();
         Medicines medicines = new Medicines();
         Node medicinesNode = document.getDocumentElement();
-        medicines.getMedicine().addAll(getFirstLevelDescendantsByName(medicinesNode, TagName.MEDICINE.getString()).
+        medicines.getMedicine().addAll(getFirstLevelDescendantsByName(medicinesNode, TagName.MEDICINE).
                 map(this::parseMedicine).collect(Collectors.toList()));
         AnaloguesBinder.bindAnalogues(analogues, medicines.getMedicine());
         return medicines;
@@ -38,15 +38,15 @@ public class DefaultDomParser implements DomParser {
         System.out.println(node.getNodeName());
         Medicine result = new Medicine();
 
-        result.setID(getAttributeValue(node, TagName.ID.getString()));
-        result.setName(getAttributeValue(node, TagName.MEDICINE_NAME.getString()));
+        result.setID(getAttributeValue(node, TagName.ID));
+        result.setName(getAttributeValue(node, TagName.MEDICINE_NAME));
 
-        result.setGroup(MedicineGroup.fromValue(getFirstDescendantByName(node, TagName.GROUP.getString()).getTextContent()));
-        result.setPharm(getFirstDescendantByName(node, TagName.PHARM.getString()).getTextContent());
-        parseAnalogues(getFirstDescendantByName(node, TagName.ANALOGUES.getString()), result);
+        result.setGroup(MedicineGroup.fromValue(getFirstDescendantByName(node, TagName.GROUP).getTextContent()));
+        result.setPharm(getFirstDescendantByName(node, TagName.PHARM).getTextContent());
+        parseAnalogues(getFirstDescendantByName(node, TagName.ANALOGUES), result);
 
-        result.setProducers((getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.PRODUCERS.getString()),
-                TagName.PRODUCER.getString()).map(this::parseProducer).collect(Collectors.toList())));
+        result.setProducers((getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.PRODUCERS),
+                TagName.PRODUCER).map(this::parseProducer).collect(Collectors.toList())));
 
         return result;
     }
@@ -56,16 +56,16 @@ public class DefaultDomParser implements DomParser {
             return;
         System.out.println(node.getNodeName()); //TODO: может не быть аналогов
         analogues.put(currentElement,
-                getFirstLevelDescendantsByName(node, TagName.ANALOGUE_ID.getString()).map(Node::getTextContent).
+                getFirstLevelDescendantsByName(node, TagName.ANALOGUE_ID).map(Node::getTextContent).
                         collect(Collectors.toList()));
     }
 
     private Manufacturer parseProducer(Node node) {
         System.out.println(node.getNodeName());
         Manufacturer res = new Manufacturer();
-        res.setName(getAttributeValue(node, TagName.PRODUCER_NAME.getString()));
-        res.setCertificate(parseCertificate(getFirstDescendantByName(node, TagName.CERTIFICATE.getString())));
-        res.setPackages(getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.PACKAGES.getString()), TagName.PACKAGE.getString()).
+        res.setName(getAttributeValue(node, TagName.PRODUCER_NAME));
+        res.setCertificate(parseCertificate(getFirstDescendantByName(node, TagName.CERTIFICATE)));
+        res.setPackages(getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.PACKAGES), TagName.PACKAGE).
                 map(this::parsePackage).collect(Collectors.toList()));
 
         return res;
@@ -74,61 +74,61 @@ public class DefaultDomParser implements DomParser {
     private Certificate parseCertificate(Node node) {
         System.out.println(node.getNodeName());
         Certificate res = new Certificate();
-        res.setCertificateID(getAttributeValue(node, TagName.CERTIFICATE_ID.getString()));
-        res.setRegisteringOrganisation(getFirstDescendantByName(node, TagName.REGISTERING_ORGANISATION.getString()).getTextContent());
-        res.setStartDate(parseDate(node, TagName.START_DATE.getString()));
-        res.setEndDate(parseDate(node, TagName.END_DATE.getString()));
+        res.setCertificateID(getAttributeValue(node, TagName.CERTIFICATE_ID));
+        res.setRegisteringOrganisation(getFirstDescendantByName(node, TagName.REGISTERING_ORGANISATION).getTextContent());
+        res.setStartDate(parseDate(node, TagName.START_DATE));
+        res.setEndDate(parseDate(node, TagName.END_DATE));
         return res;
     }
 
     private Package parsePackage(Node node) {
         System.out.println(node.getNodeName());
         Package pack = new Package();
-        pack.setCount(Integer.valueOf(getAttributeValue(node, TagName.COUNT.getString())));
-        pack.setPackType(PackageType.fromValue(getAttributeValue(node, TagName.PACK_TYPE.getString())));
-        pack.setPrice(Integer.valueOf(getAttributeValue(node, TagName.PRICE.getString())));
-        pack.setDosages(getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.DOSAGES.getString()),
-                TagName.DOSAGE.getString()).map(this::parseDosage).collect(Collectors.toList()));
-        pack.setRepresentationType(RepresentationType.fromValue(getAttributeValue(node, TagName.REPRESENTATION_TYPE.getString())));
-        pack.setMeasureUnit(MeasureUnit.fromValue(getAttributeValue(node, TagName.MEASURE_UNIT.getString())));
+        pack.setCount(Integer.valueOf(getAttributeValue(node, TagName.COUNT)));
+        pack.setPackType(PackageType.fromValue(getAttributeValue(node, TagName.PACK_TYPE)));
+        pack.setPrice(Integer.valueOf(getAttributeValue(node, TagName.PRICE)));
+        pack.setDosages(getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.DOSAGES),
+                TagName.DOSAGE).map(this::parseDosage).collect(Collectors.toList()));
+        pack.setRepresentationType(RepresentationType.fromValue(getAttributeValue(node, TagName.REPRESENTATION_TYPE)));
+        pack.setMeasureUnit(MeasureUnit.fromValue(getAttributeValue(node, TagName.MEASURE_UNIT)));
         return pack;
     }
 
     private Dosage parseDosage(Node node) {
         System.out.println(node.getNodeName());
         Dosage result = new Dosage();
-        result.setDosageCount(Integer.parseInt(getAttributeValue(node, TagName.DOSAGE_COUNT.getString())));
-        result.setMeasureUnit(MeasureUnit.fromValue(getAttributeValue(node, TagName.MEASURE_UNIT.getString())));
-        result.setFor(PeopleGroup.fromValue(getAttributeValue(node, TagName.FOR.getString())));
-        result.setPer(DosagePeriod.fromValue(getAttributeValue(node, TagName.PER.getString())));
-        result.setTimes(Integer.parseInt(getAttributeValue(node, TagName.TIMES.getString())));
+        result.setDosageCount(Integer.parseInt(getAttributeValue(node, TagName.DOSAGE_COUNT)));
+        result.setMeasureUnit(MeasureUnit.fromValue(getAttributeValue(node, TagName.MEASURE_UNIT)));
+        result.setFor(PeopleGroup.fromValue(getAttributeValue(node, TagName.FOR)));
+        result.setPer(DosagePeriod.fromValue(getAttributeValue(node, TagName.PER)));
+        result.setTimes(Integer.parseInt(getAttributeValue(node, TagName.TIMES)));
         return result;
     }
 
 
-    private LocalDate parseDate(Node parentNode, String tagName) {
+    private LocalDate parseDate(Node parentNode, TagName tagName) {
         System.out.println(parentNode.getNodeName());
         return LocalDate.parse(getFirstDescendantByName(parentNode, tagName).getTextContent());
     }
 
 
-    private String getAttributeValue(Node node, String attrName) {
-        return node.getAttributes().getNamedItem(attrName).getNodeValue();
+    private String getAttributeValue(Node node, TagName attrName) {
+        return node.getAttributes().getNamedItem(attrName.getString()).getNodeValue();
     }
 
-    private Stream<Node> getFirstLevelDescendantsByName(Node node, String nodeName) {
+    private Stream<Node> getFirstLevelDescendantsByName(Node node, TagName nodeName) {
         NodeList nodeList = node.getChildNodes();
         System.out.println(nodeList.getLength());
         List<Node> res = new ArrayList<>(nodeList.getLength());
         for (int i = 0; i < nodeList.getLength(); i++) {
-            if (nodeList.item(i).getNodeName().equals(nodeName))
+            if (nodeList.item(i).getNodeName().equals(nodeName.getString()))
                 res.add(nodeList.item(i));
         }
 
         return res.stream();
     }
 
-    private Node getFirstDescendantByName(Node node, String nodeName) {
+    private Node getFirstDescendantByName(Node node, TagName nodeName) {
         return getFirstLevelDescendantsByName(node, nodeName).findFirst().orElse(null);
     }
 }
