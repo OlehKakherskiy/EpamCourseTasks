@@ -11,8 +11,8 @@ import java.util.Map;
  */
 public class PackageParser extends AbstractTagParser<Package> {
 
-    public PackageParser(TagName tagName) {
-        super(tagName);
+    public PackageParser() {
+        super(TagName.PACKAGE);
         functionalContext.addInitFunction(TagName.DOSAGES, this::initDosages);
         functionalContext.addInsertDataFunction(TagName.DOSAGE, dosage -> element.getDosages().add((Dosage) dosage));
     }

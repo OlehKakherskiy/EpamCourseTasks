@@ -153,4 +153,31 @@ public class Package {
     public void setRepresentationType(RepresentationType value) {
         this.representationType = value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Package)) return false;
+
+        Package aPackage = (Package) o;
+
+        if (count != aPackage.count) return false;
+        if (price != aPackage.price) return false;
+        if (!dosages.equals(aPackage.dosages)) return false;
+        if (measureUnit != aPackage.measureUnit) return false;
+        if (packType != aPackage.packType) return false;
+        return representationType == aPackage.representationType;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = dosages.hashCode();
+        result = 31 * result + count;
+        result = 31 * result + measureUnit.hashCode();
+        result = 31 * result + price;
+        result = 31 * result + packType.hashCode();
+        result = 31 * result + representationType.hashCode();
+        return result;
+    }
 }

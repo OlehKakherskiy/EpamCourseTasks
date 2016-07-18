@@ -21,4 +21,19 @@ public class Medicines {
         return this.medicine;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Medicines)) return false;
+
+        Medicines medicines = (Medicines) o;
+
+        return medicine.equals(medicines.medicine);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return medicine.hashCode();
+    }
 }

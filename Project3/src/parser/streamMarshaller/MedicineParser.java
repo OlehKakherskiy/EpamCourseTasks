@@ -5,7 +5,6 @@ import entity.Medicine;
 import entity.MedicineGroup;
 import entity.TagName;
 
-import javax.xml.stream.events.XMLEvent;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -14,9 +13,9 @@ import java.util.Map;
  */
 public class MedicineParser extends AbstractTagParser<Medicine> {
 
-    public MedicineParser(TagName tagName) {
-        super(tagName);
-        functionalContext.addInsertDataFunction(TagName.PHARM, value -> setPharm((XMLEvent) value));
+    public MedicineParser() {
+        super(TagName.MEDICINE);
+        functionalContext.addInsertDataFunction(TagName.PHARM, value -> element.setPharm((String) value));
         functionalContext.addInsertDataFunction(TagName.GROUP, value -> setGroup((String) value));
         functionalContext.addInitFunction(TagName.ANALOGUES, this::initAnalogues);
         functionalContext.addInsertDataFunction(TagName.ANALOGUE_ID, this::addAnalogueMock);
@@ -39,17 +38,13 @@ public class MedicineParser extends AbstractTagParser<Medicine> {
         element.setProducers(new ArrayList<>());
     }
 
-    private void setPharm(XMLEvent value) {
-        element.setPharm(value.asCharacters().getData());
+    private void setGroup(String group) {
+        element.setGroup(MedicineGroup.fromValue(group));
     }
 
     private void addAnalogueMock(Object id) {
         Medicine mock = new Medicine();
         mock.setID((String) id);
         element.getAnalogues().add(mock);
-    }
-
-    public void setGroup(String group) {
-        element.setGroup(MedicineGroup.fromValue(group));
     }
 }

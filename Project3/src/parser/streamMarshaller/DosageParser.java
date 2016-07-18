@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public class DosageParser extends AbstractTagParser<Dosage> {
 
-    public DosageParser(TagName tagName) {
-        super(tagName);
+    public DosageParser() {
+        super(TagName.DOSAGE);
     }
 
     @Override

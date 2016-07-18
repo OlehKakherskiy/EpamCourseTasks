@@ -59,4 +59,13 @@ public enum TagName {
     public String getString() {
         return string;
     }
+
+    public static TagName fromValue(String v) {
+        for (TagName c : TagName.values()) {
+            if (c.string.equals(v)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException(v);
     }
+}

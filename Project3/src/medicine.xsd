@@ -44,6 +44,7 @@
         </xsd:sequence>
     </xsd:complexType>
 
+
     <xsd:complexType name="manufacturer">
         <xsd:sequence>
             <xsd:element name="certificate" type="t:certificate" minOccurs="1" maxOccurs="1"/>
@@ -78,7 +79,7 @@
             </xsd:element>
         </xsd:all>
         <xsd:attribute name="count" type="xsd:positiveInteger" use="required"/>
-        <xsd:attribute name="measureUnit" type="t:measureUnit" use="optional" default="gram"/>
+        <xsd:attribute name="measureUnit" type="t:measureUnit" use="required"/>
         <xsd:attribute name="price" use="required" type="xsd:positiveInteger"/>
         <xsd:attribute name="packType" use="required">
             <xsd:simpleType>
@@ -104,7 +105,7 @@
 
     <xsd:complexType name="dosage">
         <xsd:attribute name="dosageCount" type="xsd:positiveInteger" use="required"/>
-        <xsd:attribute name="times" type="xsd:positiveInteger" use="optional" default="1"/>
+        <xsd:attribute name="times" type="xsd:positiveInteger" use="required"/>
         <xsd:attribute name="per" type="t:dosagePeriod" use="required"/>
         <xsd:attribute name="for" type="t:peopleGroup" use="required"/>
         <xsd:attribute name="measureUnit" type="t:measureUnit" use="required"/>

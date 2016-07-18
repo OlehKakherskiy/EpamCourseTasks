@@ -90,6 +90,7 @@ public class DefaultDomParser implements DomParser {
         pack.setDosages(getFirstLevelDescendantsByName(getFirstDescendantByName(node, TagName.DOSAGES.getString()),
                 TagName.DOSAGE.getString()).map(this::parseDosage).collect(Collectors.toList()));
         pack.setRepresentationType(RepresentationType.fromValue(getAttributeValue(node, TagName.REPRESENTATION_TYPE.getString())));
+        pack.setMeasureUnit(MeasureUnit.fromValue(getAttributeValue(node, TagName.MEASURE_UNIT.getString())));
         return pack;
     }
 

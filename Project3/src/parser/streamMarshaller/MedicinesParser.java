@@ -5,18 +5,18 @@ import entity.Medicines;
 import entity.TagName;
 import parser.AnaloguesBinder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public class MedicinesParser extends AbstractTagParser<Medicines> {
 
-    public MedicinesParser(TagName tagName) {
-        super(tagName);
+    public MedicinesParser() {
+        super(TagName.MEDICINES);
         functionalContext.addInsertDataFunction(TagName.MEDICINE, medicine -> element.getMedicine().add((Medicine) medicine));
     }
 
@@ -28,8 +28,13 @@ public class MedicinesParser extends AbstractTagParser<Medicines> {
     @Override
     public Medicines getParsingResult() {
         Map<Medicine, List<String>> analogues = new HashMap<>();
+
         for (Medicine med : element.getMedicine()) {
-            analogues.put(med, med.getAnalogues().stream().map(Medicine::getID).collect(Collectors.toList()));
+            List<Medicine> analogStubs = med.getAnalogues();
+            med.setAnalogues(new ArrayList<>());
+            ArrayList<String> ids = new ArrayList<>();
+            analogStubs.forEach(el -> ids.add(el.getID()));
+            analogues.put(med, ids);
         }
         AnaloguesBinder.bindAnalogues(analogues, element.getMedicine());
         return element;

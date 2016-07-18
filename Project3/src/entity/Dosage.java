@@ -118,4 +118,28 @@ public class Dosage {
         this.measureUnit = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dosage)) return false;
+
+        Dosage dosage = (Dosage) o;
+
+        if (dosageCount != dosage.dosageCount) return false;
+        if (times != dosage.times) return false;
+        if (per != dosage.per) return false;
+        if (_for != dosage._for) return false;
+        return measureUnit == dosage.measureUnit;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = dosageCount;
+        result = 31 * result + times;
+        result = 31 * result + per.hashCode();
+        result = 31 * result + _for.hashCode();
+        result = 31 * result + measureUnit.hashCode();
+        return result;
+    }
 }

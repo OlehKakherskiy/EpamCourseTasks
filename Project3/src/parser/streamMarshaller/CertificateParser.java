@@ -11,16 +11,16 @@ import java.util.Map;
  */
 public class CertificateParser extends AbstractTagParser<Certificate> {
 
-    public CertificateParser(TagName tagName) {
-        super(tagName);
+    public CertificateParser() {
+        super(TagName.CERTIFICATE);
+        functionalContext.addInsertDataFunction(TagName.START_DATE, date -> element.setStartDate(LocalDate.parse((CharSequence) date)));
+        functionalContext.addInsertDataFunction(TagName.END_DATE, date -> element.setEndDate(LocalDate.parse((CharSequence) date)));
+        functionalContext.addInsertDataFunction(TagName.REGISTERING_ORGANISATION, regOrg -> element.setRegisteringOrganisation((String) regOrg));
     }
 
     @Override
     protected void startElementParsing(Map<String, String> attributes) {
         element = new Certificate();
         element.setCertificateID(getAttributeValue(attributes, TagName.CERTIFICATE_ID));
-        element.setStartDate(LocalDate.parse(getAttributeValue(attributes, TagName.START_DATE)));
-        element.setEndDate(LocalDate.parse(getAttributeValue(attributes, TagName.END_DATE)));
-        element.setRegisteringOrganisation(getAttributeValue(attributes, TagName.REGISTERING_ORGANISATION));
     }
 }

@@ -28,7 +28,7 @@ public class Medicine {
     private List<Medicine> analogues = new ArrayList<>();
 
     @XmlElement(required = true)
-    private List<Manufacturer> producers;
+    private List<Manufacturer> producers = new ArrayList<>();
 
     @XmlAttribute(name = "name", required = true)
     private String name;
@@ -144,5 +144,32 @@ public class Medicine {
 
     public void setAnalogues(List<Medicine> analogues) {
         this.analogues = analogues;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Medicine)) return false;
+
+        Medicine medicine = (Medicine) o;
+
+        if (!pharm.equals(medicine.pharm)) return false;
+        if (group != medicine.group) return false;
+        if (!analogues.equals(medicine.analogues)) return false;
+        if (!producers.equals(medicine.producers)) return false;
+        if (!name.equals(medicine.name)) return false;
+        return id.equals(medicine.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = pharm.hashCode();
+        result = 31 * result + group.hashCode();
+        result = 31 * result + analogues.hashCode();
+        result = 31 * result + producers.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + id.hashCode();
+        return result;
     }
 }

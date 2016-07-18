@@ -22,14 +22,6 @@ public abstract class AbstractTagParser<E> {
         this.tagName = tagName;
     }
 
-    public FunctionalContext getFunctionalContext() {
-        return functionalContext;
-    }
-
-    public TagName getTagName() {
-        return tagName;
-    }
-
     public E getParsingResult() {
         return element;
     }
@@ -39,4 +31,12 @@ public abstract class AbstractTagParser<E> {
     }
 
     protected abstract void startElementParsing(Map<String, String> attributes);
+
+    public FunctionalContext getFunctionalContext() {
+        return functionalContext;
+    }
+
+    public TagName getTagName() {
+        return tagName;
+    }
 }
