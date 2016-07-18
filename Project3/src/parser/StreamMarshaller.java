@@ -1,8 +1,9 @@
-package parser.streamMarshaller;
+package parser;
 
 import entity.Medicines;
 import entity.TagName;
-import parser.AbstractMarshaller;
+import parser.streamMarshaller.AbstractTagParser;
+import parser.streamMarshaller.FunctionalContext;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.validation.Schema;
@@ -19,6 +20,7 @@ import java.util.function.Supplier;
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public abstract class StreamMarshaller extends AbstractMarshaller<Medicines> {
+
 
     private Stack<FunctionalContext> functionalContextStack;
 
@@ -50,6 +52,25 @@ public abstract class StreamMarshaller extends AbstractMarshaller<Medicines> {
         fillTagContexts(tagParserList);
         functionalContextStack = new Stack<>();
     }
+
+
+    @Override
+    public Medicines unmarshalling(Reader xmlStream) {
+        try {
+            configureFactory();
+            validate(xmlStream);
+            return unmarshallingHook(xmlStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    protected abstract Medicines unmarshallingHook(Reader xmlStream) throws Exception;
+
+    protected abstract void configureFactory();
+
+    protected abstract void validate(Reader xmlStream);
 
     private void fillTagContexts(List<AbstractTagParser> tagParserList) {
         tagParserList.forEach(abstractTagParser -> tagContexts.put(abstractTagParser.getTagName(),
@@ -93,7 +114,6 @@ public abstract class StreamMarshaller extends AbstractMarshaller<Medicines> {
         System.out.println("endTag " + tagName);
         Supplier resultFunction = currentContext.getResultFunction(TagName.fromValue(tagName));
         if (resultFunction != null) {
-//            functionalContextStack.pop(); //removes current functional context.
             currentContext = functionalContextStack.pop(); //set old context
             if (currentContext == null) {//root element end tag was read.
                 result = (Medicines) resultFunction.get();
@@ -111,9 +131,15 @@ public abstract class StreamMarshaller extends AbstractMarshaller<Medicines> {
         return result;
     }
 
-    protected void acceptParsingFunction(Integer xmlEvent, String stringParam, Map<String, String> attributes) {
+    protected void prepareParamsAndAcceptFunction(String stringParam, Map<String, String> attributes, int eventType) {
+        acceptParsingFunction(eventType, stringParam, attributes);
+    }
+
+    private void acceptParsingFunction(Integer xmlEvent, String stringParam, Map<String, String> attributes) {
         if (parsingFunctions.containsKey(xmlEvent)) {
             parsingFunctions.get(xmlEvent).accept(stringParam, attributes);
         }
     }
+
+
 }

@@ -1,39 +1,69 @@
 package parser;
 
-import org.xml.sax.Attributes;
+import entity.Medicines;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import parser.streamMarshaller.AbstractTagParser;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.validation.Schema;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.List;
 
 ;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class SaxMarshaller extends DefaultHandler {
+public class SaxMarshaller extends StreamMarshaller {
 
-    @Override
-    public void startDocument() throws SAXException {
-        super.startDocument();
+    private SAXParserFactory factory;
+
+    private SaxParser parser;
+
+    public SaxMarshaller(Reader xmlSchemaReader, List<AbstractTagParser> tagParserList, SaxParser parser) {
+        super(xmlSchemaReader, tagParserList);
+        this.parser = parser;
+    }
+
+    public SaxMarshaller(Schema schema, List<AbstractTagParser> tagParserList, SaxParser parser) {
+        super(schema, tagParserList);
+        this.parser = parser;
     }
 
     @Override
-    public void endDocument() throws SAXException {
-        super.endDocument();
+    protected Medicines unmarshallingHook(Reader xmlStream) {
+        try {
+            factory.newSAXParser().parse(new InputSource(xmlStream), parser);
+            return getResult();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
-        super.characters(ch, start, length);
+    protected void configureFactory() {
+        factory = SAXParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setSchema(schema); //validating parameters
+        factory.setValidating(true);
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        super.startElement(uri, localName, qName, attributes);
-        //TODO:
+    protected void validate(Reader xmlStream) {
+        return;
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-        super.endElement(uri, localName, qName);
+    public void marshalling(Medicines element, Writer out) throws Exception {
+
     }
 }

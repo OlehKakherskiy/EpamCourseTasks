@@ -36,6 +36,7 @@ public class AbstractMarshallerTest {
     public static void init() throws FileNotFoundException {
 
         reader = new BufferedReader(new FileReader(new File("test/resources/medicine.xsd")));
+        StringBuilder schemaStringBuilder = new StringBuilder();
         reader.lines().forEach(schemaStringBuilder::append);
 
         BufferedReader targetReader = new BufferedReader(new FileReader("test/resources/testFiles/file.xml"));
@@ -52,7 +53,10 @@ public class AbstractMarshallerTest {
 
         marshallers.add(new DomMarshaller(new StringReader(schemaStringBuilder.toString()), new DefaultDomParser(), new DefaultDomSaver()));
         marshallers.add(new StaxMarshaller(new StringReader(schemaStringBuilder.toString()), tagParsers));
-        System.out.println();
+        SaxParser saxParser = new SaxParser();
+        StreamMarshaller saxMarshaller = new SaxMarshaller(new StringReader(schemaStringBuilder.toString()), tagParsers, saxParser);
+        saxParser.setMarshaller(saxMarshaller);
+        marshallers.add(saxMarshaller);
     }
 
 
