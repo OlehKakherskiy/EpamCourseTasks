@@ -5,10 +5,7 @@ import entity.Package;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import entity.DosagePeriod;
-import entity.PackageType;
-import entity.RepresentationType;
-import entity.TagName;
+import parser.AnaloguesBinder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,17 +22,15 @@ public class DefaultDomParser implements DomParser {
 
     private Map<Medicine, List<String>> analogues = new HashMap<>();
 
-    private List<Medicine> medicines;
 
     @Override
     public Medicines parse(Document document) {
         document.getDocumentElement().normalize();
         Medicines medicines = new Medicines();
         Node medicinesNode = document.getDocumentElement();
-        this.medicines = getFirstLevelDescendantsByName(medicinesNode, TagName.MEDICINE.getString()).
-                map(this::parseMedicine).collect(Collectors.toList());
-        medicines.getMedicine().addAll(this.medicines);
-        bindAnalogues();
+        medicines.getMedicine().addAll(getFirstLevelDescendantsByName(medicinesNode, TagName.MEDICINE.getString()).
+                map(this::parseMedicine).collect(Collectors.toList()));
+        AnaloguesBinder.bindAnalogues(analogues, medicines.getMedicine());
         return medicines;
     }
 
@@ -115,18 +110,6 @@ public class DefaultDomParser implements DomParser {
         return LocalDate.parse(getFirstDescendantByName(parentNode, tagName).getTextContent());
     }
 
-    private void bindAnalogues() {
-        analogues.entrySet().stream().forEach(this::bindAnalogue);
-    }
-
-    private void bindAnalogue(Map.Entry<Medicine, List<String>> elementAnalogues) {
-        elementAnalogues.getKey().setAnalogues(elementAnalogues.getValue().stream().
-                map(this::findAnalogue).collect(Collectors.toList()));
-    }
-
-    private Medicine findAnalogue(String id) {
-        return this.medicines.stream().filter(medicine -> medicine.getID().equals(id)).findFirst().orElse(null);
-    }
 
     private String getAttributeValue(Node node, String attrName) {
         return node.getAttributes().getNamedItem(attrName).getNodeValue();

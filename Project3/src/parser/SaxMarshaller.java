@@ -1,39 +1,39 @@
 package parser;
 
-import entity.Medicines;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.transform.Source;
-import javax.xml.validation.Schema;
-import java.io.Reader;
-import java.io.Writer;
+;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class SaxMarshaller extends AbstractMarshaller {
+public class SaxMarshaller extends DefaultHandler {
 
-
-    public SaxMarshaller(Reader xmlSchemaReader) {
-        super(xmlSchemaReader);
-    }
-
-    public SaxMarshaller(Schema schema) {
-        super(schema);
+    @Override
+    public void startDocument() throws SAXException {
+        super.startDocument();
     }
 
     @Override
-    public void marshalling(Object element, Writer out) throws Exception {
-
+    public void endDocument() throws SAXException {
+        super.endDocument();
     }
 
     @Override
-    protected Source getSource(Reader xmlStream, Schema schema) throws Exception {
-        return null;
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        super.characters(ch, start, length);
     }
 
     @Override
-    protected Medicines unmarshalling(Source source) {
-        return null;
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        super.startElement(uri, localName, qName, attributes);
+        //TODO:
     }
 
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        super.endElement(uri, localName, qName);
+    }
 }

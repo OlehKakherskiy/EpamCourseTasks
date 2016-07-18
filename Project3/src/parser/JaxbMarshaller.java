@@ -2,7 +2,6 @@ package parser;
 
 import entity.Medicines;
 
-import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
 import java.io.Reader;
 import java.io.Writer;
@@ -10,7 +9,7 @@ import java.io.Writer;
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class JaxbMarshaller extends AbstractMarshaller {
+public class JaxbMarshaller extends AbstractMarshaller<Medicines> {
 
 
     public JaxbMarshaller(Reader xmlSchemaReader) {
@@ -22,17 +21,13 @@ public class JaxbMarshaller extends AbstractMarshaller {
     }
 
     @Override
-    public void marshalling(Object element, Writer out) throws Exception {
-
-    }
-
-    @Override
-    protected Source getSource(Reader xmlStream, Schema schema) throws Exception {
+    public Medicines unmarshalling(Reader xmlStream) {
         return null;
     }
 
     @Override
-    protected Medicines unmarshalling(Source source) {
-        return null;
+    public void marshalling(Medicines element, Writer out) throws Exception {
+
     }
+
 }

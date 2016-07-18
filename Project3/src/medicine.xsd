@@ -44,7 +44,6 @@
         </xsd:sequence>
     </xsd:complexType>
 
-
     <xsd:complexType name="manufacturer">
         <xsd:sequence>
             <xsd:element name="certificate" type="t:certificate" minOccurs="1" maxOccurs="1"/>

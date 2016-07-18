@@ -4,13 +4,19 @@ package parser.domMarshalling;
 import entity.Medicines;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import parser.AbstractMarshaller;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -36,6 +42,24 @@ public class DomMarshaller extends AbstractMarshaller<Medicines> {
     }
 
     @Override
+    public Medicines unmarshalling(Reader xmlStream) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringElementContentWhitespace(true);
+        factory.setNamespaceAware(true);
+        factory.setSchema(schema);
+        try {
+            return parser.parse(factory.newDocumentBuilder().parse(new InputSource(xmlStream)));
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public void marshalling(Medicines medicines, Writer out) throws Exception {
         Document document = saver.save(medicines, schema);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -51,20 +75,4 @@ public class DomMarshaller extends AbstractMarshaller<Medicines> {
             throw new Exception("marshalling exception", e);
         }
     }
-
-    @Override
-    protected Source getSource(Reader xmlStream, Schema schema) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setIgnoringElementContentWhitespace(true);
-        factory.setNamespaceAware(true);
-        factory.setSchema(schema);
-        Document document = factory.newDocumentBuilder().parse(new InputSource(xmlStream));
-        return new DOMSource(document);
-    }
-
-    @Override
-    protected Medicines unmarshalling(Source source) {
-        return parser.parse((Document) ((DOMSource) source).getNode());
-    }
-
 }

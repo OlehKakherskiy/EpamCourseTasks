@@ -2,6 +2,7 @@ package parser;
 
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -37,7 +38,8 @@ public abstract class AbstractMarshaller<E> {
     public abstract void marshalling(E element, Writer out) throws Exception;
 
     private Schema getDocumentSchema(Reader schemaStream) throws SAXException {
-        return SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema(new StreamSource(schemaStream));
+
+        return SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(new StreamSource(schemaStream));
     }
 
     protected void nullCheck(Object stream) {
