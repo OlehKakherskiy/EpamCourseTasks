@@ -22,7 +22,6 @@ public class DefaultDomParser implements DomParser {
 
     private Map<Medicine, List<String>> analogues = new HashMap<>();
 
-
     @Override
     public Medicines parse(Document document) {
         document.getDocumentElement().normalize();
