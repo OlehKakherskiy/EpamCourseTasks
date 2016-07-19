@@ -1,12 +1,11 @@
 package parser.domMarshalling;
 
-import entity.Medicines;
 import org.w3c.dom.Document;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public interface DomParser {
+public interface DomParser<E> {
 
-    Medicines parse(Document document);
+    E parse(Document document);
 }

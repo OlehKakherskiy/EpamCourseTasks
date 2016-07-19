@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class DefaultDomParser implements DomParser {
+public class DefaultDomParser implements DomParser<Medicines> {
 
     private Map<Medicine, List<String>> analogues = new HashMap<>();
 

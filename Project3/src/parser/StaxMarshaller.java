@@ -1,7 +1,7 @@
 package parser;
 
 import org.xml.sax.SAXException;
-import parser.parsingStrategy.AbstractTagParser;
+import parser.unmarshallingResultBuilder.UnmarshallingResultBuilder;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -17,7 +17,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Class represents STaX parsing technology.
@@ -26,18 +29,18 @@ import java.util.*;
  *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class StaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
+public class StaxMarshaller<E> extends XmlMarshaller<E> {
 
     private StringBuilder xmlStreamStorage = new StringBuilder();
 
     private XMLInputFactory xmlInputFactory;
 
-    public StaxMarshaller(Reader xmlSchemaReader, List<AbstractTagParser> tagParserList) {
-        super(xmlSchemaReader, tagParserList);
+    public StaxMarshaller(Reader xmlSchemaReader, UnmarshallingResultBuilder<E> resultBuilder) {
+        super(xmlSchemaReader, resultBuilder);
     }
 
-    public StaxMarshaller(Schema schema, List<AbstractTagParser> tagParserList) {
-        super(schema, tagParserList);
+    public StaxMarshaller(Schema schema, UnmarshallingResultBuilder<E> resultBuilder) {
+        super(schema, resultBuilder);
     }
 
     /**
@@ -144,25 +147,25 @@ public class StaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
             switch (event.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT: {
                     StartElement startElement = event.asStartElement();
-                    acceptParsingFunction(XMLStreamConstants.START_ELEMENT,
+                    resultBuilder.buildPart(XMLStreamConstants.START_ELEMENT,
                             startElement.getName().getLocalPart(), getAttributes(startElement));
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS: {
                     stringParam = event.asCharacters().getData().trim();
                     if (!stringParam.isEmpty()) {
-                        acceptParsingFunction(XMLStreamConstants.CHARACTERS, stringParam, attributes);
+                        resultBuilder.buildPart(XMLStreamConstants.CHARACTERS, stringParam, attributes);
                     }
                     break;
                 }
                 case XMLStreamConstants.END_ELEMENT: {
-                    acceptParsingFunction(XMLStreamConstants.END_ELEMENT, event.asEndElement().getName().getLocalPart(),
+                    resultBuilder.buildPart(XMLStreamConstants.END_ELEMENT, event.asEndElement().getName().getLocalPart(),
                             Collections.emptyMap());
                     break;
                 }
             }
         }
-        return getResult();
+        return resultBuilder.getResult();
     }
 
     /**

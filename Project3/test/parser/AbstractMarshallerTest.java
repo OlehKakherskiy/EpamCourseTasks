@@ -7,7 +7,8 @@ import org.junit.Test;
 import parser.domMarshalling.DefaultDomParser;
 import parser.domMarshalling.DefaultDomSaver;
 import parser.domMarshalling.DomMarshaller;
-import parser.parsingStrategy.*;
+import parser.unmarshallingResultBuilder.XmlUnmarshallingResultBuilder;
+import parser.unmarshallingResultBuilder.parsingStrategy.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,11 +52,11 @@ public class AbstractMarshallerTest {
                 new MedicinesParser(),
                 new PackageParser()));
 
-        marshallers.add(new DomMarshaller(new StringReader(schemaStringBuilder.toString()), new DefaultDomParser(), new DefaultDomSaver()));
-        marshallers.add(new StaxMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), tagParsers));
-        SaxParser saxParser = new SaxParser();
-        FiniteStateAutomatonMarshaller<Medicines> saxMarshaller = new SaxMarshaller(new StringReader(schemaStringBuilder.toString()), tagParsers, saxParser);
-        saxParser.setMarshaller(saxMarshaller);
+        XmlUnmarshallingResultBuilder<Medicines> unmarshallingResultBuilder = new XmlUnmarshallingResultBuilder<>(tagParsers);
+
+        marshallers.add(new DomMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), new DefaultDomParser(), new DefaultDomSaver()));
+        marshallers.add(new StaxMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), unmarshallingResultBuilder));
+        AbstractMarshaller<Medicines> saxMarshaller = new SaxMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), unmarshallingResultBuilder ,new SaxParser());
         marshallers.add(saxMarshaller);
     }
 

@@ -17,7 +17,7 @@ import java.util.function.Function;
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class DefaultDomSaver implements DomSaver {
+public class DefaultDomSaver implements DomSaver<Medicines> {
 
     private Document resultDocument;
 

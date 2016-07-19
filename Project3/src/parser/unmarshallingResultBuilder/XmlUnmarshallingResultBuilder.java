@@ -1,13 +1,10 @@
-package parser;
+package parser.unmarshallingResultBuilder;
 
 import entity.TagName;
-import parser.parsingStrategy.AbstractTagParser;
-import parser.parsingStrategy.FunctionalContext;
+import parser.unmarshallingResultBuilder.parsingStrategy.AbstractTagParser;
+import parser.unmarshallingResultBuilder.parsingStrategy.FunctionalContext;
 
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.validation.Schema;
-import java.io.Reader;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +14,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Class represents basis of streaming parsing technologies.
- * <p>
- * <p>
  * It works like finite state machine, based on sequence of {@link FunctionalContext},
  * that has tagName - functional strategy of mapping xml tags to Java objects. This
  * strategies are defined in {@link AbstractTagParser} type. Also this machine has
@@ -41,7 +35,7 @@ import java.util.function.Supplier;
  * @see AbstractTagParser
  * @see FunctionalContext
  */
-public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshaller<E> {
+public class XmlUnmarshallingResultBuilder<E> implements UnmarshallingResultBuilder<E> {
 
     /**
      * stack of functional parsing contexts.
@@ -79,111 +73,19 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
      */
     private Map<Integer, BiConsumer<String, Map<String, String>>> parsingFunctions = new HashMap<>();
 
-    /**
-     * creates stream marshaller, configuring it with parsing strategies
-     * and xml schema location.
-     *
-     * @param xmlSchemaReader xml schema location
-     * @param tagParserList   parsing strategies
-     */
-    public FiniteStateAutomatonMarshaller(Reader xmlSchemaReader, List<AbstractTagParser> tagParserList) {
-        super(xmlSchemaReader);
+    public XmlUnmarshallingResultBuilder(List<AbstractTagParser> tagParserList) {
         fillTagContexts(tagParserList);
-        initXmlEventsToFunctionsMapping();
-    }
-
-    /**
-     * creates stream marshaller, configuring it with parsing strategies
-     * and xml schema.
-     *
-     * @param schema        xml schema
-     * @param tagParserList parsing strategies
-     */
-    public FiniteStateAutomatonMarshaller(Schema schema, List<AbstractTagParser> tagParserList) {
-        super(schema);
-        fillTagContexts(tagParserList);
-        functionalContextStack = new Stack<>();
         initXmlEventsToFunctionsMapping();
     }
 
     /**
      * {@inheritDoc}
-     * <p>
-     * <p>
-     * configuring factory, calling {@link #configureFactory()}, then validating schema,
-     * calling {@link #validate(Reader)}, and then calls {@link #unmarshallingHook(Reader)}
-     * </p>
      *
-     * @param xmlStream i/o of specific xml
-     * @return Object representation of xml file with schema {@link #schema}
+     * @return prepared object representation of xml stream
      */
     @Override
-    public E unmarshalling(Reader xmlStream) {
-        try {
-            configureFactory();
-            validate(xmlStream);
-            return unmarshallingHook(xmlStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public void marshalling(E element, Writer out) throws Exception {
-        throw new UnsupportedOperationException("Unsupported operation");
-    }
-
-    /**
-     * internal transitions mapping configure method. Configure mapping
-     * between {@link XMLStreamConstants} and parsing functions.
-     */
-    protected void initXmlEventsToFunctionsMapping() {
-        parsingFunctions.put(XMLStreamConstants.START_ELEMENT, this::startElementEvent);
-        parsingFunctions.put(XMLStreamConstants.CHARACTERS, (data, stringStringMap) -> charactersEvent(data));
-        parsingFunctions.put(XMLStreamConstants.END_ELEMENT, (tagName, stringStringMap) -> endElementEvent(tagName));
-    }
-
-    /**
-     * parsing technology specific chosen strategy. Must be implemented, because it's main parsing
-     * algorithm.
-     *
-     * @param xmlStream xml document stream
-     * @return object representation of this i/o stream
-     * @throws Exception if any kind exception occurs during parsing
-     */
-    protected abstract E unmarshallingHook(Reader xmlStream) throws Exception;
-
-    /**
-     * configures parsing factory (can be omitted).
-     */
-    protected abstract void configureFactory();
-
-    /**
-     * validate xml document from specific steam using {@link #schema}
-     *
-     * @param xmlStream xml document stream
-     */
-    protected abstract void validate(Reader xmlStream);
-
-    private void fillTagContexts(List<AbstractTagParser> tagParserList) {
-        tagParserList.forEach(abstractTagParser -> tagContexts.put(abstractTagParser.getTagName(),
-                abstractTagParser.getFunctionalContext()));
-    }
-
-
-    /**
-     * accept parsing function from {@link #parsingFunctions} according to target xmlEventType. If there's no
-     * function that is mapped to xml event
-     *
-     * @param stringParam  can be tagName or tag text content
-     * @param attributes   attributes map, if {@link XMLStreamConstants#START_ELEMENT} was invoked, or empty map otherwise
-     * @param xmlEventType {@link XMLStreamConstants}
-     */
-    void acceptParsingFunction(Integer xmlEventType, String stringParam, Map<String, String> attributes) {
-        if (parsingFunctions.containsKey(xmlEventType)) {
-            parsingFunctions.get(xmlEventType).accept(stringParam, attributes);
-        }
+    public E getResult() {
+        return result;
     }
 
     /**
@@ -264,11 +166,37 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
     }
 
     /**
-     * return {@link #result} value
+     * accept parsing function from {@link #parsingFunctions} according to target xmlEventType. If there's no
+     * function that is mapped to xml event
      *
-     * @return {@link #result} value
+     * @param stringParam  can be tagName or tag text content
+     * @param attributes   attributes map, if {@link XMLStreamConstants#START_ELEMENT} was invoked, or empty map otherwise
+     * @param xmlEventType {@link XMLStreamConstants}
      */
-    protected E getResult() {
-        return result;
+    public void buildPart(Integer xmlEventType, String stringParam, Map<String, String> attributes) {
+        if (parsingFunctions.containsKey(xmlEventType)) {
+            parsingFunctions.get(xmlEventType).accept(stringParam, attributes);
+        }
+    }
+
+    /**
+     * internal transitions mapping configure method. Configure mapping
+     * between {@link XMLStreamConstants} and parsing functions.
+     */
+    protected void initXmlEventsToFunctionsMapping() {
+        parsingFunctions.put(XMLStreamConstants.START_ELEMENT, this::startElementEvent);
+        parsingFunctions.put(XMLStreamConstants.CHARACTERS, (data, stringStringMap) -> charactersEvent(data));
+        parsingFunctions.put(XMLStreamConstants.END_ELEMENT, (tagName, stringStringMap) -> endElementEvent(tagName));
+    }
+
+    /**
+     * reformats list of {@link AbstractTagParser} to key/value representation,
+     * where key - {@link AbstractTagParser#element}, value - {@link AbstractTagParser#functionalContext}
+     *
+     * @param tagParserList list all tags, that can be parsed
+     */
+    private void fillTagContexts(List<AbstractTagParser> tagParserList) {
+        tagParserList.forEach(abstractTagParser -> tagContexts.put(abstractTagParser.getTagName(),
+                abstractTagParser.getFunctionalContext()));
     }
 }

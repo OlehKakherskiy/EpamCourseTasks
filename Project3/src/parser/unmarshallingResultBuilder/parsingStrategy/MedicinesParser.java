@@ -1,4 +1,4 @@
-package parser.parsingStrategy;
+package parser.unmarshallingResultBuilder.parsingStrategy;
 
 import entity.Medicine;
 import entity.Medicines;

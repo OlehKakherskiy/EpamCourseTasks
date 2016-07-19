@@ -1,14 +1,11 @@
 package parser.domMarshalling;
 
 
-import entity.Medicines;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import parser.AbstractMarshaller;
+import parser.XmlMarshaller;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -16,63 +13,66 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
 /**
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class DomMarshaller extends AbstractMarshaller<Medicines> {
+public class DomMarshaller<E> extends XmlMarshaller<E> {
 
-    private DomParser parser;
+    private DomParser<E> parser;
 
-    private DomSaver saver;
+    private DomSaver<E> saver;
 
-    public DomMarshaller(Reader xmlSchemaReader, DomParser parser, DomSaver saver) {
-        super(xmlSchemaReader);
+    private DocumentBuilderFactory builderFactory;
+
+    private TransformerFactory transformerFactory;
+
+    public DomMarshaller(Reader xmlSchemaReader, DomParser<E> parser, DomSaver<E> saver) {
+        super(xmlSchemaReader, null);
         this.parser = parser;
         this.saver = saver;
     }
 
-    public DomMarshaller(Schema schema, DomParser parser, DomSaver saver) {
-        super(schema);
+    public DomMarshaller(Schema schema, DomParser<E> parser, DomSaver<E> saver) {
+        super(schema, null);
         this.parser = parser;
         this.saver = saver;
     }
 
     @Override
-    public Medicines unmarshalling(Reader xmlStream) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setIgnoringElementContentWhitespace(true);
-        factory.setNamespaceAware(true);
-        factory.setSchema(schema);
-        try {
-            return parser.parse(factory.newDocumentBuilder().parse(new InputSource(xmlStream)));
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-        return null;
+    protected E unmarshallingHook(Reader xmlStream) throws Exception {
+        Document document = builderFactory.newDocumentBuilder().parse(new InputSource(xmlStream));
+        schema.newValidator().validate(new DOMSource(document));
+        return parser.parse(document);
     }
 
     @Override
-    public void marshalling(Medicines medicines, Writer out) throws Exception {
-        Document document = saver.save(medicines, schema);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        //pretty formatting
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    protected void configureFactory() {
+        builderFactory = DocumentBuilderFactory.newInstance();
+        builderFactory.setIgnoringElementContentWhitespace(true);
+        builderFactory.setNamespaceAware(true);
 
+        transformerFactory = TransformerFactory.newInstance();
+    }
+
+    @Override
+    public void marshalling(E element, Writer out) throws Exception {
+        Document document = saver.save(element, schema);
+        Transformer transformer = configureTransformer(transformerFactory.newTransformer());
         try {
             transformer.transform(new DOMSource(document), new StreamResult(out));
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
             throw new Exception("marshalling exception", e);
         }
+    }
+
+    private Transformer configureTransformer(Transformer transformer) {
+        //pretty formatting
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        return transformer;
     }
 }

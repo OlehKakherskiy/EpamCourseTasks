@@ -2,14 +2,14 @@ package parser;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import parser.parsingStrategy.AbstractTagParser;
+import parser.unmarshallingResultBuilder.UnmarshallingResultBuilder;
+import parser.unmarshallingResultBuilder.XmlUnmarshallingResultBuilder;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.List;
 
 ;
 
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class SaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
+public class SaxMarshaller<E> extends XmlMarshaller<E> {
 
     /**
      * parser factory for configuring and creating parsers
@@ -30,14 +30,14 @@ public class SaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
      */
     private SaxParser parser;
 
-    public SaxMarshaller(Reader xmlSchemaReader, List<AbstractTagParser> tagParserList, SaxParser parser) {
-        super(xmlSchemaReader, tagParserList);
+    public SaxMarshaller(Reader xmlSchemaReader, XmlUnmarshallingResultBuilder<E> resultBuilder, SaxParser parser) {
+        super(xmlSchemaReader, resultBuilder);
         this.parser = parser;
+        this.parser.setResultBuilder(resultBuilder);
     }
 
-    public SaxMarshaller(Schema schema, List<AbstractTagParser> tagParserList, SaxParser parser) {
-        super(schema, tagParserList);
-        this.parser = parser;
+    public SaxMarshaller(Schema schema, UnmarshallingResultBuilder<E> resultBuilder) {
+        super(schema, resultBuilder);
     }
 
     /**
@@ -54,7 +54,7 @@ public class SaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
     protected E unmarshallingHook(Reader xmlStream) {
         try {
             factory.newSAXParser().parse(new InputSource(xmlStream), parser);
-            return getResult();
+            return resultBuilder.getResult();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -74,17 +74,5 @@ public class SaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
         factory.setNamespaceAware(true);
         factory.setSchema(schema); //validating parameters
         factory.setValidating(true);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * do nothing. Factory is configured for create parsers with validation switching on
-     * </p>
-     *
-     * @param xmlStream xml document stream
-     */
-    @Override
-    protected void validate(Reader xmlStream) {
     }
 }

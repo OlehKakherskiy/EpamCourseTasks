@@ -1,4 +1,4 @@
-package parser.parsingStrategy;
+package parser.unmarshallingResultBuilder.parsingStrategy;
 
 import entity.Certificate;
 import entity.Manufacturer;
