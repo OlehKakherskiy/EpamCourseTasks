@@ -17,7 +17,6 @@ public class MedicinesParser extends AbstractTagParser<Medicines> {
 
     public MedicinesParser() {
         super(TagName.MEDICINES);
-        functionalContext.addInsertDataFunction(TagName.MEDICINE, medicine -> element.getMedicine().add((Medicine) medicine));
     }
 
     @Override
@@ -38,5 +37,10 @@ public class MedicinesParser extends AbstractTagParser<Medicines> {
         }
         AnaloguesBinder.bindAnalogues(analogues, element.getMedicine());
         return element;
+    }
+
+    @Override
+    protected void initFunctionalContext() {
+        functionalContext.addInsertDataFunction(TagName.MEDICINE, medicine -> element.getMedicine().add((Medicine) medicine));
     }
 }

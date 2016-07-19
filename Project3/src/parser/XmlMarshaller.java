@@ -15,8 +15,6 @@ import java.io.Writer;
  */
 public abstract class XmlMarshaller<E> extends AbstractMarshaller<E> {
 
-    protected UnmarshallingResultBuilder<E> resultBuilder;
-
     /**
      * Xml schema of specific xml, that will be load/save
      */
@@ -28,8 +26,8 @@ public abstract class XmlMarshaller<E> extends AbstractMarshaller<E> {
      * @param xmlSchemaReader i/o stream from which schema will be created
      */
     public XmlMarshaller(Reader xmlSchemaReader, UnmarshallingResultBuilder<E> resultBuilder) {
+        super(resultBuilder);
         nullCheck(xmlSchemaReader);
-        this.resultBuilder = resultBuilder;
         try {
             schema = getDocumentSchema(xmlSchemaReader);
         } catch (SAXException e) {
@@ -44,6 +42,7 @@ public abstract class XmlMarshaller<E> extends AbstractMarshaller<E> {
      * @param schema schema of mapped xml
      */
     public XmlMarshaller(Schema schema, UnmarshallingResultBuilder<E> resultBuilder) {
+        super(resultBuilder);
         nullCheck(schema);
         this.resultBuilder = resultBuilder;
         this.schema = schema;

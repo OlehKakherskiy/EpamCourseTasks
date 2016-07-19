@@ -19,6 +19,7 @@ public abstract class AbstractTagParser<E> {
         this.functionalContext = new FunctionalContext();
         functionalContext.addInitFunction(tagName, this::startElementParsing);
         functionalContext.addGetResultFunction(tagName, this::getParsingResult);
+        initFunctionalContext();
         this.tagName = tagName;
     }
 
@@ -29,6 +30,8 @@ public abstract class AbstractTagParser<E> {
     protected String getAttributeValue(Map<String, String> attributes, TagName attName) {
         return attributes.get(attName.getString());
     }
+
+    protected abstract void initFunctionalContext();
 
     protected abstract void startElementParsing(Map<String, String> attributes);
 

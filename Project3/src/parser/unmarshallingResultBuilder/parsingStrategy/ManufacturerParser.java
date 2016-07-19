@@ -14,6 +14,10 @@ public class ManufacturerParser extends AbstractTagParser<Manufacturer> {
 
     public ManufacturerParser() {
         super(TagName.PRODUCER);
+    }
+
+    @Override
+    protected void initFunctionalContext() {
         functionalContext.addInitFunction(TagName.PACKAGES, this::initPackages);
         functionalContext.addInsertDataFunction(TagName.CERTIFICATE, certificate -> element.setCertificate((Certificate) certificate));
         functionalContext.addInsertDataFunction(TagName.PACKAGE, pack -> element.getPackages().add((entity.Package) pack));

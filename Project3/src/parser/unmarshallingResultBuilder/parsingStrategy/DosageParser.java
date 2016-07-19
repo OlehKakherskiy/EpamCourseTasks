@@ -14,11 +14,15 @@ public class DosageParser extends AbstractTagParser<Dosage> {
     }
 
     @Override
+    protected void initFunctionalContext() {
+    }
+
+    @Override
     protected void startElementParsing(Map<String, String> attributes) {
         element = new Dosage();
         element.setMeasureUnit(MeasureUnit.fromValue(getAttributeValue(attributes, TagName.MEASURE_UNIT)));
         element.setDosageCount(Integer.valueOf(getAttributeValue(attributes, TagName.DOSAGE_COUNT)));
-        element.setFor(PeopleGroup.fromValue((getAttributeValue(attributes, TagName.FOR))));
+        element.setFor(PeopleGroup.fromValue(getAttributeValue(attributes, TagName.FOR)));
         element.setPer(DosagePeriod.fromValue(getAttributeValue(attributes, TagName.PER)));
         element.setTimes(Integer.valueOf(getAttributeValue(attributes, TagName.TIMES)));
     }

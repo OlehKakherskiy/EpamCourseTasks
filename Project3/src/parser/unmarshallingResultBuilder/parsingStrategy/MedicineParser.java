@@ -15,6 +15,10 @@ public class MedicineParser extends AbstractTagParser<Medicine> {
 
     public MedicineParser() {
         super(TagName.MEDICINE);
+    }
+
+    @Override
+    protected void initFunctionalContext() {
         functionalContext.addInsertDataFunction(TagName.PHARM, value -> element.setPharm((String) value));
         functionalContext.addInsertDataFunction(TagName.GROUP, value -> setGroup((String) value));
         functionalContext.addInitFunction(TagName.ANALOGUES, this::initAnalogues);
@@ -26,8 +30,8 @@ public class MedicineParser extends AbstractTagParser<Medicine> {
     @Override
     protected void startElementParsing(Map<String, String> attributes) {
         element = new Medicine();
-        element.setID(getAttributeValue(attributes, TagName.ID));
-        element.setName(getAttributeValue(attributes, TagName.MEDICINE_NAME));
+        element.setID((String) getAttributeValue(attributes, TagName.ID));
+        element.setName((String) getAttributeValue(attributes, TagName.MEDICINE_NAME));
     }
 
     private void initAnalogues(Map<String, String> attributes) {

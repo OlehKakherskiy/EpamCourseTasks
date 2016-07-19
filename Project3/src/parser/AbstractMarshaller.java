@@ -1,5 +1,7 @@
 package parser;
 
+import parser.unmarshallingResultBuilder.UnmarshallingResultBuilder;
+
 import java.io.Reader;
 import java.io.Writer;
 
@@ -11,6 +13,12 @@ import java.io.Writer;
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
 public abstract class AbstractMarshaller<E> {
+
+    protected UnmarshallingResultBuilder<E> resultBuilder;
+
+    public AbstractMarshaller(UnmarshallingResultBuilder<E> resultBuilder) {
+        this.resultBuilder = resultBuilder;
+    }
 
     /**
      * Maps information, represented in type dependent format, to object representation

@@ -13,6 +13,10 @@ public class CertificateParser extends AbstractTagParser<Certificate> {
 
     public CertificateParser() {
         super(TagName.CERTIFICATE);
+    }
+
+    @Override
+    protected void initFunctionalContext() {
         functionalContext.addInsertDataFunction(TagName.START_DATE, date -> element.setStartDate(LocalDate.parse((CharSequence) date)));
         functionalContext.addInsertDataFunction(TagName.END_DATE, date -> element.setEndDate(LocalDate.parse((CharSequence) date)));
         functionalContext.addInsertDataFunction(TagName.REGISTERING_ORGANISATION, regOrg -> element.setRegisteringOrganisation((String) regOrg));
