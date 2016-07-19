@@ -7,7 +7,7 @@ import org.junit.Test;
 import parser.domMarshalling.DefaultDomParser;
 import parser.domMarshalling.DefaultDomSaver;
 import parser.domMarshalling.DomMarshaller;
-import parser.streamMarshaller.*;
+import parser.parsingStrategy.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -52,9 +52,9 @@ public class AbstractMarshallerTest {
                 new PackageParser()));
 
         marshallers.add(new DomMarshaller(new StringReader(schemaStringBuilder.toString()), new DefaultDomParser(), new DefaultDomSaver()));
-        marshallers.add(new StaxMarshaller(new StringReader(schemaStringBuilder.toString()), tagParsers));
+        marshallers.add(new StaxMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), tagParsers));
         SaxParser saxParser = new SaxParser();
-        StreamMarshaller saxMarshaller = new SaxMarshaller(new StringReader(schemaStringBuilder.toString()), tagParsers, saxParser);
+        FiniteStateAutomatonMarshaller<Medicines> saxMarshaller = new SaxMarshaller(new StringReader(schemaStringBuilder.toString()), tagParsers, saxParser);
         saxParser.setMarshaller(saxMarshaller);
         marshallers.add(saxMarshaller);
     }
@@ -78,16 +78,4 @@ public class AbstractMarshallerTest {
     public void testMarshalling() throws Exception {
 
     }
-
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testNullXmlStream() throws Exception {
-//        marshallers[0].unmarshalling(nullReader);
-//    }
-//
-//
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testNullOutputStream() throws Exception {
-//        marshallers[0].marshalling(new Medicines(), null);
-//    }
-
 }

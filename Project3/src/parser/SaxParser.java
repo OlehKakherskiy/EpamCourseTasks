@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class SaxParser extends DefaultHandler {
 
-    private StreamMarshaller marshaller;
+    private FiniteStateAutomatonMarshaller marshaller;
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
@@ -22,17 +22,17 @@ public class SaxParser extends DefaultHandler {
         if (chars.trim().isEmpty()) {
             return;
         }
-        marshaller.prepareParamsAndAcceptFunction(chars, Collections.emptyMap(), XMLStreamConstants.CHARACTERS);
+        marshaller.acceptParsingFunction(XMLStreamConstants.CHARACTERS, chars, Collections.EMPTY_MAP);
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        marshaller.prepareParamsAndAcceptFunction(localName, prepareAttributes(attributes), XMLStreamConstants.START_ELEMENT);
+        marshaller.acceptParsingFunction(XMLStreamConstants.START_ELEMENT, localName, prepareAttributes(attributes));
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        marshaller.prepareParamsAndAcceptFunction(localName, Collections.emptyMap(), XMLStreamConstants.END_ELEMENT);
+        marshaller.acceptParsingFunction(XMLStreamConstants.END_ELEMENT, localName, Collections.EMPTY_MAP);
     }
 
     private Map<String, String> prepareAttributes(Attributes attributes) {
@@ -43,7 +43,7 @@ public class SaxParser extends DefaultHandler {
         return result;
     }
 
-    public void setMarshaller(StreamMarshaller marshaller) {
+    public void setMarshaller(FiniteStateAutomatonMarshaller marshaller) {
         this.marshaller = marshaller;
     }
 }

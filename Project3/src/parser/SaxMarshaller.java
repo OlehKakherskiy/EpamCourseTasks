@@ -1,9 +1,8 @@
 package parser;
 
-import entity.Medicines;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import parser.streamMarshaller.AbstractTagParser;
+import parser.parsingStrategy.AbstractTagParser;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -16,12 +15,20 @@ import java.util.List;
 ;
 
 /**
+ * Sax algorithm for finite state automaton.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class SaxMarshaller extends StreamMarshaller {
+public class SaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
 
+    /**
+     * parser factory for configuring and creating parsers
+     */
     private SAXParserFactory factory;
 
+    /**
+     * parser main parsing strategy
+     */
     private SaxParser parser;
 
     public SaxMarshaller(Reader xmlSchemaReader, List<AbstractTagParser> tagParserList, SaxParser parser) {
@@ -34,8 +41,18 @@ public class SaxMarshaller extends StreamMarshaller {
         this.parser = parser;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>
+     * creates new parser using factory and do parsing, using custom parser {@link SaxParser}
+     * </p>
+     *
+     * @param xmlStream xml document stream
+     * @return object representation of xml stream
+     */
     @Override
-    protected Medicines unmarshallingHook(Reader xmlStream) {
+    protected E unmarshallingHook(Reader xmlStream) {
         try {
             factory.newSAXParser().parse(new InputSource(xmlStream), parser);
             return getResult();
@@ -49,6 +66,9 @@ public class SaxMarshaller extends StreamMarshaller {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configureFactory() {
         factory = SAXParserFactory.newInstance();
@@ -57,13 +77,20 @@ public class SaxMarshaller extends StreamMarshaller {
         factory.setValidating(true);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * do nothing. Factory is configured for create parsers with validation switching on
+     * </p>
+     *
+     * @param xmlStream xml document stream
+     */
     @Override
     protected void validate(Reader xmlStream) {
-        return;
     }
 
     @Override
-    public void marshalling(Medicines element, Writer out) throws Exception {
+    public void marshalling(E element, Writer out) throws Exception {
 
     }
 }

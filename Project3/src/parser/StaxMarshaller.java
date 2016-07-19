@@ -1,8 +1,7 @@
 package parser;
 
-import entity.Medicines;
 import org.xml.sax.SAXException;
-import parser.streamMarshaller.AbstractTagParser;
+import parser.parsingStrategy.AbstractTagParser;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -18,11 +17,13 @@ import java.io.*;
 import java.util.*;
 
 /**
+ * Class represents STaX parsing technology.
+ *
  * @author Oleh Kakherskyi (olehkakherskiy@gmail.com)
  */
-public class StaxMarshaller extends StreamMarshaller {
+public class StaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
 
-    protected StringBuilder xmlStreamStorage = new StringBuilder();
+    private StringBuilder xmlStreamStorage = new StringBuilder();
 
     private XMLInputFactory xmlInputFactory;
 
@@ -35,19 +36,13 @@ public class StaxMarshaller extends StreamMarshaller {
     }
 
     @Override
-    protected Medicines unmarshallingHook(Reader xmlStream) {
+    protected E unmarshallingHook(Reader xmlStream) {
         try {
             return parse(createReader(new StringReader(xmlStreamStorage.toString())));
         } catch (XMLStreamException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    protected void copyXmlStream(Reader xmlStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(xmlStream);
-        bufferedReader.lines().forEach(xmlStreamStorage::append);
-        bufferedReader.close();
     }
 
     @Override
@@ -68,7 +63,13 @@ public class StaxMarshaller extends StreamMarshaller {
         }
     }
 
-    protected Source getSource(Reader sourceReader) throws XMLStreamException {
+    private void copyXmlStream(Reader xmlStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(xmlStream);
+        bufferedReader.lines().forEach(xmlStreamStorage::append);
+        bufferedReader.close();
+    }
+
+    private Source getSource(Reader sourceReader) throws XMLStreamException {
         return new StAXSource(createReader(sourceReader));
     }
 
@@ -76,7 +77,7 @@ public class StaxMarshaller extends StreamMarshaller {
         return xmlInputFactory.createXMLEventReader(sourceReader);
     }
 
-    private Medicines parse(XMLEventReader reader) throws XMLStreamException {
+    private E parse(XMLEventReader reader) throws XMLStreamException {
         XMLEvent event = null;
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -85,20 +86,20 @@ public class StaxMarshaller extends StreamMarshaller {
             switch (event.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT: {
                     StartElement startElement = event.asStartElement();
-                    prepareParamsAndAcceptFunction(startElement.getName().getLocalPart(), getAttributes(startElement),
-                            XMLStreamConstants.START_ELEMENT);
+                    acceptParsingFunction(XMLStreamConstants.START_ELEMENT,
+                            startElement.getName().getLocalPart(), getAttributes(startElement));
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS: {
                     stringParam = event.asCharacters().getData().trim();
                     if (!stringParam.isEmpty()) {
-                        prepareParamsAndAcceptFunction(stringParam, attributes, XMLStreamConstants.CHARACTERS);
+                        acceptParsingFunction(XMLStreamConstants.CHARACTERS, stringParam, attributes);
                     }
                     break;
                 }
                 case XMLStreamConstants.END_ELEMENT: {
-                    prepareParamsAndAcceptFunction(event.asEndElement().getName().getLocalPart(),
-                            Collections.emptyMap(), XMLStreamConstants.END_ELEMENT);
+                    acceptParsingFunction(XMLStreamConstants.END_ELEMENT, event.asEndElement().getName().getLocalPart(),
+                            Collections.emptyMap());
                     break;
                 }
             }
@@ -117,7 +118,7 @@ public class StaxMarshaller extends StreamMarshaller {
     }
 
     @Override
-    public void marshalling(Medicines element, Writer out) throws Exception {
-        throw new UnsupportedOperationException("Can't marshall with StAX parser");
+    public void marshalling(E element, Writer out) throws Exception {
+
     }
 }

@@ -1,4 +1,4 @@
-package parser.streamMarshaller;
+package parser.parsingStrategy;
 
 import entity.Medicine;
 import entity.Medicines;

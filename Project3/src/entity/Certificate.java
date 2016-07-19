@@ -1,13 +1,7 @@
 
 package entity;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -16,7 +10,6 @@ import java.time.LocalDate;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "certificate", propOrder = {
-
 })
 public class Certificate {
 
@@ -39,11 +32,9 @@ public class Certificate {
 
     /**
      * Gets the value of the startDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public LocalDate getStartDate() {
         return startDate;
@@ -51,11 +42,9 @@ public class Certificate {
 
     /**
      * Sets the value of the startDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setStartDate(LocalDate value) {
         this.startDate = value;
@@ -63,11 +52,9 @@ public class Certificate {
 
     /**
      * Gets the value of the endDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public LocalDate getEndDate() {
         return endDate;
@@ -75,11 +62,9 @@ public class Certificate {
 
     /**
      * Sets the value of the endDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setEndDate(LocalDate value) {
         this.endDate = value;
@@ -87,11 +72,9 @@ public class Certificate {
 
     /**
      * Gets the value of the registeringOrganisation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getRegisteringOrganisation() {
         return registeringOrganisation;
@@ -99,11 +82,9 @@ public class Certificate {
 
     /**
      * Sets the value of the registeringOrganisation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setRegisteringOrganisation(String value) {
         this.registeringOrganisation = value;
@@ -111,11 +92,9 @@ public class Certificate {
 
     /**
      * Gets the value of the certificateID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCertificateID() {
         return certificateID;
@@ -123,11 +102,9 @@ public class Certificate {
 
     /**
      * Sets the value of the certificateID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCertificateID(String value) {
         this.certificateID = value;
