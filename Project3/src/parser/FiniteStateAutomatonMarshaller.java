@@ -7,6 +7,7 @@ import parser.parsingStrategy.FunctionalContext;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.validation.Schema;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +127,11 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void marshalling(E element, Writer out) throws Exception {
+        throw new UnsupportedOperationException("Unsupported operation");
     }
 
     /**

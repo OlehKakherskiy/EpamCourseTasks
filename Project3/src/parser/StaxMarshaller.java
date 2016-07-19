@@ -116,9 +116,4 @@ public class StaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
         }
         return result;
     }
-
-    @Override
-    public void marshalling(E element, Writer out) throws Exception {
-
-    }
 }

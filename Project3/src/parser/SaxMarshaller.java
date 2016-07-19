@@ -9,7 +9,6 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
 import java.util.List;
 
 ;
@@ -87,10 +86,5 @@ public class SaxMarshaller<E> extends FiniteStateAutomatonMarshaller<E> {
      */
     @Override
     protected void validate(Reader xmlStream) {
-    }
-
-    @Override
-    public void marshalling(E element, Writer out) throws Exception {
-
     }
 }
