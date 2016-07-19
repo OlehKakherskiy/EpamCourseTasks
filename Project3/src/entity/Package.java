@@ -180,4 +180,16 @@ public class Package {
         result = 31 * result + representationType.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Package{" +
+                "dosages=" + dosages +
+                ", count=" + count +
+                ", measureUnit=" + measureUnit +
+                ", price=" + price +
+                ", packType=" + packType +
+                ", representationType=" + representationType +
+                '}';
+    }
 }

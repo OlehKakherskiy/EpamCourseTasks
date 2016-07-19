@@ -142,4 +142,15 @@ public class Dosage {
         result = 31 * result + measureUnit.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Dosage{" +
+                "dosageCount=" + dosageCount +
+                ", times=" + times +
+                ", per=" + per +
+                ", _for=" + _for +
+                ", measureUnit=" + measureUnit +
+                '}';
+    }
 }

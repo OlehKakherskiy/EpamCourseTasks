@@ -16,15 +16,15 @@
                     <package count="1" price="1" packType="packType1" measureUnit="gram"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="14" times="1" per="30m" for="adult men" measureUnit="gram"/>
+                            <dosage dosageCount="15" times="2" per="hour" for="pregnant" measureUnit="milliliter"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="milliliter"
                              representationType="drops">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="14" times="3" per="30m" for="adult men" measureUnit="gram"/>
+                            <dosage dosageCount="15" times="5" per="day" for="pregnant" measureUnit="milliliter"/>
                         </dosages>
                     </package>
                 </packages>
@@ -39,24 +39,28 @@
                     <package count="1" price="12" packType="packType1" measureUnit="thing"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="14" times="5" per="30m" for="adult men" measureUnit="gram"/>
+                            <dosage dosageCount="15" times="2" per="hour" for="pregnant" measureUnit="milliliter"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="gram"
                              representationType="powder">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="14" times="1" per="30m" for="adult men" measureUnit="gram"/>
+                            <dosage dosageCount="15" times="2" per="30m" for="pregnant" measureUnit="milliliter"/>
                         </dosages>
                     </package>
                 </packages>
             </producer>
         </producers>
     </medicine>
-    <medicine name="A" ID="ae5">
+    <medicine name="B" ID="ae5">
         <pharm>B</pharm>
         <group>antibiotics</group>
+        <analogues>
+            <analogueID>ae3</analogueID>
+            <analogueID>ae2</analogueID>
+        </analogues>
         <producers>
             <producer name="Producer1">
                 <certificate certificateID="sad8">
@@ -65,18 +69,18 @@
                     <registeringOrganisation>Organization1</registeringOrganisation>
                 </certificate>
                 <packages>
-                    <package count="1" price="1" packType="packType1" measureUnit="gram"
+                    <package count="1" price="1" packType="packType1" measureUnit="thing"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="milliliter"
                              representationType="drops">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="14" times="2" per="30m" for="adult men" measureUnit="gram"/>
+                            <dosage dosageCount="15" times="15" per="month" for="pregnant" measureUnit="milliliter"/>
                         </dosages>
                     </package>
                 </packages>
@@ -91,22 +95,22 @@
                     <package count="1" price="12" packType="packType1" measureUnit="thing"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="gram"
                              representationType="powder">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                 </packages>
             </producer>
         </producers>
     </medicine>
-    <medicine name="A" ID="ae2">
+    <medicine name="C" ID="ae2">
         <pharm>B</pharm>
         <group>antibiotics</group>
         <producers>
@@ -120,15 +124,15 @@
                     <package count="1" price="1" packType="packType1" measureUnit="gram"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="milliliter"
                              representationType="drops">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                 </packages>
@@ -143,15 +147,15 @@
                     <package count="1" price="12" packType="packType1" measureUnit="thing"
                              representationType="capsules">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                     <package count="2" price="15" packType="packType2" measureUnit="gram"
                              representationType="powder">
                         <dosages>
-                            <dosage dosageCount="14" per="30m" for="adult men" measureUnit="gram"/>
-                            <dosage dosageCount="15" per="30m" for="pregnant" measureUnit="milliliter"/>
+                            <dosage dosageCount="2" times="3" per="hour" for="children" measureUnit="gram"/>
+                            <dosage dosageCount="3" times="4" per="30m" for="adult women" measureUnit="thing"/>
                         </dosages>
                     </package>
                 </packages>

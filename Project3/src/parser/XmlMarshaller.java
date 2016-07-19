@@ -28,6 +28,7 @@ public abstract class XmlMarshaller<E> extends AbstractMarshaller<E> {
     public XmlMarshaller(Reader xmlSchemaReader, UnmarshallingResultBuilder<E> resultBuilder) {
         super(resultBuilder);
         nullCheck(xmlSchemaReader);
+        configureFactory();
         try {
             schema = getDocumentSchema(xmlSchemaReader);
         } catch (SAXException e) {
@@ -46,6 +47,7 @@ public abstract class XmlMarshaller<E> extends AbstractMarshaller<E> {
         nullCheck(schema);
         this.resultBuilder = resultBuilder;
         this.schema = schema;
+        configureFactory();
     }
 
     /**
@@ -61,7 +63,6 @@ public abstract class XmlMarshaller<E> extends AbstractMarshaller<E> {
      */
     public E unmarshalling(Reader xmlStream) {
         try {
-            configureFactory();
             validate(xmlStream);
             return unmarshallingHook(xmlStream);
         } catch (Exception e) {

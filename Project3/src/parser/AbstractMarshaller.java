@@ -44,7 +44,7 @@ public abstract class AbstractMarshaller<E> {
      */
     protected void nullCheck(Object stream) {
         if (stream == null) {
-            throw new IllegalArgumentException("stream is null");
+            throw new IllegalArgumentException("for performing this operation parameter can't be null");
         }
     }
 }

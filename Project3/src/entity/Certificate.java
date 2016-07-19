@@ -132,4 +132,14 @@ public class Certificate {
         result = 31 * result + certificateID.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Certificate{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", registeringOrganisation='" + registeringOrganisation + '\'' +
+                ", certificateID='" + certificateID + '\'' +
+                '}';
+    }
 }

@@ -54,9 +54,9 @@ public class AbstractMarshallerTest {
 
         XmlUnmarshallingResultBuilder<Medicines> unmarshallingResultBuilder = new XmlUnmarshallingResultBuilder<>(tagParsers);
 
-        marshallers.add(new DomMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), new DefaultDomParser(), new DefaultDomSaver()));
-        marshallers.add(new StaxMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), unmarshallingResultBuilder));
-        AbstractMarshaller<Medicines> saxMarshaller = new SaxMarshaller<Medicines>(new StringReader(schemaStringBuilder.toString()), unmarshallingResultBuilder ,new SaxParser());
+        marshallers.add(new DomMarshaller<>(new StringReader(schemaStringBuilder.toString()), new DefaultDomParser(), new DefaultDomSaver()));
+        marshallers.add(new StaxMarshaller<>(new StringReader(schemaStringBuilder.toString()), unmarshallingResultBuilder));
+        AbstractMarshaller<Medicines> saxMarshaller = new SaxMarshaller<>(new StringReader(schemaStringBuilder.toString()), unmarshallingResultBuilder, new SaxParser());
         marshallers.add(saxMarshaller);
     }
 

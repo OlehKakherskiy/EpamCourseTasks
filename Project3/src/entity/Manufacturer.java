@@ -129,4 +129,13 @@ public class Manufacturer {
         result = 31 * result + name.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "certificate=" + certificate +
+                ", packages=" + packages +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

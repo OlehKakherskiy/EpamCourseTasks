@@ -172,4 +172,16 @@ public class Medicine {
         result = 31 * result + id.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Medicine{" +
+                "pharm='" + pharm + '\'' +
+                ", group=" + group +
+                ", analogues=" + analogues +
+                ", producers=" + producers +
+                ", name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

@@ -36,4 +36,11 @@ public class Medicines {
     public int hashCode() {
         return medicine.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Medicines{" +
+                "medicine=" + medicine +
+                '}';
+    }
 }
