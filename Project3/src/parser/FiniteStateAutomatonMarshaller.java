@@ -65,7 +65,7 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
      * strategy for parsing start tag (it hasn't any attributes or specific object initializing
      * is not need).
      */
-    private TagName lastTag; //TODO: должен быть стек вызванных тегов, иначе данные будет не туда вставлять!!!!
+    private Stack<TagName> tagStack = new Stack<>();
 
     /**
      * parsing result/
@@ -191,14 +191,14 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
      * @param attributes tag attributes
      */
     private void startElementEvent(String tagName, Map<String, String> attributes) {
-        lastTag = TagName.fromValue(tagName);
+        tagStack.push(TagName.fromValue(tagName));
         System.out.println("startTag " + tagName);
         if (acceptParseFunctionFromCurrentContext(attributes)) {
             return;
         }
 
         //no tag parser in curentContext, try to find in other contexts
-        FunctionalContext newTagContext = tagContexts.get(lastTag);
+        FunctionalContext newTagContext = tagContexts.get(tagStack.peek());
         if (newTagContext != null) {
             functionalContextStack.push(currentContext);
             currentContext = newTagContext;
@@ -216,7 +216,7 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
     private boolean acceptParseFunctionFromCurrentContext(Map<String, String> attributes) {
         if (currentContext == null)
             return false;
-        Consumer<Map<String, String>> parser = currentContext.getInitFunction(lastTag);
+        Consumer<Map<String, String>> parser = currentContext.getInitFunction(tagStack.peek());
         if (parser != null) {
             parser.accept(attributes);
             return true;
@@ -231,7 +231,7 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
      */
     @SuppressWarnings("unchecked")
     private void charactersEvent(String data) {
-        currentContext.getInsertFunction(lastTag).accept(data);
+        currentContext.getInsertFunction(tagStack.peek()).accept(data);
     }
 
     /**
@@ -245,6 +245,7 @@ public abstract class FiniteStateAutomatonMarshaller<E> extends AbstractMarshall
     @SuppressWarnings("unchecked")
     private void endElementEvent(String tagName) {
         System.out.println("endTag " + tagName);
+        tagStack.pop();
         Supplier resultFunction = currentContext.getResultFunction(TagName.fromValue(tagName));
         if (resultFunction != null) {
             currentContext = functionalContextStack.pop(); //set old context
